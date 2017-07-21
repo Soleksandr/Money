@@ -5,7 +5,15 @@ const createUser = data => (validator.validateOnEmptiness(data) ? new db.User(da
 
 const getUsers = () => db.users;
 
+const getTransactionsOfUser = (id) => {
+  const transactions = db.transactions.filter(
+    transaction => transaction.participantsId.find(
+      participantId => participantId === id) || transaction.payerId === id);
+  return transactions;
+};
+
 module.exports = {
   createUser,
   getUsers,
+  getTransactionsOfUser,
 };

@@ -20,4 +20,9 @@ module.exports = (app) => {
       res.sendStatus(500);
     }
   });
+
+  app.get('/users/:id/transactions', (req, res) => {
+    const transactions = handlers.getTransactionsOfUser(req.params.id);
+    res.json(transactions);
+  });
 };
