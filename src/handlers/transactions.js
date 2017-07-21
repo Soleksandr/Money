@@ -1,16 +1,13 @@
-const data = require('../data');
+const db = require('../db');
+const validator = require('../validator');
 
-const addTransaction = (req, res) => {
-  const transaction = new data.Transaction(req.body);
-  data.transactions.push(transaction);
-  res.json(transaction);
-};
 
-const getTransactions = (req, res) => {
-  res.json(data.transactions);
-};
+const createTransaction = data => (
+  validator.validateOnEmptiness(data) ? new db.Transaction(data) : null);
+
+const getTransactions = () => db.transactions;
 
 module.exports = {
-  addTransaction,
+  createTransaction,
   getTransactions,
 };

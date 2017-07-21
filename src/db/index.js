@@ -1,8 +1,8 @@
-const transactions = [];
-const users = [];
-
 let transactionsIdCounter = 0;
 let usersIdCounter = 0;
+
+const transactions = [];
+const users = [];
 
 class Transaction {
   constructor({ title, cost, payerId, participantsId }) {
@@ -11,17 +11,11 @@ class Transaction {
     this.participantsId = participantsId;
     this.payerId = payerId;
     this.id = Transaction.generateId();
-    this.addTransactionIdToUsers(participantsId);
+    transactions.push(this);
   }
 
   static generateId = () => transactionsIdCounter += 1;
 
-  addTransactionIdToUsers = (participantsId) => {
-    participantsId.forEach((id) => {
-      const participant = users.find(user => user.id === Number(id));
-      participant.transactionsId.push(this.id);
-    });
-  }
 }
 
 class User {
@@ -30,6 +24,7 @@ class User {
     this.surname = surname;
     this.transactionsId = [];
     this.id = User.generateId();
+    users.push(this);
   }
 
   static generateId = () => usersIdCounter += 1;

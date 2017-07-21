@@ -1,23 +1,11 @@
-const data = require('../data');
+const db = require('../db');
+const validator = require('../validator');
 
-const addUser = (req, res) => {
-  const newUser = new data.User(req.body);
-  data.users.push(newUser);
-  res.json(newUser);
-};
+const createUser = data => (validator.validateOnEmptiness(data) ? new db.User(data) : null);
 
-const getUsers = (req, res) => {
-  res.json(data.users);
-};
-
-const getUser = (req, res) => {
-  const currentUser = data.users.find(
-    user => user.id === Number(req.params.id));
-  res.json(currentUser);
-};
+const getUsers = () => db.users;
 
 module.exports = {
-  addUser,
+  createUser,
   getUsers,
-  getUser,
 };

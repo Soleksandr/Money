@@ -1,10 +1,23 @@
 const handlers = require('../handlers/users');
 
 module.exports = (app) => {
-  app.route('/users')
-     .post(handlers.addUser)
-     .get(handlers.getUsers);
+  app.post('/users', (req, res) => {
+    const user = handlers.createUser(req.body);
+    if (user) {
+      res.json(user);
+    } else if (user === null) {
+      res.sendStatus(400);
+    } else {
+      res.sendStatus(500);
+    }
+  });
 
-  app.route('/users/:id')
-     .get(handlers.getUser);
+  app.get('/users', (req, res) => {
+    const users = handlers.getUsers();
+    if (users) {
+      res.json(users);
+    } else {
+      res.sendStatus(500);
+    }
+  });
 };
