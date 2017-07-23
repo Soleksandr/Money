@@ -22,7 +22,6 @@ class User {
   constructor({ name, surname }) {
     this.name = name;
     this.surname = surname;
-    this.transactionsId = [];
     this.id = User.generateId();
     users.push(this);
   }

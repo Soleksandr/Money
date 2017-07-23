@@ -25,3 +25,27 @@ describe('Test getUsers handler', () => {
     expect(handlers.getUsers()).toBeInstanceOf(Array);
   });
 });
+
+describe('Test getTransactionsOfUser handler', () => {
+  beforeEach(() => {
+    config.initDb();
+  });
+
+  afterEach(() => {
+    config.clearDb();
+  });
+
+  it('should return an array', () => {
+    expect(handlers.getUsers()).toBeInstanceOf(Array);
+  });
+  it('user with id 1 should has two transactions only', () => {
+    const transactions = handlers.getTransactionsOfUser(1);
+    expect(transactions.length).toBe(2);
+  });
+  it('transactions id for user with id 1 should be 1 and 2', () => {
+    const transactions = handlers.getTransactionsOfUser(1);
+    transactions.forEach((item) => {
+      expect(item.id === 1 || item.id === 2).toBeTruthy();
+    });
+  });
+});

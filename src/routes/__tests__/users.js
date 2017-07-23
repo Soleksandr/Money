@@ -16,3 +16,10 @@ describe('Test route /users', () => {
       expect(res.statusCode).toBe(400);
     }));
 });
+
+describe('Test route /users', () => {
+  it('get method should return an array', () =>
+    request(app).get('/users').then((res) => {
+      expect(res.body).toBeInstanceOf(Array);
+    }));
+});
