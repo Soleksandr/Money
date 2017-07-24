@@ -23,3 +23,22 @@ describe('Test route /users', () => {
       expect(res.body).toBeInstanceOf(Array);
     }));
 });
+
+describe('Test route /users/:id/transactions', () => {
+  beforeEach(() => {
+    config.initDb();
+  });
+
+  afterEach(() => {
+    config.clearDb();
+  });
+
+  it('get method with user id which exists should return an array', () =>
+    request(app).get('/users/1/transactions').then((res) => {
+      expect(res.body).toBeInstanceOf(Array);
+    }));
+  it('get method with user id which does not exist should return status 404', () =>
+    request(app).get('/users/100/transactions').then((res) => {
+      expect(res.statusCode).toBe(404);
+    }));
+});

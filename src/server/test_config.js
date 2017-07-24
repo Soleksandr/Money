@@ -25,8 +25,8 @@ const emptyName = {
 };
 
 // user id 1:
-//    payer: transaction id 1,
-//    participant: transaction id 1, transaction id 2
+//    payer: transaction id 1, transaction id 2
+//    participant: transaction id 2, transaction id 3
 // user id 2:
 //    payer: transaction id 2,
 //    participant: transaction id 1, transaction id 2
@@ -73,8 +73,22 @@ const initDb = () => {
       title: 'cloths',
       cost: 50,
       participantsId: [1, 2, 3],
-      payerId: 2,
+      payerId: 1,
       id: 2,
+    },
+    {
+      title: 'traveling',
+      cost: 100,
+      participantsId: [1, 2, 3],
+      payerId: 2,
+      id: 3,
+    },
+    {
+      title: 'somethig else',
+      cost: 500,
+      participantsId: [2, 3],
+      payerId: 2,
+      id: 4,
     },
   ];
 };

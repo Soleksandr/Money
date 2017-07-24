@@ -10,4 +10,6 @@ require('./routes/start')(app);
 require('./routes/users')(app);
 require('./routes/transactions')(app);
 
+app.use(express.static('static'));
+
 module.exports = app;

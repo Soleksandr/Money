@@ -38,14 +38,17 @@ describe('Test getTransactionsOfUser handler', () => {
   it('should return an array', () => {
     expect(handlers.getUsers()).toBeInstanceOf(Array);
   });
-  it('user with id 1 should has two transactions only', () => {
-    const transactions = handlers.getTransactionsOfUser(1);
-    expect(transactions.length).toBe(2);
+  it('user should has all transactions where he is a payer', () => {
+    const userId = 1;
+    const transactions = handlers.getTransactionsOfUser(userId);
+    const asPayer = transactions.filter(item => item.payerId === 1);
+    expect(asPayer.length).toBe(2);
   });
-  it('transactions id for user with id 1 should be 1 and 2', () => {
-    const transactions = handlers.getTransactionsOfUser(1);
-    transactions.forEach((item) => {
-      expect(item.id === 1 || item.id === 2).toBeTruthy();
-    });
+  it('users should has all transactions where he is a participant', () => {
+    const userId = 1;
+    const transactions = handlers.getTransactionsOfUser(userId);
+    const asParticipant = transactions.filter(item =>
+      item.participantsId.find(id => id === userId));
+    expect(asParticipant.length).toBe(2);
   });
 });

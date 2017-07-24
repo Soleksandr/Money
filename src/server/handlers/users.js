@@ -6,11 +6,16 @@ const createUser = data => (
 
 const getUsers = () => db.users;
 
+const getUser = id => db.users.find(user => user.id === id) || null;
+
 const getTransactionsOfUser = (id) => {
-  const transactions = db.transactions.filter(
-    transaction => transaction.participantsId.find(
-      participantId => participantId === id) || transaction.payerId === id);
-  return transactions;
+  if (getUser(id)) {
+    const transactions = db.transactions.filter(
+      transaction => transaction.participantsId.find(
+        participantId => participantId === id) || transaction.payerId === id);
+    return transactions;
+  }
+  return null;
 };
 
 module.exports = {
