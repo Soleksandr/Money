@@ -1,27 +1,47 @@
 const handlers = require('../transactions');
+const validator = require('../../utils/validator');
 const db = require('../../db');
-const config = require('../../test_config');
 
-describe('Test addTransaction handler', () => {
-  it('should return instance of Transaction class', () => {
-    expect(handlers.createTransaction(config.correctTransaction)).toBeInstanceOf(db.Transaction);
-  });
-  it('should add new transaction to db', () => {
-    const instance = handlers.createTransaction(config.correctTransaction);
-    expect(db.transactions.find(item => instance === item)).toBeTruthy();
-  });
-  it('should set unique id', () => {
-    const instance1 = handlers.createTransaction(config.correctTransaction);
-    const instance2 = handlers.createTransaction(config.correctTransaction);
-    expect(instance1.id !== instance2.id).toBeTruthy();
-  });
-  it('should return null when parameter contain property with empty value', () => {
-    expect(handlers.createTransaction(config.emptyTitle)).toBe(null);
-  });
-});
+const mockTransaction = {
+  value: 'test',
+};
 
-describe('Test getTransactions handler', () => {
-  it('should return an array', () => {
-    expect(handlers.getTransactions()).toBeInstanceOf(Array);
+jest.mock('../../db', () => ({
+  Transaction: jest.fn(() => mockTransaction),
+}));
+
+describe('Test createTransaction handler', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should call validateOnEmptiness and db.Transaction  with correct parameter', () => {
+    const mockParameter = 'correct';
+    validator.validateOnEmptiness = jest.fn(() => true);
+    handlers.createTransaction(mockParameter);
+    expect(validator.validateOnEmptiness).toBeCalledWith(mockParameter);
+    expect(db.Transaction).toBeCalledWith(mockParameter);
+  });
+
+  it('should call validateOnEmptiness and does not call db.Transaction  with incorrect parameter', () => {
+    const mockParameter = 'incorrect';
+    validator.validateOnEmptiness = jest.fn(() => false);
+    handlers.createTransaction(mockParameter);
+    expect(validator.validateOnEmptiness).toBeCalledWith(mockParameter);
+    expect(db.Transaction).not.toBeCalled();
+  });
+
+  it('should return mockTransaction with correct parameter', () => {
+    const mockParameter = 'correct';
+    validator.validateOnEmptiness = jest.fn(() => true);
+    const result = handlers.createTransaction(mockParameter);
+    expect(result).toBe(db.Transaction());
+  });
+
+  it('should return null with incorrect parameter', () => {
+    const mockParameter = 'incorrect';
+    validator.validateOnEmptiness = jest.fn(() => false);
+    const result = handlers.createTransaction(mockParameter);
+    expect(result).toBe(null);
   });
 });
