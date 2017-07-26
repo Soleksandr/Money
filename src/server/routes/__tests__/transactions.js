@@ -1,6 +1,6 @@
 const request = require('supertest');
 const app = require('../../app');
-const config = require('../../test_config');
+const transactions = require('../transactions');
 
 describe('Test route /transactions', () => {
   it('get method should return an array', () =>

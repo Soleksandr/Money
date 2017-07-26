@@ -2,7 +2,13 @@ const handlers = require('../users');
 const db = require('../../db');
 const validator = require('../../utils/validator');
 
-describe('Test createTransaction handler', () => {
+jest.mock('../../db', () => ({
+  User: jest.fn(() => ({ id: 2 })),
+  users: [{ id: 1 }],
+  transactions: [{ participantsId: [1, 2], payerId: 2 }],
+}));
+
+describe('Test createUser handler', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -10,7 +16,7 @@ describe('Test createTransaction handler', () => {
   it('should call validateOnEmptiness and db.User  with correct parameter', () => {
     const mockParameter = 'correct';
     validator.validateOnEmptiness = jest.fn(() => true);
-    handlers.createTransaction(mockParameter);
+    handlers.createUser(mockParameter);
     expect(validator.validateOnEmptiness).toBeCalledWith(mockParameter);
     expect(db.User).toBeCalledWith(mockParameter);
   });
@@ -18,75 +24,70 @@ describe('Test createTransaction handler', () => {
   it('should call validateOnEmptiness and does not call db.User  with incorrect parameter', () => {
     const mockParameter = 'incorrect';
     validator.validateOnEmptiness = jest.fn(() => false);
-    handlers.createTransaction(mockParameter);
+    handlers.createUser(mockParameter);
     expect(validator.validateOnEmptiness).toBeCalledWith(mockParameter);
     expect(db.User).not.toBeCalled();
   });
 
-  it('should return mockTransaction with correct parameter', () => {
+  it('should return mockUser with correct parameter', () => {
     const mockParameter = 'correct';
     validator.validateOnEmptiness = jest.fn(() => true);
-    const result = handlers.createTransaction(mockParameter);
-    expect(result).toBe(db.User());
+    const result = handlers.createUser(mockParameter);
+    expect(result).toEqual(db.User());
   });
 
   it('should return null with incorrect parameter', () => {
     const mockParameter = 'incorrect';
     validator.validateOnEmptiness = jest.fn(() => false);
-    const result = handlers.createTransaction(mockParameter);
+    const result = handlers.createUser(mockParameter);
     expect(result).toBe(null);
   });
 });
 
+describe('Test getUsers handler', () => {
+  it('should return an array', () => {
+    expect(handlers.getUsers()).toBeInstanceOf(Array);
+  });
+});
 
+describe('Test getUser handler', () => {
+  it('should return user with correct parameter', () => {
+    const correctParameter = db.users[0].id;
+    expect(handlers.getUser(correctParameter)).toEqual(db.users[0]);
+  });
 
-// describe('Test addUser handler', () => {
-//   it('should return instance of User class', () => {
-//     expect(handlers.createUser(config.correctUser)).toBeInstanceOf(db.User);
-//   });
-//   it('should add new user to db', () => {
-//     const instance = handlers.createUser(config.correctUser);
-//     expect(db.users.find(item => instance === item)).toBeTruthy();
-//   });
-//   it('should set unique id', () => {
-//     const instance1 = handlers.createUser(config.correctUser);
-//     const instance2 = handlers.createUser(config.correctUser);
-//     expect(instance1.id !== instance2.id).toBeTruthy();
-//   });
-//   it('should return null when parameter contain property with empty value', () => {
-//     expect(handlers.createUser(config.emptyName)).toBe(null);
-//   });
-// });
+  it('should return null with incorrect parameter', () => {
+    const incorrectParameter = 100;
+    expect(handlers.getUser(incorrectParameter)).toBe(null);
+  });
+});
 
-// describe('Test getUsers handler', () => {
-//   it('should return an array', () => {
-//     expect(handlers.getUsers()).toBeInstanceOf(Array);
-//   });
-// });
+describe('Test getTransactionsOfUser handler', () => {
+  it('should call getUser with correct parameter', () => {
+    const correctParameter = 'correct';
+    const mockGetUserFn = jest.fn(() => {});
+    const getTransactionsOfUser = handlers.getTransactionsOfUserPureFn(mockGetUserFn);
+    getTransactionsOfUser(correctParameter);
+    expect(mockGetUserFn).toBeCalledWith(correctParameter);
+  });
 
-// describe('Test getTransactionsOfUser handler', () => {
-//   beforeEach(() => {
-//     config.initDb();
-//   });
+  it('should call getUser with incorrect parameter', () => {
+    const incorrectParameter = 'incorrect';
+    const mockGetUserFn = jest.fn(() => {});
+    const getTransactionsOfUser = handlers.getTransactionsOfUserPureFn(mockGetUserFn);
+    getTransactionsOfUser(incorrectParameter);
+    expect(mockGetUserFn).toBeCalledWith(incorrectParameter);
+  });
 
-//   afterEach(() => {
-//     config.clearDb();
-//   });
+  it('with correct parameter should return an array that contains transaction', () => {
+    const correctParameter = db.users[0].id;
+    const result = handlers.getTransactionsOfUser(correctParameter);
+    expect(result.length).not.toBe(0);
+  });
 
-//   it('should return an array', () => {
-//     expect(handlers.getUsers()).toBeInstanceOf(Array);
-//   });
-//   it('user should has all transactions where he is a payer', () => {
-//     const userId = 1;
-//     const transactions = handlers.getTransactionsOfUser(userId);
-//     const asPayer = transactions.filter(item => item.payerId === 1);
-//     expect(asPayer.length).toBe(2);
-//   });
-//   it('users should has all transactions where he is a participant', () => {
-//     const userId = 1;
-//     const transactions = handlers.getTransactionsOfUser(userId);
-//     const asParticipant = transactions.filter(item =>
-//       item.participantsId.find(id => id === userId));
-//     expect(asParticipant.length).toBe(2);
-//   });
-// });
+  it('with incorrect parameter should return null', () => {
+    const incorrectParameter = 100;
+    const result = handlers.getTransactionsOfUser(incorrectParameter);
+    expect(result).toBe(null);
+  });
+});
