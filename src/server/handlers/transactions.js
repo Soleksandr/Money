@@ -6,7 +6,10 @@ const createTransaction = data => (
 
 const getTransactions = () => db.transactions;
 
+const getTransaction = id => db.users.find(user => user.id === id);
+
 module.exports = {
   createTransaction,
   getTransactions,
+  getTransaction,
 };

@@ -9,6 +9,8 @@ app.use(bodyParser.json());
 require('./routes/start')(app);
 require('./routes/users')(app);
 require('./routes/transactions')(app);
+require('./routes/transaction')(app);
+require('./routes/userTransactions')(app);
 
 app.use(express.static('static'));
 

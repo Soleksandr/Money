@@ -65,7 +65,7 @@ describe('Test getUser handler', () => {
 describe('Test getTransactionsOfUser handler', () => {
   it('should call getUser with correct parameter', () => {
     const correctParameter = 'correct';
-    const mockGetUserFn = jest.fn(() => {});
+    const mockGetUserFn = jest.fn();
     const getTransactionsOfUser = handlers.getTransactionsOfUserPureFn(mockGetUserFn);
     getTransactionsOfUser(correctParameter);
     expect(mockGetUserFn).toBeCalledWith(correctParameter);
@@ -73,7 +73,7 @@ describe('Test getTransactionsOfUser handler', () => {
 
   it('should call getUser with incorrect parameter', () => {
     const incorrectParameter = 'incorrect';
-    const mockGetUserFn = jest.fn(() => {});
+    const mockGetUserFn = jest.fn();
     const getTransactionsOfUser = handlers.getTransactionsOfUserPureFn(mockGetUserFn);
     getTransactionsOfUser(incorrectParameter);
     expect(mockGetUserFn).toBeCalledWith(incorrectParameter);

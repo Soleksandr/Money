@@ -8,7 +8,7 @@ module.exports = (app) => {
     } else if (transaction === null) {
       res.sendStatus(400);
     } else {
-      res.sendSatus(500);
+      res.sendStatus(500);
     }
   });
 
@@ -17,7 +17,7 @@ module.exports = (app) => {
     if (transactions) {
       res.json(transactions);
     } else {
-      res.sendSatus(500);
+      res.sendStatus(500);
     }
   });
 };

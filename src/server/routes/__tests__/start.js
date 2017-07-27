@@ -1,6 +1,8 @@
 const request = require('supertest');
 const app = require('../../app');
 const start = require('../start');
+const fs = require('fs');
+const path = require('path');
 
 const res = {
   sendFile: jest.fn(),
@@ -12,20 +14,24 @@ const mockApp = {
   }),
 };
 
+const startPage = fs.readFileSync(
+  path.join(__dirname, '../../../../static/index.html'), 'utf-8');
+
 describe('Test route /', () => {
-  it('get method sholud call sendFile method of res param', () =>
+  it('get method sholud return index.html page', () =>
     request(app).get('/').then((resp) => {
-      expect(resp.text.indexOf('<!DOCTYPE html>')).toBe(0);
+      expect(resp.text).toBe(startPage);
     }));
 
-  it('should call get method of parameter with first argunent === "/"', () => {
+  it('should call get method with first argument "/" and second any function', () => {
     start(mockApp);
     expect(mockApp.get).toHaveBeenCalledWith('/', expect.any(Function));
   });
 
   it('sendFile method of res param should be called with a string', () => {
+    start(mockApp);
     expect(res.sendFile).toBeCalled();
-    expect(typeof res.sendFile.mock.calls[0][0] === 'string').toBeTruthy();
+    expect(res.sendFile).toHaveBeenCalledWith(expect.any(String));
   });
 });
 
