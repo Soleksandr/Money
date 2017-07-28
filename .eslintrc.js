@@ -11,6 +11,8 @@ module.exports = {
       "jsx-a11y/href-no-hash": "off",
     },
     "env": {
-    "jest": true
+    "jest": true,
+    "browser": true,
+    "node": true
     }
 };

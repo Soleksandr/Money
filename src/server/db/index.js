@@ -1,8 +1,22 @@
 let transactionsIdCounter = 0;
 let usersIdCounter = 0;
 
-const transactions = [];
-const users = [];
+const transactions = [
+  {
+    title: 'goods',
+    cost: 50,
+    payerId: 1,
+    participantsId: [1, 2, 3],
+    id: 0,
+  }
+];
+const users = [
+  {
+    name: 'Ivanov',
+    surname: 'Ivan',
+    id: 0,
+  }
+];
 
 class Transaction {
   constructor({ title, cost, payerId, participantsId }) {
