@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 export default class TransactionPreview extends Component {
   render() {
     const { title, cost, participants } = this.props;
+
     return (
       <li>
-        <span>{title}</span>
-        <span>{cost}</span>
-        <span>{participants.length}</span>
+        <span>{`${title} ${cost} ${participants.length}`}</span>
       </li>);
   }
 }

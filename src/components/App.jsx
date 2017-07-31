@@ -5,17 +5,16 @@ import Layout from './Layout';
 import UsersList from './UsersList';
 import TransactionsList from './TransactionsList';
 import AddTransactionForm from './AddTransactionForm';
+import AddUserForm from './AddUserForm';
 import * as transactionActions from '../actions/transactions';
 import * as userActions from '../actions/users';
 
 const App = props => (
   <Router>
-    <Layout
-      getTransactions={props.getTransactions} 
-      getUsers={props.getUsers}
-    >
+    <Layout>
       <Switch>
         <Route exact path="/users" render={() => <UsersList {...props} />} />
+        <Route exact path="/users/new_user" render={() => <AddUserForm {...props} />} />
         <Route exact path="/transactions" render={() => <TransactionsList {...props} />} />
         <Route exact path="/transactions/new_transaction" render={() => <AddTransactionForm {...props} />} />
       </Switch>
@@ -31,8 +30,9 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   getTransactions: transactionActions.getTransactions(dispatch),
-  getUsers: userActions.getUsers(dispatch),
   addTransaction: transactionActions.addTransaction(dispatch),
+  getUsers: userActions.getUsers(dispatch),
+  addUser: userActions.addUser(dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

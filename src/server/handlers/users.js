@@ -1,8 +1,14 @@
 const db = require('../db');
 const validator = require('../utils/validator');
 
-const createUser = data => (
-  validator.validateOnEmptiness(data) ? new db.User(data) : null);
+const createUser = (data) => {
+  if (validator.validateOnEmptiness(data)) {
+    const user = new db.User(data);
+    db.users = [...db.users, user];
+    return user;
+  }
+  return null;
+};
 
 const getUsers = () => db.users;
 

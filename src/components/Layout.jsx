@@ -6,12 +6,12 @@ const Layout = props => (
   <section>
     <div>
       <div>
-        <Link to="/users" onClick={props.getUsers}>
+        <Link to="/users">
           P
         </Link>
       </div>
       <div>
-        <Link to="/transactions" onClick={props.getTransactions}>
+        <Link to="/transactions">
           T
         </Link>
       </div>

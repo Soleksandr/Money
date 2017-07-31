@@ -4,6 +4,10 @@ import { Link } from 'react-router-dom';
 import TransactionPreview from './TransactionPreview';
 
 export default class TransactionsList extends Component {
+  componentDidMount() {
+    this.props.getTransactions();
+  }
+
   render() {
     return (
       <div>
@@ -26,6 +30,7 @@ export default class TransactionsList extends Component {
 }
 
 TransactionsList.propTypes = {
+  getTransactions: PropTypes.func.isRequired,
   transactions: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
     cost: PropTypes.number,

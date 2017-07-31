@@ -1,48 +1,52 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-class AddTransactionForm extends Component {
+export default class AddUserForm extends Component {
   state = {
     name: '',
     surname: '',
   }
 
-  onNameChange = (e) => {
+  onNameChange = ({ target: { value } }) => {
     this.setState({
-      name: `${e.target.value}`
+      name: value,
     });
   }
 
-  onSurnameChange = (e) => {
+  onSurnameChange = ({ target: { value } }) => {
     this.setState({
-      surname: `${e.target.value}`
+      surname: value,
     });
+  }
+
+  onSubmit = (e) => {
+    e.preventDefault();
+    this.props.addUser(this.state);
   }
 
   render() {
     return (
-      <form>
+      <form onSubmit={this.onSubmit}>
         <input
           type="text"
           placeholder="name"
-          name="name"
           value={this.state.name}
           onChange={this.onNameChange}
         />
         <input
           type="text"
           placeholder="surname"
-          name="surname"
           value={this.state.surname}
           onChange={this.onSurnameChange}
         />
         <button
           type="submit"
-          onSubmit={this.onSubmit}
         >add</button>
       </form>
     );
   }
 }
 
-export default AddTransactionForm;
+AddUserForm.propTypes = {
+  addUser: PropTypes.func.isRequired,
+};

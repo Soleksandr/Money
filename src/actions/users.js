@@ -1,5 +1,5 @@
 import * as constants from '../constants';
-import * as usersApi from '../apiCalls/users';
+import * as usersApiCalls from '../apiCalls/users';
 
 const getUsersActionCreator = users => ({
   type: constants.GET_USERS,
@@ -7,6 +7,14 @@ const getUsersActionCreator = users => ({
 });
 
 export const getUsers = dispatch => () =>
-  usersApi.getUsers().then(transactions =>
+  usersApiCalls.getUsers().then(transactions =>
     dispatch(getUsersActionCreator(transactions)));
 
+const addUserActionCreator = user => ({
+  type: constants.ADD_USER,
+  payload: user,
+});
+
+export const addUser = dispatch => data =>
+  usersApiCalls.addUser(data).then(user =>
+    dispatch(addUserActionCreator(user)));

@@ -1,10 +1,10 @@
 export const getTransactions = () =>
-  fetch('./transactions', {
+  fetch('/transactions', {
     method: 'GET',
   }).then(transactions => transactions.json());
 
 export const addTransaction = data =>
-  fetch('./transactions', {
+  fetch('/transactions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
