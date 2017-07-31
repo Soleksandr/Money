@@ -10,6 +10,12 @@ jest.mock('../../db', () => ({
   Transaction: jest.fn(() => mockTransaction),
 }));
 
+jest.mock('../../utils/validator', () => ({
+  validateOnEmptiness: jest.fn(param =>
+    param === 'correct',
+  ),
+}));
+
 describe('Test createTransaction handler', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -17,7 +23,6 @@ describe('Test createTransaction handler', () => {
 
   it('should call validateOnEmptiness and db.Transaction  with correct parameter', () => {
     const mockParameter = 'correct';
-    validator.validateOnEmptiness = jest.fn(() => true);
     handlers.createTransaction(mockParameter);
     expect(validator.validateOnEmptiness).toBeCalledWith(mockParameter);
     expect(db.Transaction).toBeCalledWith(mockParameter);
@@ -25,7 +30,6 @@ describe('Test createTransaction handler', () => {
 
   it('should call validateOnEmptiness and does not call db.Transaction  with incorrect parameter', () => {
     const mockParameter = 'incorrect';
-    validator.validateOnEmptiness = jest.fn(() => false);
     handlers.createTransaction(mockParameter);
     expect(validator.validateOnEmptiness).toBeCalledWith(mockParameter);
     expect(db.Transaction).not.toBeCalled();
@@ -33,14 +37,12 @@ describe('Test createTransaction handler', () => {
 
   it('should return mockTransaction with correct parameter', () => {
     const mockParameter = 'correct';
-    validator.validateOnEmptiness = jest.fn(() => true);
     const result = handlers.createTransaction(mockParameter);
     expect(result).toBe(db.Transaction());
   });
 
   it('should return null with incorrect parameter', () => {
     const mockParameter = 'incorrect';
-    validator.validateOnEmptiness = jest.fn(() => false);
     const result = handlers.createTransaction(mockParameter);
     expect(result).toBe(null);
   });

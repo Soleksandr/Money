@@ -8,6 +8,13 @@ jest.mock('../../db', () => ({
   transactions: [{ participantsId: [1, 2], payerId: 2 }],
 }));
 
+jest.mock('../../utils/validator', () => ({
+  validateOnEmptiness: jest.fn(param =>
+    param === 'correct',
+  ),
+}));
+
+
 describe('Test createUser handler', () => {
   afterEach(() => {
     jest.clearAllMocks();
@@ -15,7 +22,6 @@ describe('Test createUser handler', () => {
 
   it('should call validateOnEmptiness and db.User  with correct parameter', () => {
     const mockParameter = 'correct';
-    validator.validateOnEmptiness = jest.fn(() => true);
     handlers.createUser(mockParameter);
     expect(validator.validateOnEmptiness).toBeCalledWith(mockParameter);
     expect(db.User).toBeCalledWith(mockParameter);
@@ -23,7 +29,6 @@ describe('Test createUser handler', () => {
 
   it('should call validateOnEmptiness and does not call db.User  with incorrect parameter', () => {
     const mockParameter = 'incorrect';
-    validator.validateOnEmptiness = jest.fn(() => false);
     handlers.createUser(mockParameter);
     expect(validator.validateOnEmptiness).toBeCalledWith(mockParameter);
     expect(db.User).not.toBeCalled();
@@ -31,14 +36,12 @@ describe('Test createUser handler', () => {
 
   it('should return mockUser with correct parameter', () => {
     const mockParameter = 'correct';
-    validator.validateOnEmptiness = jest.fn(() => true);
     const result = handlers.createUser(mockParameter);
     expect(result).toEqual(db.User());
   });
 
   it('should return null with incorrect parameter', () => {
     const mockParameter = 'incorrect';
-    validator.validateOnEmptiness = jest.fn(() => false);
     const result = handlers.createUser(mockParameter);
     expect(result).toBe(null);
   });

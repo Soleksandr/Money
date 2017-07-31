@@ -1,5 +1,6 @@
 const transactions = require('../transactions');
 const handlers = require('../../handlers/transactions');
+const app = require('../../app');
 
 const mockTransaction = {
   title: 'test',
@@ -14,6 +15,11 @@ jest.mock('../../handlers/transactions', () => ({
   getTransactions: jest.fn(),
 }));
 
+jest.mock('../../app', () => ({
+  post: jest.fn(),
+  get: jest.fn(),
+}));
+
 const req = {
   body: 'test',
 };
@@ -23,75 +29,71 @@ const res = {
   json: jest.fn(),
 };
 
-const mockApp = {
-  post: jest.fn((route, callback) => {
-    callback(req, res);
-  }),
-  get: jest.fn((route, callback) => {
-    callback(req, res);
-  }),
-};
-
-
 describe('Test post /transactions', () => {
+  app.post = jest.fn((route, callback) => {
+    callback(req, res);
+  });
+
   beforeEach(() => {
-    mockApp.get.mockImplementationOnce(() => null);
     jest.clearAllMocks();
   });
 
   it('should calls handlers.createTransaction with req.body parameter', () => {
-    transactions(mockApp);
+    transactions(app);
     expect(handlers.createTransaction).toHaveBeenCalledWith(req.body);
   });
 
   it('json method of res param should be called with mockTransaction', () => {
     handlers.createTransaction.mockImplementationOnce(() => mockTransaction);
-    transactions(mockApp);
+    transactions(app);
     expect(res.json).toBeCalled();
     expect(res.json).toHaveBeenCalledWith(mockTransaction);
   });
 
   it('should calls sendStatus with 400 and should not calls json method of res when transaction value is null', () => {
     handlers.createTransaction.mockImplementationOnce(() => null);
-    transactions(mockApp);
+    transactions(app);
     expect(res.json).not.toBeCalled();
     expect(res.sendStatus).toHaveBeenCalledWith(400);
   });
 
   it('should calls sendStatus with 500 and should not calls json method of res with undefined', () => {
     handlers.createTransaction.mockImplementationOnce(() => undefined);
-    transactions(mockApp);
+    transactions(app);
     expect(res.json).not.toBeCalled();
     expect(res.sendStatus).toHaveBeenCalledWith(500);
   });
 });
 
 describe('Test get /transactions', () => {
+  app.get = jest.fn((route, callback) => {
+    callback(req, res);
+  });
+
   beforeEach(() => {
     jest.clearAllMocks();
-    mockApp.post.mockImplementationOnce(() => null);
   });
 
   it('should calls get method with first argument "/transactions" and second any function', () => {
-    transactions(mockApp);
-    expect(mockApp.get).toHaveBeenCalledWith('/transactions', expect.any(Function));
+    transactions(app);
+    expect(app.get).toHaveBeenCalledWith('/transactions', expect.any(Function));
   });
 
   it('should calls handlers.getTransactions', () => {
-    transactions(mockApp);
+    transactions(app);
     expect(handlers.getTransactions).toBeCalled();
   });
 
   it('json method of res param should be called with correct transaction value', () => {
     handlers.getTransactions.mockImplementationOnce(() => [mockTransaction]);
-    transactions(mockApp);
+    transactions(app);
     expect(res.json).toBeCalled();
     expect(res.json).toHaveBeenCalledWith([mockTransaction]);
   });
 
   it('should calls sendStatus with 500 and should not calls json method of res when transaction value incorrect', () => {
     handlers.getTransactions.mockImplementationOnce(() => undefined);
-    transactions(mockApp);
+    transactions(app);
     expect(res.json).not.toBeCalled();
     expect(res.sendStatus).toHaveBeenCalledWith(500);
   });
