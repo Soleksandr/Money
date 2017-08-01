@@ -5,12 +5,9 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-require('./routes/start')(app);
-require('./routes/users')(app);
-require('./routes/transactions')(app);
-require('./routes/transaction')(app);
-require('./routes/userTransactions')(app);
+app.use('/transactions', require('./routers/transactions'));
+app.use('/users', require('./routers/users'));
+app.use('/', require('./routers/start'));
 
 app.use(express.static('static'));
 

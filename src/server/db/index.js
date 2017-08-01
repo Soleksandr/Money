@@ -1,8 +1,32 @@
 let transactionsIdCounter = 0;
 let usersIdCounter = 0;
 
-const transactions = [];
-const users = [];
+const transactions = [
+  {
+    title: 'goods',
+    cost: 50,
+    payerId: 1,
+    participantsId: [1, 2, 3],
+    id: 1,
+  }
+];
+const users = [
+  {
+    name: 'Ivan',
+    surname: 'Ivanov',
+    id: 1,
+  },
+  {
+    name: 'Petr',
+    surname: 'Petrov',
+    id: 2,
+  },
+  {
+    name: 'Vasil',
+    surname: 'Rodugin',
+    id: 3,
+  }
+];
 
 class Transaction {
   constructor({ title, cost, payerId, participantsId }) {
@@ -11,7 +35,6 @@ class Transaction {
     this.participantsId = participantsId;
     this.payerId = payerId;
     this.id = Transaction.generateId();
-    transactions.push(this);
   }
 
   static generateId = () => transactionsIdCounter += 1;
@@ -23,7 +46,6 @@ class User {
     this.name = name;
     this.surname = surname;
     this.id = User.generateId();
-    users.push(this);
   }
 
   static generateId = () => usersIdCounter += 1;
