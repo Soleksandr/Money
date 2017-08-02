@@ -1,91 +1,106 @@
-const request = require('supertest');
-const transactions = require('../transactions');
+const transactionsRouter = require('../transactions');
 const handlers = require('../../handlers/transactions');
-const app = require('../../app');
+
+// const mockUser = {
+//   name: 'Ivan',
+//   surname: 'Ivanov',
+//   id: 1,
+// };
 
 const mockTransaction = {
-  title: 'test',
-  cost: 100,
+  title: 'goods',
+  cost: 50,
   payerId: 1,
-  participantsId: [1, 2, 3],
+  participantsId: [1, 2],
   id: 1,
 };
 
-const mockData = {
-  title: 'test',
-  cost: 100,
-  payerId: 1,
-  participantsId: [1, 2, 3],
+const mockRequest = {
+  body: jest.fn(),
+  params: {
+    id: 1,
+  },
+};
+
+const mockResponse = {
+  json: jest.fn(),
+  sendStatus: jest.fn(),
 };
 
 jest.mock('../../handlers/transactions', () => ({
-  createTransaction: jest.fn(),
-  getTransactions: jest.fn(),
+  createTransaction: jest.fn(() => mockTransaction),
+  getTransactions: jest.fn(() => [mockTransaction]),
+  getTransaction: jest.fn(() => mockTransaction),
 }));
 
-describe('Test post /transactions', () => {
+describe('Test transactions router', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should calls handlers.createTransaction with mockData parameter', () =>
-    request(app).post('/transactions').then(() =>
-      expect(handlers.createTransaction).toHaveBeenCalledWith('mockData'),
-    ),
-  );
+  describe('createTransaction function', () => {
+    it('should calls handlers.createTransaction with mockRequest.body', () => {
+      transactionsRouter.createTransaction(mockRequest, mockResponse);
+      expect(handlers.createTransaction).toBeCalledWith(mockRequest.body);
+    });
 
-//   it('json method of res param should be called with mockTransaction', () => {
-//     handlers.createTransaction.mockImplementationOnce(() => mockTransaction);
-//     transactions(app);
-//     expect(res.json).toBeCalled();
-//     expect(res.json).toHaveBeenCalledWith(mockTransaction);
-//   });
+    it('should calls mockResponse.json with mockTransaction', () => {
+      transactionsRouter.createTransaction(mockRequest, mockResponse);
+      expect(mockResponse.json).toBeCalledWith(mockTransaction);
+    });
 
-//   it('should calls sendStatus with 400 and should not calls json method of res when transaction value is null', () => {
-//     handlers.createTransaction.mockImplementationOnce(() => null);
-//     transactions(app);
-//     expect(res.json).not.toBeCalled();
-//     expect(res.sendStatus).toHaveBeenCalledWith(400);
-//   });
+    it('should calls mockResponse.sendStatus with 400', () => {
+      handlers.createTransaction.mockImplementationOnce(() => null);
+      transactionsRouter.createTransaction(mockRequest, mockResponse);
+      expect(mockResponse.sendStatus).toBeCalledWith(400);
+    });
 
-//   it('should calls sendStatus with 500 and should not calls json method of res with undefined', () => {
-//     handlers.createTransaction.mockImplementationOnce(() => undefined);
-//     transactions(app);
-//     expect(res.json).not.toBeCalled();
-//     expect(res.sendStatus).toHaveBeenCalledWith(500);
-//   });
-// });
+    it('should calls mockResponse.sendStatus with 500', () => {
+      handlers.createTransaction.mockImplementationOnce(() => undefined);
+      transactionsRouter.createTransaction(mockRequest, mockResponse);
+      expect(mockResponse.sendStatus).toBeCalledWith(500);
+    });
+  });
 
-// describe('Test get /transactions', () => {
-//   app.get = jest.fn((route, callback) => {
-//     callback(req, res);
-//   });
+  describe('getTransaction function', () => {
+    it('should calls handlers.getTransaction with mockRequest.params.id', () => {
+      transactionsRouter.getTransaction(mockRequest, mockResponse);
+      expect(handlers.getTransaction).toBeCalledWith(mockRequest.params.id);
+    });
 
-//   beforeEach(() => {
-//     jest.clearAllMocks();
-//   });
+    it('should calls mockResponse.json with mockTransaction', () => {
+      transactionsRouter.getTransaction(mockRequest, mockResponse);
+      expect(mockResponse.json).toBeCalledWith(mockTransaction);
+    });
 
-//   it('should calls get method with first argument "/transactions" and second any function', () => {
-//     transactions(app);
-//     expect(app.get).toHaveBeenCalledWith('/transactions', expect.any(Function));
-//   });
+    it('should calls mockResponse.sendStatus with 404', () => {
+      handlers.getTransaction.mockImplementationOnce(() => null);
+      transactionsRouter.getTransaction(mockRequest, mockResponse);
+      expect(mockResponse.sendStatus).toBeCalledWith(404);
+    });
 
-//   it('should calls handlers.getTransactions', () => {
-//     transactions(app);
-//     expect(handlers.getTransactions).toBeCalled();
-//   });
+    it('should calls mockResponse.sendStatus with 500', () => {
+      handlers.getTransaction.mockImplementationOnce(() => undefined);
+      transactionsRouter.getTransaction(mockRequest, mockResponse);
+      expect(mockResponse.sendStatus).toBeCalledWith(500);
+    });
+  });
 
-//   it('json method of res param should be called with correct transaction value', () => {
-//     handlers.getTransactions.mockImplementationOnce(() => [mockTransaction]);
-//     transactions(app);
-//     expect(res.json).toBeCalled();
-//     expect(res.json).toHaveBeenCalledWith([mockTransaction]);
-//   });
+  describe('getTransactions function', () => {
+    it('should calls handlers.getTransactions', () => {
+      transactionsRouter.getTransactions(mockRequest, mockResponse);
+      expect(handlers.getTransactions).toBeCalled();
+    });
 
-//   it('should calls sendStatus with 500 and should not calls json method of res when transaction value incorrect', () => {
-//     handlers.getTransactions.mockImplementationOnce(() => undefined);
-//     transactions(app);
-//     expect(res.json).not.toBeCalled();
-//     expect(res.sendStatus).toHaveBeenCalledWith(500);
-//   });
+    it('should calls mockResponse.json with [mockTransaction]', () => {
+      transactionsRouter.getTransactions(mockRequest, mockResponse);
+      expect(mockResponse.json).toBeCalledWith([mockTransaction]);
+    });
+
+    it('should calls mockResponse.sendStatus with 500', () => {
+      handlers.getTransactions.mockImplementationOnce(() => undefined);
+      transactionsRouter.getTransactions(mockRequest, mockResponse);
+      expect(mockResponse.sendStatus).toBeCalledWith(500);
+    });
+  });
 });

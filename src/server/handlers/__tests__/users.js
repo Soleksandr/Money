@@ -5,7 +5,7 @@ const validator = require('../../utils/validator');
 jest.mock('../../db', () => ({
   User: jest.fn(() => ({ id: 2 })),
   users: [{ id: 1 }],
-  transactions: [{ participantsId: [1, 2], payerId: 2 }],
+  transactions: [{ participantsId: [1, 2], payerId: 2, id: 1 }],
 }));
 
 jest.mock('../../utils/validator', () => ({
@@ -14,35 +14,38 @@ jest.mock('../../utils/validator', () => ({
   ),
 }));
 
+const mockGetUser = jest.fn(id => id === 1);
+const mockId = 1;
+
 
 describe('Test createUser handler', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should call validateOnEmptiness and db.User  with correct parameter', () => {
-    const mockParameter = 'correct';
-    handlers.createUser(mockParameter);
-    expect(validator.validateOnEmptiness).toBeCalledWith(mockParameter);
-    expect(db.User).toBeCalledWith(mockParameter);
+  it('should calls validateOnEmptiness and calls db.User with proper arguments', () => {
+    const mockArgument = 'correct';
+    handlers.createUser(mockArgument);
+    expect(validator.validateOnEmptiness).toBeCalledWith(mockArgument);
+    expect(db.User).toBeCalledWith(mockArgument);
   });
 
-  it('should call validateOnEmptiness and does not call db.User  with incorrect parameter', () => {
-    const mockParameter = 'incorrect';
-    handlers.createUser(mockParameter);
-    expect(validator.validateOnEmptiness).toBeCalledWith(mockParameter);
+  it('should calls validateOnEmptiness with proper argument and does not call db.User', () => {
+    const mockArgument = 'incorrect';
+    handlers.createUser(mockArgument);
+    expect(validator.validateOnEmptiness).toBeCalledWith(mockArgument);
     expect(db.User).not.toBeCalled();
   });
 
-  it('should return mockUser with correct parameter', () => {
-    const mockParameter = 'correct';
-    const result = handlers.createUser(mockParameter);
+  it('should return mockUser with correct argument', () => {
+    const mockArgument = 'correct';
+    const result = handlers.createUser(mockArgument);
     expect(result).toEqual(db.User());
   });
 
-  it('should return null with incorrect parameter', () => {
-    const mockParameter = 'incorrect';
-    const result = handlers.createUser(mockParameter);
+  it('should return null with incorrect argument', () => {
+    const mockArgument = 'incorrect';
+    const result = handlers.createUser(mockArgument);
     expect(result).toBe(null);
   });
 });
@@ -54,43 +57,28 @@ describe('Test getUsers handler', () => {
 });
 
 describe('Test getUser handler', () => {
-  it('should return user with correct parameter', () => {
+  it('should return user when argument is correct', () => {
     const correctParameter = db.users[0].id;
     expect(handlers.getUser(correctParameter)).toEqual(db.users[0]);
   });
 
-  it('should return null with incorrect parameter', () => {
+  it('should return null when argument is incorrect', () => {
     const incorrectParameter = 100;
     expect(handlers.getUser(incorrectParameter)).toBe(null);
   });
 });
 
-describe('Test getTransactionsOfUser handler', () => {
-  it('should call getUser with correct parameter', () => {
-    const correctParameter = 'correct';
-    const mockGetUserFn = jest.fn();
-    const getTransactionsOfUser = handlers.getTransactionsOfUserPureFn(mockGetUserFn);
-    getTransactionsOfUser(correctParameter);
-    expect(mockGetUserFn).toBeCalledWith(correctParameter);
+describe('Test getUserTransactions', () => {
+  it('should return a function', () => {
+    expect(typeof handlers.getUserTransactionsPureFn()).toBe('function');
   });
 
-  it('should call getUser with incorrect parameter', () => {
-    const incorrectParameter = 'incorrect';
-    const mockGetUserFn = jest.fn();
-    const getTransactionsOfUser = handlers.getTransactionsOfUserPureFn(mockGetUserFn);
-    getTransactionsOfUser(incorrectParameter);
-    expect(mockGetUserFn).toBeCalledWith(incorrectParameter);
+  it('should return proper transactions', () => {
+    const result = handlers.getUserTransactionsPureFn(mockGetUser)(mockId);
+    expect(result).toEqual(db.transactions);
   });
 
-  it('with correct parameter should return an array that contains transaction', () => {
-    const correctParameter = db.users[0].id;
-    const result = handlers.getTransactionsOfUser(correctParameter);
-    expect(result.length).not.toBe(0);
-  });
-
-  it('with incorrect parameter should return null', () => {
-    const incorrectParameter = 100;
-    const result = handlers.getTransactionsOfUser(incorrectParameter);
-    expect(result).toBe(null);
+  it('should return null', () => {
+    expect(handlers.getUserTransactionsPureFn(mockGetUser)(100)).toBe(null);
   });
 });

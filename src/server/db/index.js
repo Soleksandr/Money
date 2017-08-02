@@ -1,32 +1,6 @@
 let transactionsIdCounter = 0;
 let usersIdCounter = 0;
 
-const transactions = [
-  {
-    title: 'goods',
-    cost: 50,
-    payerId: 1,
-    participantsId: [1, 2, 3],
-    id: 1,
-  }
-];
-const users = [
-  {
-    name: 'Ivan',
-    surname: 'Ivanov',
-    id: 1,
-  },
-  {
-    name: 'Petr',
-    surname: 'Petrov',
-    id: 2,
-  },
-  {
-    name: 'Vasil',
-    surname: 'Rodugin',
-    id: 3,
-  }
-];
 
 class Transaction {
   constructor({ title, cost, payerId, participantsId }) {
@@ -50,6 +24,40 @@ class User {
 
   static generateId = () => usersIdCounter += 1;
 }
+
+const transactions = [
+  {
+    title: 'goods',
+    cost: 50,
+    payerId: 1,
+    participantsId: [1, 2, 3],
+    id: Transaction.generateId(),
+  },
+  {
+    title: 'goods',
+    cost: 50,
+    payerId: 1,
+    participantsId: [1, 2],
+    id: Transaction.generateId(),
+  }
+];
+const users = [
+  {
+    name: 'Ivan',
+    surname: 'Ivanov',
+    id: User.generateId(),
+  },
+  {
+    name: 'Petr',
+    surname: 'Petrov',
+    id: User.generateId(),
+  },
+  {
+    name: 'Vasil',
+    surname: 'Rodugin',
+    id: User.generateId(),
+  }
+];
 
 module.exports = {
   Transaction,

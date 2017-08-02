@@ -1,129 +1,132 @@
-const usersRouter = require('../users').router;
+const usersRouter = require('../users');
 const handlers = require('../../handlers/users');
-const app = require('../../app');
-const callbacks = require('../users').callbacks
-
 
 const mockUser = {
   name: 'Ivan',
   surname: 'Ivanov',
+  id: 1,
+};
+
+const mockTransaction = {
+  title: 'goods',
+  cost: 50,
+  payerId: 1,
+  participantsId: [1, 2],
+  id: 1,
+};
+
+const mockRequest = {
+  body: jest.fn(),
+  params: {
+    id: 1,
+  },
+};
+
+const mockResponse = {
+  json: jest.fn(),
+  sendStatus: jest.fn(),
 };
 
 jest.mock('../../handlers/users', () => ({
-  createUser: jest.fn(),
-  getUsers: jest.fn(),
-  getTransactionsOfUser: jest.fn(),
+  createUser: jest.fn(() => mockUser),
+  getUsers: jest.fn(() => [mockUser]),
+  getUser: jest.fn(() => mockUser),
+  getUserTransaction: jest.fn(() => mockTransaction),
+  getUserTransactions: jest.fn(() => [mockTransaction]),
 }));
 
-jest.mock('../../app', () => ({
-  post: jest.fn(),
-  get: jest.fn(),
-}));
+describe('Test users router', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-const req = {
-  body: 'test',
-};
+  describe('createUser function', () => {
+    it('should calls handlers.createUser with mockRequest.body', () => {
+      usersRouter.createUser(mockRequest, mockResponse);
+      expect(handlers.createUser).toBeCalledWith(mockRequest.body);
+    });
 
-const res = {
-  sendStatus: jest.fn(),
-  json: jest.fn(),
-};
+    it('should calls mockResponse.json with mockUser', () => {
+      usersRouter.createUser(mockRequest, mockResponse);
+      expect(mockResponse.json).toBeCalledWith(mockUser);
+    });
 
-const usersRouter = {
-  get: jest.fn((route, callback) => {
-    callback(req, res);
-  }),
-  post: jest.fn((route, callback) => {
-    callback(req, res);
-  }),
-};
+    it('should calls mockResponse.sendStatus with 400', () => {
+      handlers.createUser.mockImplementationOnce(() => null);
+      usersRouter.createUser(mockRequest, mockResponse);
+      expect(mockResponse.sendStatus).toBeCalledWith(400);
+    });
 
-callbacks['/get'] = jest.fn((route, callback) => {
-    callback(req, res);
-}),
+    it('should calls mockResponse.sendStatus with 500', () => {
+      handlers.createUser.mockImplementationOnce(() => undefined);
+      usersRouter.createUser(mockRequest, mockResponse);
+      expect(mockResponse.sendStatus).toBeCalledWith(500);
+    });
+  });
 
-// usersRouter.post = jest.fn((route, callback) => {
-//   callback(req, res);
-// });
+  describe('getUsers function', () => {
+    it('should calls handlers.getUsers', () => {
+      usersRouter.getUsers(mockRequest, mockResponse);
+      expect(handlers.getUsers).toBeCalled();
+    });
 
-describe('Test post /', () => {
-  it('should calls handlers.createUser function', () => {
-    usersRouter.post('/', callback);
-    expect(handlers.createUser).toBeCalled();
+    it('should calls mockResponse.json with [mockUser]', () => {
+      usersRouter.getUsers(mockRequest, mockResponse);
+      expect(mockResponse.json).toBeCalledWith([mockUser]);
+    });
+
+    it('should calls mockResponse.sendStatus with 500', () => {
+      handlers.getUsers.mockImplementationOnce(() => null);
+      usersRouter.getUsers(mockRequest, mockResponse);
+      expect(mockResponse.sendStatus).toBeCalledWith(500);
+    });
+  });
+
+  describe('getUser function', () => {
+    it('should calls handlers.getUser with mockRequest.params.id', () => {
+      usersRouter.getUser(mockRequest, mockResponse);
+      expect(handlers.getUser).toBeCalledWith(mockRequest.params.id);
+    });
+
+    it('should calls mockResponse.json with mockUser', () => {
+      usersRouter.getUser(mockRequest, mockResponse);
+      expect(mockResponse.json).toBeCalledWith(mockUser);
+    });
+
+    it('should calls mockResponse.sendStatus with 404', () => {
+      handlers.getUser.mockImplementationOnce(() => null);
+      usersRouter.getUser(mockRequest, mockResponse);
+      expect(mockResponse.sendStatus).toBeCalledWith(404);
+    });
+
+    it('should calls mockResponse.sendStatus with 500', () => {
+      handlers.getUser.mockImplementationOnce(() => undefined);
+      usersRouter.getUser(mockRequest, mockResponse);
+      expect(mockResponse.sendStatus).toBeCalledWith(500);
+    });
+  });
+
+  describe('getUserTransactions function', () => {
+    it('should calls handlers.getUserTransactions with mockRequest.params.id', () => {
+      usersRouter.getUserTransactions(mockRequest, mockResponse);
+      expect(handlers.getUserTransactions).toBeCalledWith(mockRequest.params.id);
+    });
+
+    it('should calls mockResponse.json with [mockTransaction]', () => {
+      usersRouter.getUserTransactions(mockRequest, mockResponse);
+      expect(mockResponse.json).toBeCalledWith([mockTransaction]);
+    });
+
+    it('should calls mockResponse.sendStatus with 404', () => {
+      handlers.getUserTransactions.mockImplementationOnce(() => null);
+      usersRouter.getUserTransactions(mockRequest, mockResponse);
+      expect(mockResponse.sendStatus).toBeCalledWith(404);
+    });
+
+    it('should calls mockResponse.sendStatus with 500', () => {
+      handlers.getUserTransactions.mockImplementationOnce(() => undefined);
+      usersRouter.getUserTransactions(mockRequest, mockResponse);
+      expect(mockResponse.sendStatus).toBeCalledWith(500);
+    });
   });
 });
-
-// describe('Test post /users', () => {
-//   app.post = jest.fn((route, callback) => {
-//     callback(req, res);
-//   });
-
-//   beforeEach(() => {
-//     jest.clearAllMocks();
-//   });
-
-//   it('should calls post method with first argument "/users" and second any function', () => {
-//     users(app);
-//     expect(app.post).toHaveBeenCalledWith('/users', expect.any(Function));
-//   });
-
-//   it('should calls handlers.createUser with req.body parameter', () => {
-//     users(app);
-//     expect(handlers.createUser).toHaveBeenCalledWith(req.body);
-//   });
-
-//   it('json method of res param should be called with mockUser', () => {
-//     handlers.createUser.mockImplementationOnce(() => mockUser);
-//     users(app);
-//     expect(res.json).toBeCalled();
-//     expect(res.json).toHaveBeenCalledWith(mockUser);
-//   });
-
-//   it('should calls sendStatus with 400 and should not calls json method of res when transaction value is null', () => {
-//     handlers.createUser.mockImplementationOnce(() => null);
-//     users(app);
-//     expect(res.json).not.toBeCalled();
-//     expect(res.sendStatus).toHaveBeenCalledWith(400);
-//   });
-
-//   it('should calls sendStatus with 500 and should not calls json method of res with undefined', () => {
-//     handlers.createUser.mockImplementationOnce(() => undefined);
-//     users(app);
-//     expect(res.json).not.toBeCalled();
-//     expect(res.sendStatus).toHaveBeenCalledWith(500);
-//   });
-// });
-
-// describe('Test get /users', () => {
-//   app.get = jest.fn((route, callback) => {
-//     callback(req, res);
-//   });
-
-//   beforeEach(() => {
-//     jest.clearAllMocks();
-//   });
-
-//   it('should calls get method with first argument "/users" and second any function', () => {
-//     users(app);
-//     expect(app.get).toHaveBeenCalledWith('/users', expect.any(Function));
-//   });
-
-//   it('should calls handlers.getUsers', () => {
-//     users(app);
-//     expect(handlers.getUsers).toBeCalled();
-//   });
-
-//   it('json method of res param should be called with correct user value', () => {
-//     handlers.getUsers.mockImplementationOnce(() => [mockUser]);
-//     users(app);
-//     expect(res.json).toBeCalled();
-//     expect(res.json).toHaveBeenCalledWith([mockUser]);
-//   });
-
-//   it('should calls sendStatus with 500 and should not calls json method of res when transaction value incorrect', () => {
-//     handlers.getUsers.mockImplementationOnce(() => undefined);
-//     users(app);
-//     expect(res.json).not.toBeCalled();
-//     expect(res.sendStatus).toHaveBeenCalledWith(500);
-//   });
-// });

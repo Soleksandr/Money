@@ -24,13 +24,10 @@ const getUserTransactions = getUserFn => (id) => {
   return null;
 };
 
-const getUserTransaction = id => db.transactions.find(user => user.id === id);
-
 module.exports = {
   createUser,
   getUsers,
   getUserTransactions: getUserTransactions(getUser),
   getUserTransactionsPureFn: getUserTransactions,
   getUser,
-  getUserTransaction,
 };

@@ -3,7 +3,7 @@ const handlers = require('../handlers/users');
 
 const router = express.Router();
 
-router.post('/', (req, res) => {
+const createUser = (req, res) => {
   const user = handlers.createUser(req.body);
   if (user) {
     res.json(user);
@@ -12,18 +12,18 @@ router.post('/', (req, res) => {
   } else {
     res.sendStatus(500);
   }
-});
+};
 
-router.get('/', (req, res) => {
+const getUsers = (req, res) => {
   const users = handlers.getUsers();
   if (users) {
     res.json(users);
   } else {
     res.sendStatus(500);
   }
-});
+};
 
-router.get('/:id', (req, res) => {
+const getUser = (req, res) => {
   const user = handlers.getUser(parseInt(req.params.id, 10));
   if (user) {
     res.json(user);
@@ -32,9 +32,9 @@ router.get('/:id', (req, res) => {
   } else {
     res.sendStatus(500);
   }
-});
+};
 
-router.get('/:id/transactions', (req, res) => {
+const getUserTransactions = (req, res) => {
   const transactions = handlers.getUserTransactions(parseInt(req.params.id, 10));
   if (transactions) {
     res.json(transactions);
@@ -43,17 +43,28 @@ router.get('/:id/transactions', (req, res) => {
   } else {
     res.sendStatus(500);
   }
+};
+
+router.post('/', (req, res) => {
+  createUser(req, res);
 });
 
-router.get('/:id/transactions/:transactionId', (req, res) => {
-  const transaction = handlers.getUserTransaction(parseInt(req.params.id, 10));
-  if (transaction) {
-    res.json(transaction);
-  } else if (transaction === null) {
-    res.sendStatus(404);
-  } else {
-    res.sendStatus(500);
-  }
+router.get('/', (req, res) => {
+  getUsers(req, res);
 });
 
-module.exports = router;
+router.get('/:id', (req, res) => {
+  getUser(req, res);
+});
+
+router.get('/:id/transactions', (req, res) => {
+  getUserTransactions(req, res);
+});
+
+module.exports = {
+  router,
+  createUser,
+  getUser,
+  getUsers,
+  getUserTransactions,
+};
