@@ -16,7 +16,7 @@ export default class UsersList extends Component {
   render() {
     return (
       <div>
-        <ul>
+        <ul className="list-group">
           {this.props.users.map((user) => {
             if (this.props.isSelectOpportunity) {
               return (<UserSelectionOpp
@@ -56,4 +56,3 @@ UsersList.defaultProps = {
   onMarkCheckbox: null,
   isSelectOpportunity: false,
 };
-

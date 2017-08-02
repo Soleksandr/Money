@@ -6,8 +6,9 @@ export default class TransactionPreview extends Component {
     const { title, cost, participants } = this.props;
 
     return (
-      <li>
-        <span>{`${title} ${cost} ${participants.length}`}</span>
+      <li className="list-group-item">
+        <span>{`${title}`}</span>
+        <span className="badge">{`${cost} ${participants.length}`}</span>
       </li>);
   }
 }

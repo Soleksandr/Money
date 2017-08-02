@@ -48,7 +48,7 @@ export default class AddTransactionForm extends Component {
   }
 
   findPayer = () => {
-    
+
     // return this.props.users.find(user =>
     //   (user.name
     //     .toLowerCase() === payerData[0].toLowerCase() &&
@@ -67,34 +67,45 @@ export default class AddTransactionForm extends Component {
     return (
       <div>
         <form onSubmit={this.onSubmit}>
-          <input
-            type="text"
-            placeholder="title"
-            value={this.state.title}
-            onChange={this.onTitleChange}
-          />
-          <input
-            type="text"
-            placeholder="cost"
-            value={this.state.cost}
-            onChange={this.onCostChange}
-          />
-          <input
-            type="text"
-            placeholder="payidBy"
-            value={this.state.payidBy}
-            onChange={this.onPayidByChange}
-          />
-          <button
-            type="submit"
-          >add</button>
+          <div className="form-group">
+            <input
+              className="form-control"
+              type="text"
+              placeholder="title"
+              value={this.state.title}
+              onChange={this.onTitleChange}
+            />
+          </div>
+          <div className="form-group">
+            <input
+              className="form-control"
+              type="text"
+              placeholder="cost"
+              value={this.state.cost}
+              onChange={this.onCostChange}
+            />
+          </div>
+          <div className="form-group">
+            <input
+              className="form-control"
+              type="text"
+              placeholder="payidBy"
+              value={this.state.payidBy}
+              onChange={this.onPayidByChange}
+            />
+          </div>
         </form>
         <UsersList
+          className="panel-body"
           users={this.props.users}
           onMarkCheckbox={this.onMarkCheckbox}
           getUsers={this.props.getUsers}
           isSelectOpportunity
         />
+        <button
+          className="btn btn-default"
+          type="submit"
+        >add</button>
       </div>
     );
   }
