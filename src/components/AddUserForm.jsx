@@ -27,19 +27,26 @@ export default class AddUserForm extends Component {
   render() {
     return (
       <form onSubmit={this.onSubmit}>
-        <input
-          type="text"
-          placeholder="name"
-          value={this.state.name}
-          onChange={this.onNameChange}
-        />
-        <input
-          type="text"
-          placeholder="surname"
-          value={this.state.surname}
-          onChange={this.onSurnameChange}
-        />
+        <div className="form-group">
+          <input
+            className="form-control"
+            type="text"
+            placeholder="name"
+            value={this.state.name}
+            onChange={this.onNameChange}
+          />
+        </div>
+        <div className="form-group">
+          <input
+            className="form-control"
+            type="text"
+            placeholder="surname"
+            value={this.state.surname}
+            onChange={this.onSurnameChange}
+          />
+        </div>
         <button
+          className="btn btn-default"
           type="submit"
         >add</button>
       </form>

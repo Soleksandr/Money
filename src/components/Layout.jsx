@@ -3,26 +3,28 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 const Layout = props => (
-  <section>
-    <div>
-      <div>
-        <Link to="/users">
-          P
-        </Link>
+  <section className="container">
+    <div className="row well">
+      <div className="col-sm-3">
+        <div>
+          <Link to="/users">
+            P
+          </Link>
+        </div>
+        <div>
+          <Link to="/transactions">
+            T
+          </Link>
+        </div>
+        <div>
+          <Link to="/login">
+            L
+          </Link>
+        </div>
       </div>
-      <div>
-        <Link to="/transactions">
-          T
-        </Link>
+      <div className="col-sm-9">
+        {props.children}
       </div>
-      <div>
-        <Link to="/login">
-          L
-        </Link>
-      </div>
-    </div>
-    <div>
-      {props.children}
     </div>
   </section>);
 

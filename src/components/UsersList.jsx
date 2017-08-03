@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import UserMoneyInfo from './UserMoneyInfo';
 import UserSelectionOpp from './UserSelectionOpp';
 
@@ -13,30 +12,37 @@ export default class UsersList extends Component {
     this.props.getUsers();
   }
 
+  renderUserMoneyInfo = ({ id, name, surname }) => (
+    <UserMoneyInfo
+      key={id}
+      id={id}
+      name={name}
+      surname={surname}
+    />
+  );
+
+  renderUserSelectionOpp = ({ id, name, surname }) => (
+    <UserSelectionOpp
+      key={id}
+      id={id}
+      name={name}
+      surname={surname}
+      onMarkCheckbox={this.props.onMarkCheckbox}
+    />
+  );
+
   render() {
     return (
       <div>
-        <ul>
-          {this.props.users.map((user) => {
-            if (this.props.isSelectOpportunity) {
-              return (<UserSelectionOpp
-                key={user.id}
-                id={user.id}
-                name={user.name}
-                surname={user.surname}
-                onMarkCheckbox={this.props.onMarkCheckbox}
-              />);
-            }
-            return (<UserMoneyInfo
-              key={user.id}
-              name={user.name}
-              surname={user.surname}
-            />);
-          })}
+        <ul className="list-group">
+          {
+            this.props.users.map(user =>
+            this.props.isSelectOpportunity ?
+              this.renderUserSelectionOpp(user) :
+              this.renderUserMoneyInfo(user),
+            )
+          }
         </ul>
-        <Link to="/users/new_user">
-          +
-        </Link>
       </div>
     );
   }
@@ -56,4 +62,3 @@ UsersList.defaultProps = {
   onMarkCheckbox: null,
   isSelectOpportunity: false,
 };
-

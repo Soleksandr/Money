@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import UsersList from './UsersList';
+import SearchUser from './SearchUser';
 
 export default class AddTransactionForm extends Component {
   state = {
@@ -48,53 +49,59 @@ export default class AddTransactionForm extends Component {
   }
 
   findPayer = () => {
-    
-    // return this.props.users.find(user =>
-    //   (user.name
-    //     .toLowerCase() === payerData[0].toLowerCase() &&
-    //     user.surname.toLowerCase() === payerData[1].toLowerCase()) ||
-    //   (user.name.toLowerCase() === payerData[1].toLowerCase() &&
-    //     user.surname.toLowerCase() === payerData[0].toLowerCase()),
-    // );
+    const payerData = this.state.payidBy.split(' ');
+    return this.props.users.find(user =>
+      (user.name
+        .toLowerCase() === payerData[0].toLowerCase() &&
+        user.surname.toLowerCase() === payerData[1].toLowerCase()) ||
+      (user.name.toLowerCase() === payerData[1].toLowerCase() &&
+        user.surname.toLowerCase() === payerData[0].toLowerCase()),
+    );
   }
 
   render() {
-    const payerData = this.state.payidBy.trim().toLowerCase();
-
-    const users = this.props.users.filter(user =>
-      user.name.toLowerCase().includes(payerData) || user.surname.toLowerCase().includes(payerData));
-
+    // const users = this.props.users.filter(user =>
+    //   user.name.toLowerCase().includes(payerData) || user.surname.toLowerCase().includes(payerData));
     return (
       <div>
         <form onSubmit={this.onSubmit}>
-          <input
-            type="text"
-            placeholder="title"
-            value={this.state.title}
-            onChange={this.onTitleChange}
-          />
-          <input
-            type="text"
-            placeholder="cost"
-            value={this.state.cost}
-            onChange={this.onCostChange}
-          />
-          <input
-            type="text"
-            placeholder="payidBy"
-            value={this.state.payidBy}
-            onChange={this.onPayidByChange}
-          />
-          <button
-            type="submit"
-          >add</button>
+          <div className="form-group">
+            <input
+              className="form-control"
+              type="text"
+              placeholder="title"
+              value={this.state.title}
+              onChange={this.onTitleChange}
+            />
+          </div>
+          <div className="form-group">
+            <input
+              className="form-control"
+              type="text"
+              placeholder="cost"
+              value={this.state.cost}
+              onChange={this.onCostChange}
+            />
+          </div>
+          <div className="form-group">
+            <SearchUser
+              users={this.props.users}
+              payidBy={this.state.payidBy}
+              onPayidByChange={this.onPayidByChange}
+            />
+          </div>
         </form>
         <UsersList
+          className="panel-body"
           users={this.props.users}
           onMarkCheckbox={this.onMarkCheckbox}
           getUsers={this.props.getUsers}
           isSelectOpportunity
         />
+        <button
+          className="btn btn-default"
+          type="submit"
+        >add</button>
       </div>
     );
   }

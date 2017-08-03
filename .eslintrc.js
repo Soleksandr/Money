@@ -3,17 +3,11 @@ module.exports = {
     "plugins": [
         "react",
         "jsx-a11y",
-        "import",
+        "import"
     ],
     "rules": {
-      "no-warning-comments": "off",
-      "no-console": "off",
       "jsx-a11y/href-no-hash": "off",
-    },
-    "env": {
-    "jest": true,
-    "browser": true,
-    "node": true
+      "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }]
     },
     "parser": "babel-eslint"
 };

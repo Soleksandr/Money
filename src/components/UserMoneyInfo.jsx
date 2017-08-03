@@ -7,11 +7,12 @@ export default class UserPreview extends Component {
     const { name, surname } = this.props;
 
     return (
-      <li>
+      <li className="list-group-item">
         <Link to="/users">
           <span>{`${name} ${surname}`}</span>
         </Link>
-      </li>);
+      </li>
+    );
   }
 }
 

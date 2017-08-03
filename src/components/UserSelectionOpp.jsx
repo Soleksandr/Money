@@ -19,13 +19,17 @@ export default class UserPreview extends Component {
     const { name, surname } = this.props;
 
     return (
-      <li>
-        <input
-          type="checkbox"
-          value={this.state.isChecked}
-          onChange={this.onInputChange}
-        />
-        <span>{`${name} ${surname}`}</span>
+      <li className="list-group-item">
+        <div className="checkbox">
+          <label>
+            <input
+              type="checkbox"
+              value={this.state.isChecked}
+              onChange={this.onInputChange}
+            />
+            {`${name} ${surname}`}
+          </label>
+        </div>
       </li>);
   }
 }
