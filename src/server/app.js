@@ -1,16 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const transactionsRouter = require('./routers/transactions').router;
+const usersRouter = require('./routers/users').router;
+const indexPage = require('./routers/indexPage');
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
-require('./routes/start')(app);
-require('./routes/users')(app);
-require('./routes/transactions')(app);
-require('./routes/transaction')(app);
-require('./routes/userTransactions')(app);
+app.use('/transactions', transactionsRouter);
+app.use('/users', usersRouter);
+app.use('/', indexPage);
 
 app.use(express.static('static'));
 

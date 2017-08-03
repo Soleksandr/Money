@@ -14,7 +14,7 @@ const getUsers = () => db.users;
 
 const getUser = id => db.users.find(user => user.id === id) || null;
 
-const getTransactionsOfUser = getUserFn => (id) => {
+const getUserTransactions = getUserFn => (id) => {
   if (getUserFn(id)) {
     const transactions = db.transactions.filter(
       transaction => transaction.participantsId.find(
@@ -27,7 +27,7 @@ const getTransactionsOfUser = getUserFn => (id) => {
 module.exports = {
   createUser,
   getUsers,
-  getTransactionsOfUser: getTransactionsOfUser(getUser),
-  getTransactionsOfUserPureFn: getTransactionsOfUser,
+  getUserTransactions: getUserTransactions(getUser),
+  getUserTransactionsPureFn: getUserTransactions,
   getUser,
 };

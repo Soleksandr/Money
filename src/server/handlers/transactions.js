@@ -12,7 +12,7 @@ const createTransaction = (data) => {
 
 const getTransactions = () => db.transactions;
 
-const getTransaction = id => db.transactions.find(user => user.id === id);
+const getTransaction = id => db.transactions.find(transaction => transaction.id === id) || null;
 
 module.exports = {
   createTransaction,
