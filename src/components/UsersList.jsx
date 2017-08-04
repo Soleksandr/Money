@@ -1,19 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import UserMoneyInfo from './UserMoneyInfo';
+import UserPreview from './UserPreview';
 import UserSelectionOpp from './UserSelectionOpp';
 
 export default class UsersList extends Component {
-  state = {
-    isSelectOpportunity: this.props.isSelectOpportunity,
-  }
-
   componentDidMount() {
     this.props.getUsers();
   }
 
-  renderUserMoneyInfo = ({ id, name, surname }) => (
-    <UserMoneyInfo
+  renderUserPreview = ({ id, name, surname }) => (
+    <UserPreview
       key={id}
       id={id}
       name={name}
@@ -39,7 +35,7 @@ export default class UsersList extends Component {
             this.props.users.map(user =>
             this.props.isSelectOpportunity ?
               this.renderUserSelectionOpp(user) :
-              this.renderUserMoneyInfo(user),
+              this.renderUserPreview(user),
             )
           }
         </ul>

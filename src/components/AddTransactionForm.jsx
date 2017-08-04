@@ -7,7 +7,7 @@ export default class AddTransactionForm extends Component {
   state = {
     title: '',
     cost: '',
-    payidBy: '',
+    payidBy: null,
     participantsId: [],
   }
 
@@ -24,6 +24,7 @@ export default class AddTransactionForm extends Component {
   }
 
   onPayidByChange = ({ target: { value } }) => {
+    console.log(value)
     this.setState({
       payidBy: value,
     });
@@ -37,31 +38,17 @@ export default class AddTransactionForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    const payer = this.findPayer();
-    if (payer) {
+    if (this.state.payidBy) {
       this.props.addTransaction({
         title: this.state.title,
         cost: parseFloat(this.state.cost),
-        payerId: payer.id,
+        payerId: this.state.payerId,
         participantsId: this.state.participantsId,
       });
     }
   }
 
-  findPayer = () => {
-    const payerData = this.state.payidBy.split(' ');
-    return this.props.users.find(user =>
-      (user.name
-        .toLowerCase() === payerData[0].toLowerCase() &&
-        user.surname.toLowerCase() === payerData[1].toLowerCase()) ||
-      (user.name.toLowerCase() === payerData[1].toLowerCase() &&
-        user.surname.toLowerCase() === payerData[0].toLowerCase()),
-    );
-  }
-
   render() {
-    // const users = this.props.users.filter(user =>
-    //   user.name.toLowerCase().includes(payerData) || user.surname.toLowerCase().includes(payerData));
     return (
       <div>
         <form onSubmit={this.onSubmit}>
@@ -90,18 +77,18 @@ export default class AddTransactionForm extends Component {
               onPayidByChange={this.onPayidByChange}
             />
           </div>
+          <UsersList
+            className="panel-body"
+            users={this.props.users}
+            onMarkCheckbox={this.onMarkCheckbox}
+            getUsers={this.props.getUsers}
+            isSelectOpportunity
+          />
+          <button
+            className="btn btn-default"
+            type="submit"
+          >add</button>
         </form>
-        <UsersList
-          className="panel-body"
-          users={this.props.users}
-          onMarkCheckbox={this.onMarkCheckbox}
-          getUsers={this.props.getUsers}
-          isSelectOpportunity
-        />
-        <button
-          className="btn btn-default"
-          type="submit"
-        >add</button>
       </div>
     );
   }
