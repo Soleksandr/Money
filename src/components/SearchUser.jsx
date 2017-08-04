@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 export default class SearchUser extends Component {
   render = () => {
-    const users = ['', ...this.props.users];
+    const users = [{ id: 0, name: '', surname: '' }, ...this.props.users];
     return (
       <select
         className="form-control"

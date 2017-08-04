@@ -11,6 +11,7 @@ const mapDispatchToProps = dispatch => ({
   getTransactions: transactionsActions.getTransactions(dispatch),
   addTransaction: transactionsActions.addTransaction(dispatch),
   getUsers: usersActions.getUsers(dispatch),
+  getUserTransactions: usersActions.getUserTransactions(dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);

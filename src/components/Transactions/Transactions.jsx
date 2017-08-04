@@ -8,7 +8,7 @@ export default class Users extends Component {
 
   renderTransactionsList = ({ getTransactions, transactions }) => (
     <TransactionsList
-      getTransactions={getTransactions}
+      getInitialData={getTransactions}
       transactions={transactions}
     />
   )
@@ -21,14 +21,34 @@ export default class Users extends Component {
     />
   )
 
+  renderUserTransactionsList = ({ getUserTransactions, transactions, id }) => (
+    <TransactionsList
+      getInitialData={getUserTransactions}
+      transactions={transactions}
+      param={id}
+    />
+  )
+
   render() {
+    const path = this.props.match.path;
+    let component = null;
+
+    switch (path) {
+      case '/transactions':
+        component = this.renderTransactionsList(this.props);
+        break;
+      case '/transactions/new_transaction':
+        component = this.renderAddTransactionForm(this.props);
+        break;
+      case '/users/:id':
+        const id = parseInt(this.props.match.url.split('/').pop(), 10);
+        component = this.renderUserTransactionsList({ ...this.props, id });
+        break;
+    }
+
     return (
       <div>
-        {
-          this.props.match.path === '/transactions' ?
-            this.renderTransactionsList(this.props) :
-            this.renderAddTransactionForm(this.props)
-        }
+        {component}
         <Link to="/transactions/new_transaction">
           +
         </Link>
@@ -36,3 +56,9 @@ export default class Users extends Component {
     );
   }
 }
+
+Users.propTypes = {
+  match: PropTypes.objectOf({
+    path: PropTypes.string.isRequired,
+  }).isRequired,
+};

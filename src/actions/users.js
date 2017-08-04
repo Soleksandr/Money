@@ -18,3 +18,12 @@ const addUserActionCreator = user => ({
 export const addUser = dispatch => data =>
   usersApiCalls.addUser(data).then(user =>
     dispatch(addUserActionCreator(user)));
+
+const getUserTransactionsActionCreator = transactions => ({
+  type: constants.GET_USER_TRANSACTIONS,
+  payload: transactions,
+});
+
+export const getUserTransactions = dispatch => id =>
+  usersApiCalls.getUserTransactions(id).then(transactions =>
+    dispatch(getUserTransactionsActionCreator(transactions)));

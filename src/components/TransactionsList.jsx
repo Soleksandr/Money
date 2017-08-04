@@ -4,7 +4,9 @@ import TransactionPreview from './TransactionPreview';
 
 export default class TransactionsList extends Component {
   componentDidMount() {
-    this.props.getTransactions();
+    this.props.param ? 
+      this.props.getInitialData(this.props.param) :
+      this.props.getInitialData();
   }
 
   render() {
@@ -28,7 +30,8 @@ export default class TransactionsList extends Component {
 }
 
 TransactionsList.propTypes = {
-  getTransactions: PropTypes.func.isRequired,
+  param: PropTypes.number,
+  getInitialData: PropTypes.func.isRequired,
   transactions: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
     cost: PropTypes.number,
@@ -36,3 +39,4 @@ TransactionsList.propTypes = {
     payerId: PropTypes.number.isRequired,
   })).isRequired,
 };
+

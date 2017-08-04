@@ -7,7 +7,7 @@ export default class AddTransactionForm extends Component {
   state = {
     title: '',
     cost: '',
-    payidBy: null,
+    payerId: null,
     participantsId: [],
   }
 
@@ -24,9 +24,8 @@ export default class AddTransactionForm extends Component {
   }
 
   onPayidByChange = ({ target: { value } }) => {
-    console.log(value)
     this.setState({
-      payidBy: value,
+      payerId: value,
     });
   }
 
@@ -38,11 +37,11 @@ export default class AddTransactionForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    if (this.state.payidBy) {
+    if (this.state.payerId) {
       this.props.addTransaction({
         title: this.state.title,
         cost: parseFloat(this.state.cost),
-        payerId: this.state.payerId,
+        payerId: parseInt(this.state.payerId, 10),
         participantsId: this.state.participantsId,
       });
     }
@@ -73,10 +72,11 @@ export default class AddTransactionForm extends Component {
           <div className="form-group">
             <SearchUser
               users={this.props.users}
-              payidBy={this.state.payidBy}
+              payerId={this.state.payerId}
               onPayidByChange={this.onPayidByChange}
             />
           </div>
+          <h4>Participants:</h4>
           <UsersList
             className="panel-body"
             users={this.props.users}

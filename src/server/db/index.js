@@ -1,5 +1,5 @@
-let transactionsIdCounter = 2;
-let usersIdCounter = 2;
+let transactionsIdCounter = 0;
+let usersIdCounter = 0;
 
 
 class Transaction {
