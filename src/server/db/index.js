@@ -34,10 +34,17 @@ const transactions = [
     id: Transaction.generateId(),
   },
   {
-    title: 'goods',
-    cost: 50,
-    payerId: 1,
+    title: 'car',
+    cost: 5000,
+    payerId: 3,
     participantsId: [1, 2],
+    id: Transaction.generateId(),
+  },
+  {
+    title: 'house',
+    cost: 10000,
+    payerId: 1,
+    participantsId: [2],
     id: Transaction.generateId(),
   },
 ];

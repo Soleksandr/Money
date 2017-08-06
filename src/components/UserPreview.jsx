@@ -8,7 +8,7 @@ export default class UserPreview extends Component {
 
     return (
       <li className="list-group-item">
-        <Link to={`/users/${id}`}>
+        <Link to={`/users/${id}/transactions`}>
           <span>{`${name} ${surname}`}</span>
         </Link>
         <span className="badge">{money}</span>

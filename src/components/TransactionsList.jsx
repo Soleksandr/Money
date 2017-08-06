@@ -1,26 +1,25 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import TransactionPreview from './TransactionPreview';
 
 export default class TransactionsList extends Component {
-  componentDidMount() {
-    this.props.param ? 
-      this.props.getInitialData(this.props.param) :
-      this.props.getInitialData();
-  }
-
   render() {
     return (
       <div>
         <ul>
           {
             this.props.transactions.map(transaction => (
-              <TransactionPreview
+              <Link
+                to={`/transactions/${transaction.id}`}
                 key={transaction.id}
-                title={transaction.title}
-                cost={transaction.cost}
-                participants={transaction.participantsId}
-              />
+              >
+                <TransactionPreview
+                  title={transaction.title}
+                  cost={transaction.cost}
+                  participants={transaction.participantsId}
+                />
+              </Link>
             ))
           }
         </ul>
@@ -30,8 +29,6 @@ export default class TransactionsList extends Component {
 }
 
 TransactionsList.propTypes = {
-  param: PropTypes.number,
-  getInitialData: PropTypes.func.isRequired,
   transactions: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
     cost: PropTypes.number,
@@ -39,4 +36,3 @@ TransactionsList.propTypes = {
     payerId: PropTypes.number.isRequired,
   })).isRequired,
 };
-

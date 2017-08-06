@@ -3,6 +3,11 @@ export const getTransactions = () =>
     method: 'GET',
   }).then(transactions => transactions.json());
 
+export const getTransaction = id =>
+  fetch(`/transactions/${id}`, {
+    method: 'GET',
+  }).then(transaction => transaction.json());
+
 export const addTransaction = data =>
   fetch('/transactions', {
     method: 'POST',

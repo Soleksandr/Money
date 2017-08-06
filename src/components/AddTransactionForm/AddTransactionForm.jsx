@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import UsersList from './UsersList';
-import SearchUser from './SearchUser';
+import UsersList from '../UsersList';
+import SearchUser from '../SearchUser';
 
 export default class AddTransactionForm extends Component {
   state = {
@@ -81,7 +81,6 @@ export default class AddTransactionForm extends Component {
             className="panel-body"
             users={this.props.users}
             onMarkCheckbox={this.onMarkCheckbox}
-            getUsers={this.props.getUsers}
             isSelectOpportunity
           />
           <button
@@ -95,7 +94,6 @@ export default class AddTransactionForm extends Component {
 }
 
 AddTransactionForm.propTypes = {
-  getUsers: PropTypes.func.isRequired,
   addTransaction: PropTypes.func.isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,

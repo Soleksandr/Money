@@ -4,10 +4,6 @@ import UserPreview from './UserPreview';
 import UserSelectionOpp from './UserSelectionOpp';
 
 export default class UsersList extends Component {
-  componentDidMount() {
-    this.props.getUsers();
-  }
-
   renderUserPreview = ({ id, name, surname }) => (
     <UserPreview
       key={id}
@@ -47,7 +43,6 @@ export default class UsersList extends Component {
 UsersList.propTypes = {
   isSelectOpportunity: PropTypes.bool,
   onMarkCheckbox: PropTypes.func,
-  getUsers: PropTypes.func.isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string,
     surname: PropTypes.string,

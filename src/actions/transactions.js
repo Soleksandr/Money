@@ -18,3 +18,12 @@ const addTransactionActionCreator = transaction => ({
 export const addTransaction = dispatch => data =>
   transactionsApiCalls.addTransaction(data).then(transaction =>
     dispatch(addTransactionActionCreator(transaction)));
+
+const getTransactionActionCreator = transaction => ({
+  type: constants.GET_TRANSACTION,
+  payload: transaction,
+});
+
+export const getTransaction = dispatch => id =>
+  transactionsApiCalls.getTransaction(id).then(transaction =>
+    dispatch(getTransactionActionCreator(transaction)));

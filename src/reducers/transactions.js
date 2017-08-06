@@ -8,6 +8,8 @@ export default (state = [], action) => {
       return [...state, action.payload];
     case constants.GET_USER_TRANSACTIONS:
       return action.payload;
+    case constants.GET_TRANSACTION:
+      return action.payload;
     default:
       return state;
   }
