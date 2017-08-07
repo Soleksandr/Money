@@ -11,6 +11,7 @@ app.use(bodyParser.json());
 app.use('/transactions', transactionsRouter);
 app.use('/users', usersRouter);
 app.use('/', indexPage);
+app.all('*', indexPage);
 
 app.use(express.static('static'));
 

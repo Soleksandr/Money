@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import UsersList from '../UsersList';
+import UserSelectionOpp from '../UserSelectionOpp';
 
 
 export default class Transaction extends Component {
@@ -39,10 +39,26 @@ export default class Transaction extends Component {
           />
         </div>
         <h4>Participants:</h4>
-        <UsersList
-          className="panel-body"
-          users={users}
-        />
+        <ul className="list-group">
+          {
+            users.map(user =>
+              (<li
+                className="list-group-item"
+                key={user.id}
+              >
+                <div className="checkbox">
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked
+                      disabled
+                    />
+                    {`${user.name} ${user.surname}`}
+                  </label>
+                </div>
+              </li>))
+          }
+        </ul>
       </div>
     );
   }

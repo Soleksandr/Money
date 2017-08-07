@@ -9,9 +9,17 @@ export default class AllTransactions extends Component {
     this.props.getUsers();
   }
   render() {
+    let transactions = this.props.transactions;
+    const id = parseInt(this.props.match.params.id, 10);
+    if (id) {
+      transactions = this.props.transactions.filter(transaction =>
+      transaction.participantsId.some(participantId =>
+        participantId === id || transaction.payerId === id));
+    }
+
     return (
       <div>
-        <TransactionsList transactions={this.props.transactions} />
+        <TransactionsList transactions={transactions} />
         <Link to="/transactions/new_transaction">
           +
         </Link>

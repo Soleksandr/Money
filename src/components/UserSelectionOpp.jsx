@@ -24,7 +24,7 @@ export default class UserPreview extends Component {
           <label>
             <input
               type="checkbox"
-              value={this.state.isChecked}
+              checked={this.state.isChecked}
               onChange={this.onInputChange}
             />
             {`${name} ${surname}`}

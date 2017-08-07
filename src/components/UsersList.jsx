@@ -31,8 +31,7 @@ export default class UsersList extends Component {
             this.props.users.map(user =>
             this.props.isSelectOpportunity ?
               this.renderUserSelectionOpp(user) :
-              this.renderUserPreview(user),
-            )
+              this.renderUserPreview(user))
           }
         </ul>
       </div>

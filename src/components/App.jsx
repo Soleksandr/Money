@@ -13,7 +13,7 @@ const App = () => (
     <Layout>
       <Switch>
         <Route exact path="/users" component={Users} />
-        <Route exact path="/users/:id/transactions" component={UserTransactions} />
+        <Route exact path="/users/:id/transactions" component={Transactions} />
         <Route exact path="/users/new_user" component={AddUserForm} />
         <Route exact path="/transactions" component={Transactions} />
         <Route exact path="/transactions/new_transaction" component={AddTransactionForm} />
