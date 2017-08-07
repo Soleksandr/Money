@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 
 export default class TransactionPreview extends Component {
   render() {
-    const { title, cost, participants } = this.props;
+    const { title, cost, participantsId } = this.props;
 
     return (
       <li className="list-group-item">
         <span>{`${title}`}</span>
-        <span className="badge">{`${cost} ${participants.length}`}</span>
+        <span className="badge">{`${cost} ${participantsId.length}`}</span>
       </li>);
   }
 }
@@ -16,5 +16,5 @@ export default class TransactionPreview extends Component {
 TransactionPreview.propTypes = {
   title: PropTypes.string.isRequired,
   cost: PropTypes.number.isRequired,
-  participants: PropTypes.arrayOf(PropTypes.number).isRequired,
+  participantsId: PropTypes.arrayOf(PropTypes.number).isRequired,
 };

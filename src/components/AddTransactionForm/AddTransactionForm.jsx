@@ -45,6 +45,7 @@ export default class AddTransactionForm extends Component {
         participantsId: this.state.participantsId,
       });
     }
+    this.props.history.push('/transactions');
   }
 
   render() {

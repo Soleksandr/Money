@@ -6,10 +6,6 @@ export default (state = [], action) => {
       return action.payload;
     case constants.ADD_TRANSACTION:
       return [...state, action.payload];
-    case constants.GET_USER_TRANSACTIONS:
-      return action.payload;
-    case constants.GET_TRANSACTION:
-      return action.payload;
     default:
       return state;
   }

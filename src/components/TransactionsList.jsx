@@ -11,13 +11,13 @@ export default class TransactionsList extends Component {
           {
             this.props.transactions.map(transaction => (
               <Link
-                to={`/transactions/${transaction.id}`}
                 key={transaction.id}
+                to={`/transactions/${transaction.id}`}
               >
                 <TransactionPreview
                   title={transaction.title}
                   cost={transaction.cost}
-                  participants={transaction.participantsId}
+                  participantsId={transaction.participantsId}
                 />
               </Link>
             ))
