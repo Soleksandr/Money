@@ -21,6 +21,15 @@ const props = {
   },
 };
 
+const testArg = {
+  target: {
+    value: 'test',
+  },
+  preventDefault: jest.fn(),
+};
+
+const testParticipant = 'test';
+
 describe('Test <AddTransactionForm>', () => {
   it('should render two input', () => {
     const wrapper = shallow(<AddTransactionForm {...props} />);
@@ -68,7 +77,52 @@ describe('Test <AddTransactionForm>', () => {
 
   it('onTitleChange should change state.title', () => {
     const wrapper = shallow(<AddTransactionForm {...props} />);
-    wrapper.find('input[placeholder="title"]').simulate('change', { target: 'test' });
-    expect(props.onTitleChange).toBeCalled();
+    wrapper.find('input[placeholder="title"]').simulate('change', testArg);
+    expect(wrapper.instance().state.title).toBe(testArg.target.value);
+  });
+
+  it('onCostChange should change state.cost', () => {
+    const wrapper = shallow(<AddTransactionForm {...props} />);
+    wrapper.find('input[placeholder="cost"]').simulate('change', testArg);
+    expect(wrapper.instance().state.cost).toBe(testArg.target.value);
+  });
+
+  it('onPayidByChange should change state.payerId', () => {
+    const wrapper = shallow(<AddTransactionForm {...props} />);
+    wrapper.instance().onPayidByChange(testArg);
+    expect(wrapper.instance().state.payerId).toBe(testArg.target.value);
+  });
+
+  it('onMarkCheckbox should push new participant, when isChecked is true', () => {
+    const isChecked = true;
+    const wrapper = shallow(<AddTransactionForm {...props} />);
+    wrapper.instance().onMarkCheckbox(testParticipant, isChecked);
+    expect(wrapper.instance().participantsId).toContain(testParticipant);
+  });
+
+  it('onMarkCheckbox should remove existing participant, when isChecked is false', () => {
+    const isChecked = false;
+    const wrapper = shallow(<AddTransactionForm {...props} />);
+    wrapper.instance().participantsId.push(testParticipant);
+    wrapper.instance().onMarkCheckbox(testParticipant, isChecked);
+    expect(wrapper.instance().participantsId).not.toContain(testParticipant);
+  });
+
+  it('form submitting should calls preventDefault method', () => {
+    const wrapper = shallow(<AddTransactionForm {...props} />);
+    wrapper.find('form').simulate('submit', testArg);
+    expect(testArg.preventDefault).toBeCalled();
+  });
+
+  it('form submitting should calls addTransaction with proper argument', () => {
+    const wrapper = shallow(<AddTransactionForm {...props} />);
+    const instance = wrapper.instance();
+    wrapper.find('form').simulate('submit', testArg);
+    expect(props.addTransaction).toBeCalledWith({
+      title: instance.state.title,
+      cost: parseFloat(instance.state.cost),
+      payerId: parseInt(instance.state.payerId, 10),
+      participantsId: instance.participantsId,
+    });
   });
 });
