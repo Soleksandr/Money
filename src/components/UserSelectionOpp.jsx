@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class UserPreview extends Component {
+export default class UserSelectionOpp extends Component {
   state = {
     isChecked: false,
   }
 
+  componentDidUpdate() {
+    this.props.onMarkCheckbox(this.props.id, this.state.isChecked);
+  }
+
   onInputChange = () => {
-    if (!this.state.isChecked) {
-      this.props.onMarkCheckbox(this.props.id);
-    }
     this.setState({
       isChecked: !this.state.isChecked,
     });
@@ -34,7 +35,7 @@ export default class UserPreview extends Component {
   }
 }
 
-UserPreview.propTypes = {
+UserSelectionOpp.propTypes = {
   id: PropTypes.number.isRequired,
   onMarkCheckbox: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,

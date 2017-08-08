@@ -8,11 +8,9 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static('static'));
 app.use('/transactions', transactionsRouter);
 app.use('/users', usersRouter);
-app.use('/', indexPage);
 app.all('*', indexPage);
-
-app.use(express.static('static'));
 
 module.exports = app;

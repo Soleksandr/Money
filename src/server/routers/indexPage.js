@@ -1,10 +1,7 @@
 const path = require('path');
-const express = require('express');
 
-const router = express.Router();
-
-router.get('/', (req, res) => {
+const indexPage = (req, res) => {
   res.sendFile(path.join(__dirname, '../../../static/index.html'));
-});
+};
 
-module.exports = router;
+module.exports = indexPage;

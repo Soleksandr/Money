@@ -22,7 +22,7 @@ export default class AddUserForm extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     this.props.addUser(this.state);
-    this.props.history.push('/users');
+    this.props.history.push('/participants');
   }
 
   render() {

@@ -3,11 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import TransactionsList from '../TransactionsList';
 
-export default class AllTransactions extends Component {
-  componentDidMount() {
-    this.props.getTransactions();
-    this.props.getUsers();
-  }
+export default class Transactions extends Component {
   render() {
     let transactions = this.props.transactions;
     const id = parseInt(this.props.match.params.id, 10);
@@ -20,7 +16,7 @@ export default class AllTransactions extends Component {
     return (
       <div>
         <TransactionsList transactions={transactions} />
-        <Link to="/transactions/new_transaction">
+        <Link to="/new_transaction">
           +
         </Link>
       </div>
@@ -28,9 +24,7 @@ export default class AllTransactions extends Component {
   }
 }
 
-AllTransactions.propTypes = {
-  getTransactions: PropTypes.func.isRequired,
-  getUsers: PropTypes.func.isRequired,
+Transactions.propTypes = {
   transactions: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
     cost: PropTypes.number,

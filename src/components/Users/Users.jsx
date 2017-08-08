@@ -12,7 +12,7 @@ export default class Users extends Component {
     return (
       <div>
         <UsersList users={this.props.users} />
-        <Link to="/users/new_user">
+        <Link to="/new_user">
           +
         </Link>
       </div>

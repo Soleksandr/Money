@@ -1,24 +1,14 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import PropTypes from 'prop-types';
 
-export default class UserPreview extends Component {
-  render() {
-    const { name, surname, money, id } = this.props;
-
-    return (
-      <li className="list-group-item">
-        <Link to={`/users/${id}/transactions`}>
-          <span>{`${name} ${surname}`}</span>
-        </Link>
-        <span className="badge">{money}</span>
-      </li>
-    );
-  }
-}
+const UserPreview = ({ name, surname, money }) => (
+  <li className="list-group-item">
+    <span>{`${name} ${surname}`}</span>
+    <span className="badge">{money}</span>
+  </li>
+);
 
 UserPreview.propTypes = {
-  id: PropTypes.number.isRequired,
   money: PropTypes.number,
   name: PropTypes.string.isRequired,
   surname: PropTypes.string.isRequired,
@@ -27,3 +17,6 @@ UserPreview.propTypes = {
 UserPreview.defaultProps = {
   money: 0,
 };
+
+export default UserPreview;
+

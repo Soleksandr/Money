@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import UsersList from '../UsersList';
-import SearchUser from '../SearchUser';
+import SelectUser from '../SelectUser';
 
 export default class AddTransactionForm extends Component {
-  state = {
-    title: '',
-    cost: '',
-    payerId: null,
-    participantsId: [],
+  constructor(props) {
+    super(props);
+    this.state = {
+      title: '',
+      cost: '',
+      payerId: 'default',
+    };
+    this.participantsId = [];
   }
 
   onTitleChange = ({ target: { value } }) => {
@@ -29,23 +32,21 @@ export default class AddTransactionForm extends Component {
     });
   }
 
-  onMarkCheckbox = (id) => {
-    this.setState({
-      participantsId: [...this.state.participantsId, id],
-    });
+  onMarkCheckbox = (id, isChecked) => {
+    isChecked ?
+      this.participantsId = [...this.participantsId, id] :
+      this.participantsId = this.participantsId.filter(partId => partId !== id);
   }
 
   onSubmit = (e) => {
     e.preventDefault();
-    if (this.state.payerId) {
-      this.props.addTransaction({
-        title: this.state.title,
-        cost: parseFloat(this.state.cost),
-        payerId: parseInt(this.state.payerId, 10),
-        participantsId: this.state.participantsId,
-      });
-    }
-    this.props.history.push('/transactions');
+    this.props.addTransaction({
+      title: this.state.title,
+      cost: parseFloat(this.state.cost),
+      payerId: parseInt(this.state.payerId, 10),
+      participantsId: this.participantsId,
+    });
+    this.props.history.push('/all_transactions');
   }
 
   render() {
@@ -71,7 +72,7 @@ export default class AddTransactionForm extends Component {
             />
           </div>
           <div className="form-group">
-            <SearchUser
+            <SelectUser
               users={this.props.users}
               payerId={this.state.payerId}
               onPayidByChange={this.onPayidByChange}

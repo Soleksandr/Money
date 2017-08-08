@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import UserPreview from './UserPreview';
 import UserSelectionOpp from './UserSelectionOpp';
 
 export default class UsersList extends Component {
   renderUserPreview = ({ id, name, surname }) => (
     <UserPreview
-      key={id}
       id={id}
       name={name}
       surname={surname}
@@ -31,7 +31,12 @@ export default class UsersList extends Component {
             this.props.users.map(user =>
             this.props.isSelectOpportunity ?
               this.renderUserSelectionOpp(user) :
-              this.renderUserPreview(user))
+              <Link
+                to={`/participants/${user.id}/transactions`}
+                key={user.id}
+              >
+                {this.renderUserPreview(user)}
+              </Link>)
           }
         </ul>
       </div>

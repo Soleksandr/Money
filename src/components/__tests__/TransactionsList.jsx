@@ -30,30 +30,27 @@ describe('Test <TransactionsList>', () => {
 
   it('should render two links', () => {
     const wrapper = shallow(<TransactionsList {...props} />);
-    expect(wrapper.find('Link').length).toBe(2);
+    expect(wrapper.find('Link').length).toBe(props.transactions.length);
   });
 
-  it('sets prop "to" of Link component to proper path', () => {
+  it('sets prop "to" of Link to proper path', () => {
     const wrapper = shallow(<TransactionsList {...props} />);
-    expect(wrapper.find('Link[to="/transactions/1"]').length).toBe(1);
+    expect(wrapper.find('Link').first().props().to)
+      .toEqual(expect.stringContaining(`${props.transactions[0].id}`));
   });
 
   it('should render two TransactionPreview', () => {
     const wrapper = shallow(<TransactionsList {...props} />);
-    expect(wrapper.find('TransactionPreview').length).toBe(2);
-  });
-
-  it('sets ', () => {
-    const wrapper = shallow(<TransactionsList {...props} />);
-    expect(wrapper.find('TransactionPreview').length).toBe(2);
+    expect(wrapper.find('TransactionPreview').length).toBe(props.transactions.length);
   });
 
   it("sets the rendered TransactionPreview's props to proper values", () => {
     const wrapper = shallow(<TransactionsList {...props} />);
-    expect(wrapper.find('TransactionPreview[title="test1"]').length).toBe(1);
-    expect(wrapper.find('TransactionPreview[title="test1"]').props().cost)
+    expect(wrapper.find('TransactionPreview').first().props().title)
+      .toBe(props.transactions[0].title);
+    expect(wrapper.find('TransactionPreview').first().props().cost)
       .toBe(props.transactions[0].cost);
-    expect(wrapper.find('TransactionPreview[title="test1"]').props().participantsId)
+    expect(wrapper.find('TransactionPreview').first().props().participantsId)
       .toEqual(props.transactions[0].participantsId);
   });
 });

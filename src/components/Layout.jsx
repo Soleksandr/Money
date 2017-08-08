@@ -7,12 +7,12 @@ const Layout = props => (
     <div className="row well">
       <div className="col-sm-3">
         <div>
-          <Link to="/users">
+          <Link to="/participants">
             P
           </Link>
         </div>
         <div>
-          <Link to="/transactions">
+          <Link to="/all_transactions">
             T
           </Link>
         </div>
