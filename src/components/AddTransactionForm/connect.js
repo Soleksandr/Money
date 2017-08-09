@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
 import * as transactionsActions from '../../actions/transactions';
-import * as usersActions from '../../actions/users';
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   users: state.users,
 });
 
-const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = dispatch => ({
   addTransaction: transactionsActions.addTransaction(dispatch),
 });
 

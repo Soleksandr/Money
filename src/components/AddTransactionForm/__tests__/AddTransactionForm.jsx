@@ -70,11 +70,6 @@ describe('Test <AddTransactionForm>', () => {
     expect(wrapper.instance().participantsId).toBeInstanceOf(Array);
   });
 
-  it('instance should contains participantsId property', () => {
-    const wrapper = shallow(<AddTransactionForm {...props} />);
-    expect(wrapper.instance().participantsId).toBeInstanceOf(Array);
-  });
-
   it('onTitleChange should change state.title', () => {
     const wrapper = shallow(<AddTransactionForm {...props} />);
     wrapper.find('input[placeholder="title"]').simulate('change', testArg);
@@ -124,5 +119,11 @@ describe('Test <AddTransactionForm>', () => {
       payerId: parseInt(instance.state.payerId, 10),
       participantsId: instance.participantsId,
     });
+  });
+
+  it('form submitting should calls history.push with proper argument', () => {
+    const wrapper = shallow(<AddTransactionForm {...props} />);
+    wrapper.find('form').simulate('submit', testArg);
+    expect(props.history.push).toBeCalledWith('/all_transactions');
   });
 });

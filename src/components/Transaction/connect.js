@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
   users: state.users,
   transactions: state.transactions,
 });

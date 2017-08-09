@@ -11,8 +11,3 @@ export const addUser = data =>
     },
     body: JSON.stringify(data),
   }).then(user => user.json());
-
-export const getUserTransactions = id =>
-  fetch(`/users/${id}/transactions`, {
-    method: 'GET',
-  }).then(transactions => transactions.json());

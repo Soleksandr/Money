@@ -1,17 +1,33 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import c from '../connect';
+import * as connect from '../connect';
+import * as transactionsActions from '../../../actions/transactions';
 
-jest.mock('react-redux', () => ({
-  connect: jest.fn(),
+jest.mock('../../../actions/transactions', () => ({
+  addTransaction: jest.fn(arg => arg),
 }));
 
-const mockMapStateToProps = 'test1';
-const mockMapDispatchToProps = 'test2';
+const mockState = {
+  users: [
+    {
+      name: 'Ivan',
+      surname: 'Ivanov',
+      id: 1,
+    },
+  ],
+};
+
+const mockDispatch = 'dispatch';
 
 describe('Test connect for <AddTransactionForm>', () => {
-  it('should to be called with mockMapStateToProps and mockMapDispatchToProps',
-    expect(wrapper.find('input').length).toBe(2);
+  it('mapStateToProps should return proper object with data from mockState', () => {
+    expect(connect.mapStateToProps(mockState)).toEqual({ users: mockState.users });
   });
 
+  it('mapDispatchToProps should call addTransaction with mockDispatch', () => {
+    connect.mapDispatchToProps(mockDispatch);
+    expect(transactionsActions.addTransaction).toBeCalledWith(mockDispatch);
+  });
+
+  it('mapDispatchToProps should return proper object with result of calling addTransaction', () => {
+    expect(connect.mapDispatchToProps(mockDispatch)).toEqual({ addTransaction: mockDispatch });
+  });
 });
