@@ -1,6 +1,5 @@
 const validateOnEmptiness = data =>
-  Object.keys(data).every(prop =>
-    !(data[prop] === '') || !!data[prop].trim());
+  (data !== '') && !!data.trim();
 
 module.exports = {
   validateOnEmptiness,
