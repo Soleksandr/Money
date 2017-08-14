@@ -1,20 +1,26 @@
 const db = require('../db');
-const validator = require('../utils/validator');
-const model = require('../models/transactions');
+// const validator = require('../utils/validator');
+const { modelTransaction } = require('../models');
+const { modelUserTransaction } = require('../models');
 
 const createTransaction = data =>
-  model.create({
+  modelTransaction.create({
     title: data.title,
-    cost: data.cost,
+    cost: parseInt(data.cost, 10),
     payer_id: data.payerId,
-  });
-    // .then(partTransaction =>
-      
-    // );
+  })
+    .then(res => new Promise.all([data.participantsId.map(
+      id =>
+      modelUserTransaction.create({
+        userId: id,
+        transactionId: res.id,
+      }),
+    )]));
 
-const getTransactions = () => model.findAll({
+const getTransactions = () => modelTransaction.findAll({
   include: [{
-    model: 'usersTransactions',
+    model: modelUserTransaction,
+    as: 'participantsId',
   }],
 });
 

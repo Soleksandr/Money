@@ -1,14 +1,14 @@
 // const db = require('../db');
 // const validator = require('../utils/validator');
-const model = require('../models').users;
+const { modelUser } = require('../models');
 
 const createUser = data =>
-  model.create({
+  modelUser.create({
     name: data.name,
     surname: data.surname,
   });
 
-const getUsers = () => model.findAll();
+const getUsers = () => modelUser.findAll();
 
 // const getUser = id => db.users.find(user => user.id === id) || null;
 

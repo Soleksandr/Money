@@ -4,13 +4,16 @@ const handlers = require('../handlers/transactions');
 const router = express.Router();
 
 const createTransaction = (req, res) => {
-  handlers.createTransaction(req.body).then((transaction) => {
-    if (transaction) {
-      res.json(transaction);
-    } else if (transaction === null) {
-      res.sendStatus(400);
-    } else {
-      res.sendStatus(500);
+  handlers.createTransaction(req.body).then((data) => {
+    if (data.length = req.body.participantsId.length) {
+      // if (transaction) {
+      //   res.json(transaction);
+      // } else if (transaction === null) {
+      //   res.sendStatus(400);
+      // } else {
+      //   res.sendStatus(500);
+      // }
+      res.json(req.body);
     }
   });
 };
@@ -28,6 +31,10 @@ const createTransaction = (req, res) => {
 
 const getTransactions = (req, res) => {
   handlers.getTransactions().then((transactions) => {
+    transactions = transactions.map(transaction => transaction.get());
+    transactions.forEach(tr => console.log(tr));
+      // tr.participnatsId = tr.participnatsId.forEach(id => console.log('for each', id)));
+    // console.log('transactions get ====================', transactions);
     if (transactions) {
       res.json(transactions);
     } else {
