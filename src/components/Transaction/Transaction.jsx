@@ -34,7 +34,7 @@ export default class Transaction extends Component {
           className="form-control"
           type="text"
           disabled
-          value={`${payer.name} ${payer.surname}`}
+          value={`${payer.name.trim()} ${payer.surname.trim()}`}
         />
       </div>
       <h4>Participants:</h4>

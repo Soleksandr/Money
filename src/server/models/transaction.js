@@ -20,7 +20,7 @@ module.exports = (db, type) => {
         notEmpty: true,
       },
     },
-    payer_id: {
+    payerId: {
       type: type.INTEGER,
       allowNull: false,
       validate: {

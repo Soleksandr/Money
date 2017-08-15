@@ -46,7 +46,7 @@ export default class AddTransactionForm extends Component {
       payerId: parseInt(this.state.payerId, 10),
       participantsId: this.participantsId,
     });
-    this.props.history.push('/all_transactions');
+    this.props.history.push('/all_transactions')
   }
 
   render() {
