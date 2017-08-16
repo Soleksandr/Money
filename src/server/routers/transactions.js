@@ -6,7 +6,6 @@ const router = express.Router();
 const createTransaction = (req, res) =>
   handlers.createTransaction(req.body).then((data) => {
     if (data) {
-      console.log(data);
       const transaction = data[0].get();
       transaction.participantsId = transaction.participantsId.map(p => p.get().userId);
       res.json(transaction);
@@ -19,7 +18,6 @@ const getTransactions = (req, res) =>
   handlers.getTransactions().then((data) => {
     if (data) {
       const transactions = data.map((transaction) => {
-        console.log(transaction)
         const t = transaction.get();
         t.participantsId = t.participantsId.map(p => p.get().userId);
         return t;

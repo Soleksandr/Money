@@ -24,7 +24,7 @@ const mockResponse = {
 
 jest.mock('../../handlers/transactions', () => ({
   createTransaction: jest.fn(() => Promise.resolve([{ get: () => mockTransaction }])),
-  getTransactions: jest.fn(() => Promise.resolve([{ get: () => [mockTransaction] }])),
+  getTransactions: jest.fn(() => Promise.resolve([{ get: () => mockTransaction }])),
 }));
 
 describe('Test transactions router', () => {
@@ -47,7 +47,7 @@ describe('Test transactions router', () => {
     );
 
     it('should calls mockResponse.sendStatus with 500', () => {
-      handlers.createTransaction.mockImplementationOnce(() => Promise.resolve(undefined));
+      handlers.createTransaction.mockImplementationOnce(() => Promise.resolve(null));
       return transactionsRouter.createTransaction(mockRequest, mockResponse).then(() =>
         expect(mockResponse.sendStatus).toBeCalledWith(500),
       );
@@ -69,7 +69,7 @@ describe('Test transactions router', () => {
     );
 
     it('should calls mockResponse.sendStatus with 500', () => {
-      handlers.getTransactions.mockImplementationOnce(() => Promise.resolve(undefined));
+      handlers.getTransactions.mockImplementationOnce(() => Promise.resolve(null));
       return transactionsRouter.getTransactions(mockRequest, mockResponse).then(() =>
         expect(mockResponse.sendStatus).toBeCalledWith(500),
       );

@@ -1,4 +1,3 @@
-const db = require('../db');
 const { modelTransaction } = require('../models');
 const { modelUserTransaction } = require('../models');
 
@@ -22,8 +21,7 @@ const createTransaction = data =>
           attributes: ['userId'],
         }],
       }),
-    )
-    .catch(e => console.log(e));
+    ).catch(e => console.error(e));
 
 const getTransactions = () => modelTransaction.findAll({
   include: [{
@@ -31,13 +29,9 @@ const getTransactions = () => modelTransaction.findAll({
     as: 'participantsId',
     attributes: ['userId'],
   }],
-})
-  .catch(e => console.log(e));
-
-const getTransaction = id => db.transactions.find(transaction => transaction.id === id) || null;
+}).catch(e => console.error(e));
 
 module.exports = {
   createTransaction,
   getTransactions,
-  getTransaction,
 };

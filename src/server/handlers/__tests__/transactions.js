@@ -1,65 +1,79 @@
-// const handlers = require('../transactions');
-// const db = require('../../db');
-// const validator = require('../../utils/validator');
+const handlers = require('../transactions');
+const { modelTransaction } = require('../../models');
+const { modelUserTransaction } = require('../../models');
 
-// jest.mock('../../db', () => ({
-//   Transaction: jest.fn(() => ({ participantsId: [1, 2], payerId: 2, id: 1 })),
-//   users: [{ id: 1 }],
-//   transactions: [{ participantsId: [1, 2], payerId: 2, id: 1 }],
-// }));
+const mockTransactionId = 1;
 
-// jest.mock('../../utils/validator', () => ({
-//   validateOnEmptiness: jest.fn(param =>
-//     param === 'correct',
-//   ),
-// }));
+jest.mock('../../models', () => ({
+  modelTransaction: {
+    create: jest.fn(data => Promise.resolve({ ...data, id: mockTransactionId })),
+    findAll: jest.fn(data => Promise.resolve(data)),
+  },
+  modelUserTransaction: {
+    create: jest.fn(() => Promise.resolve(
+      { get: () => ({ transactionId: mockTransactionId }) },
+    )),
+  },
+}));
 
-// describe('Test createTransaction handler', () => {
-//   afterEach(() => {
-//     jest.clearAllMocks();
-//   });
 
-//   it('should calls validateOnEmptiness and calls db.Transaction with proper arguments', () => {
-//     const mockArgument = 'correct';
-//     handlers.createTransaction(mockArgument);
-//     expect(validator.validateOnEmptiness).toBeCalledWith(mockArgument);
-//     expect(db.Transaction).toBeCalledWith(mockArgument);
-//   });
+const mockParam = {
+  title: 'test',
+  cost: 5,
+  payerId: 1,
+  participantsId: [1, 2, 3],
+};
 
-//   it('should calls validateOnEmptiness with proper argument and does not call db.Transaction', () => {
-//     const mockArgument = 'incorrect';
-//     handlers.createTransaction(mockArgument);
-//     expect(validator.validateOnEmptiness).toBeCalledWith(mockArgument);
-//     expect(db.Transaction).not.toBeCalled();
-//   });
+describe('Test createTransaction handler', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
-//   it('should return mockTransaction with correct argument', () => {
-//     const mockArgument = 'correct';
-//     const result = handlers.createTransaction(mockArgument);
-//     expect(result).toEqual(db.Transaction());
-//   });
+  it('should calls modelTransaction.create with proper parameter', () =>
+    handlers.createTransaction(mockParam).then(() =>
+      expect(modelTransaction.create).toBeCalledWith({
+        title: mockParam.title,
+        cost: mockParam.cost,
+        payerId: mockParam.payerId,
+      }),
+    ),
+  );
 
-//   it('should return null with incorrect argument', () => {
-//     const mockArgument = 'incorrect';
-//     const result = handlers.createTransaction(mockArgument);
-//     expect(result).toBe(null);
-//   });
-// });
+  it('should calls modelUserTransaction.create three times with proper parameter', () =>
+    handlers.createTransaction(mockParam).then(() => {
+      expect(modelUserTransaction.create).toHaveBeenCalledTimes(mockParam.participantsId.length);
+      expect(modelUserTransaction.create).toBeCalledWith({
+        userId: mockParam.participantsId.pop(),
+        transactionId: mockTransactionId,
+      });
+    }),
+  );
 
-// describe('Test getTransactions handler', () => {
-//   it('should return an array', () => {
-//     expect(handlers.getTransactions()).toBeInstanceOf(Array);
-//   });
-// });
+  it('should calls modelTransaction.findAll with proper parameter', () =>
+    handlers.createTransaction(mockParam).then(() => {
+      expect(modelTransaction.findAll).toBeCalledWith({
+        where: { id: mockTransactionId },
+        include: [{
+          model: modelUserTransaction,
+          as: 'participantsId',
+          attributes: ['userId'],
+        }],
+      });
+    }),
+  );
+});
 
-// describe('Test getTransaction handler', () => {
-//   it('should return transaction when argument is correct', () => {
-//     const correctParameter = db.transactions[0].id;
-//     expect(handlers.getTransaction(correctParameter)).toEqual(db.transactions[0]);
-//   });
+describe('Test getTransactions handler', () => {
+  it('should calls modelTransaction.findAll with proper parameter', () =>
+    handlers.getTransactions(mockParam).then(() => {
+      expect(modelTransaction.findAll).toBeCalledWith({
+        include: [{
+          model: modelUserTransaction,
+          as: 'participantsId',
+          attributes: ['userId'],
+        }],
+      });
+    }),
+  );
+});
 
-//   it('should return null when argument is incorrect', () => {
-//     const incorrectParameter = 100;
-//     expect(handlers.getTransaction(incorrectParameter)).toBe(null);
-//   });
-// });

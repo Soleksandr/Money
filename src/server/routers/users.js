@@ -3,7 +3,7 @@ const handlers = require('../handlers/users');
 
 const router = express.Router();
 
-const createUser = (req, res) => {
+const createUser = (req, res) =>
   handlers.createUser(req.body).then((user) => {
     if (user) {
       res.json(user);
@@ -11,9 +11,8 @@ const createUser = (req, res) => {
       res.sendStatus(500);
     }
   });
-};
 
-const getUsers = (req, res) => {
+const getUsers = (req, res) =>
   handlers.getUsers().then((users) => {
     if (users) {
       res.json(users);
@@ -21,7 +20,6 @@ const getUsers = (req, res) => {
       res.sendStatus(500);
     }
   });
-};
 
 router.post('/', (req, res) => {
   createUser(req, res);
