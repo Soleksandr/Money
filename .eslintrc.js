@@ -3,7 +3,7 @@ module.exports = {
   "plugins": [
       "react",
       "jsx-a11y",
-      "import"
+      "import",
   ],
   "rules": {
     "jsx-a11y/href-no-hash": "off",
@@ -12,5 +12,6 @@ module.exports = {
   },
   "env": {
     "jest": true
-  }
+  },
+  "parser": "babel-eslint"
 };

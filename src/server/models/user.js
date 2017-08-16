@@ -1,7 +1,15 @@
 module.exports = (db, type) => {
   const User = db.define('user', {
+    username: {
+      type: type.STRING(10),
+      allowNull: false,
+      validate: {
+        isAlpha: true,
+        notEmpty: true,
+      },
+    },
     name: {
-      type: type.CHAR(10),
+      type: type.STRING(10),
       allowNull: false,
       validate: {
         isAlpha: true,
@@ -9,7 +17,15 @@ module.exports = (db, type) => {
       },
     },
     surname: {
-      type: type.CHAR(10),
+      type: type.STRING(10),
+      allowNull: false,
+      validate: {
+        isAlpha: true,
+        notEmpty: true,
+      },
+    },
+    password: {
+      type: type.STRING(15),
       allowNull: false,
       validate: {
         isAlpha: true,
@@ -19,27 +35,3 @@ module.exports = (db, type) => {
   });
   return User;
 };
-
-
-
-// module.exports = (sequelize, DataTypes) => {
-//   const User = sequelize.define('user', {
-//     name: {
-//       type: DataTypes.CHAR(10),
-//       allowNull: false,
-//       validate: {
-//         isAlpha: true,
-//         notEmpty: true,
-//       },
-//     },
-//     surname: {
-//       type: DataTypes.CHAR(10),
-//       allowNull: false,
-//       validate: {
-//         isAlpha: true,
-//         notEmpty: true,
-//       },
-//     },
-//   });
-//   return User;
-// };

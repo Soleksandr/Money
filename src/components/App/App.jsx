@@ -7,6 +7,7 @@ import Transactions from '../Transactions';
 import AddTransactionForm from '../AddTransactionForm';
 import AddUserForm from '../AddUserForm';
 import Transaction from '../Transaction';
+import Login from '../Login';
 
 class App extends Component {
   componentDidMount() {
@@ -24,6 +25,7 @@ class App extends Component {
             <Route exact path="/all_transactions" component={Transactions} />
             <Route exact path="/new_transaction" component={AddTransactionForm} />
             <Route exact path="/all_transactions/:id" component={Transaction} />
+            <Route exact path="/login" component={Login} />
           </Switch>
         </Layout>
       </Router>
