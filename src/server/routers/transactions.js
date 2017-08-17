@@ -6,6 +6,7 @@ const router = express.Router();
 const createTransaction = (req, res) =>
   handlers.createTransaction(req.body).then((data) => {
     if (data) {
+      console.log('data[0] ============= ', data[0]);
       const transaction = data[0].get();
       transaction.participantsId = transaction.participantsId.map(p => p.get().userId);
       res.json(transaction);

@@ -4,7 +4,6 @@ module.exports = (db, type) => {
       type: type.STRING(10),
       allowNull: false,
       validate: {
-        isAlpha: true,
         notEmpty: true,
       },
     },
@@ -25,10 +24,9 @@ module.exports = (db, type) => {
       },
     },
     password: {
-      type: type.STRING(15),
+      type: type.STRING,
       allowNull: false,
       validate: {
-        isAlpha: true,
         notEmpty: true,
       },
     },

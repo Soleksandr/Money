@@ -1,12 +1,16 @@
+const bcrypt = require('bcrypt');
 const { modelUser } = require('../models');
 
-const createUser = data =>
-  modelUser.create({
-    username: data.username,
-    name: data.name,
-    surname: data.surname,
-    password: data.password,
-  });
+const saltRounds = 10;
+
+const createUser = ({ username, name, surname, password }) =>
+  bcrypt.hash(password, saltRounds).then(hash =>
+    modelUser.create({
+      username,
+      name,
+      surname,
+      password: hash,
+    }));
 
 const getUsers = () => modelUser.findAll();
 
