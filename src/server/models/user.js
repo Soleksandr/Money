@@ -19,27 +19,3 @@ module.exports = (db, type) => {
   });
   return User;
 };
-
-
-
-// module.exports = (sequelize, DataTypes) => {
-//   const User = sequelize.define('user', {
-//     name: {
-//       type: DataTypes.CHAR(10),
-//       allowNull: false,
-//       validate: {
-//         isAlpha: true,
-//         notEmpty: true,
-//       },
-//     },
-//     surname: {
-//       type: DataTypes.CHAR(10),
-//       allowNull: false,
-//       validate: {
-//         isAlpha: true,
-//         notEmpty: true,
-//       },
-//     },
-//   });
-//   return User;
-// };

@@ -6,22 +6,16 @@ const router = express.Router();
 const createTransaction = (req, res) =>
   handlers.createTransaction(req.body).then((data) => {
     if (data) {
-      const transaction = data[0].get();
-      transaction.participantsId = transaction.participantsId.map(p => p.get().userId);
-      res.json(transaction);
+      const id = data.get({ plain: true }).id;
+      res.json(id);
     } else {
       res.sendStatus(500);
     }
   });
 
 const getTransactions = (req, res) =>
-  handlers.getTransactions().then((data) => {
-    if (data) {
-      const transactions = data.map((transaction) => {
-        const t = transaction.get();
-        t.participantsId = t.participantsId.map(p => p.get().userId);
-        return t;
-      });
+  handlers.getTransactions().then((transactions) => {
+    if (transactions) {
       res.json(transactions);
     } else {
       res.sendStatus(500);
