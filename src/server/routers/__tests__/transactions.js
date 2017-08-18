@@ -23,14 +23,13 @@ const mockResponse = {
 };
 
 jest.mock('../../handlers/transactions', () => ({
-  createTransaction: jest.fn(() => Promise.resolve([{ get: () => mockTransaction }])),
-  getTransactions: jest.fn(() => Promise.resolve([{ get: () => mockTransaction }])),
+  createTransaction: jest.fn(() => Promise.resolve(mockTransaction.id)),
+  getTransactions: jest.fn(() => Promise.resolve([mockTransaction])),
 }));
 
 describe('Test transactions router', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockTransaction.participantsId = [{ get: () => ({ userId: 1 }) }];
   });
 
   describe('createTransaction function', () => {
@@ -42,7 +41,7 @@ describe('Test transactions router', () => {
 
     it('should calls mockResponse.json with mockTransaction', () =>
       transactionsRouter.createTransaction(mockRequest, mockResponse).then(() =>
-        expect(mockResponse.json).toBeCalledWith(mockTransaction),
+        expect(mockResponse.json).toBeCalledWith(mockTransaction.id),
       ),
     );
 

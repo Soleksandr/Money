@@ -1,5 +1,5 @@
 const express = require('express');
-const handlers = require('../handlers/login');
+const handlers = require('../handlers/transactions');
 
 const router = express.Router();
 

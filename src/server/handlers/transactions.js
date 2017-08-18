@@ -1,35 +1,29 @@
 const { modelTransaction } = require('../models');
-const { modelUserTransaction } = require('../models');
+const { modelUser } = require('../models');
 
-const createTransaction = data =>
+const createTransaction = ({ title, cost, payerId, participantsId }) =>
   modelTransaction.create({
-    title: data.title,
-    cost: data.cost,
-    payerId: data.payerId,
+    title,
+    cost,
+    payerId,
   })
-    .then(res => Promise.all(data.participantsId.map(id =>
-      modelUserTransaction.create({
-        userId: id,
-        transactionId: res.id,
-      }))))
-    .then(d =>
-      modelTransaction.findAll({
-        where: { id: d[0].get().transactionId },
-        include: [{
-          model: modelUserTransaction,
-          as: 'participantsId',
-          attributes: ['userId'],
-        }],
-      }),
-    ).catch(e => console.error(e));
+    .then(transaction =>
+      transaction.addUsers(participantsId))
+    .then(result => result[0][0].get({ plain: true }).transactionId)
+    .catch(e => console.error(e));
 
 const getTransactions = () => modelTransaction.findAll({
-  include: [{
-    model: modelUserTransaction,
-    as: 'participantsId',
-    attributes: ['userId'],
-  }],
-}).catch(e => console.error(e));
+  attributes: ['id', 'title', 'cost', 'payerId'],
+  include: [{ model: modelUser }],
+})
+  .then(transactions =>
+    transactions.map((t) => {
+      const transaction = t.get({ plain: true });
+      transaction.participantsId = transaction.users.map(u => u.id);
+      return transaction;
+    }))
+    .catch(e => console.error(e));
+
 
 module.exports = {
   createTransaction,

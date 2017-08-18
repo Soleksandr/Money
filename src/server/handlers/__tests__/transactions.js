@@ -1,28 +1,31 @@
 const handlers = require('../transactions');
 const { modelTransaction } = require('../../models');
-const { modelUserTransaction } = require('../../models');
+const { modelUser } = require('../../models');
 
 const mockTransactionId = 1;
-
-jest.mock('../../models', () => ({
-  modelTransaction: {
-    create: jest.fn(data => Promise.resolve({ ...data, id: mockTransactionId })),
-    findAll: jest.fn(data => Promise.resolve(data)),
-  },
-  modelUserTransaction: {
-    create: jest.fn(() => Promise.resolve(
-      { get: () => ({ transactionId: mockTransactionId }) },
-    )),
-  },
-}));
-
-
+const mockAddUsers = jest.fn(() => [[{
+  get: jest.fn(() => ({ transactionId: mockTransactionId })),
+}]]);
 const mockParam = {
   title: 'test',
   cost: 5,
   payerId: 1,
   participantsId: [1, 2, 3],
 };
+
+jest.mock('../../models', () => ({
+  modelTransaction: {
+    create: jest.fn(data => Promise.resolve({
+      ...data,
+      id: mockTransactionId,
+      addUsers: mockAddUsers,
+    })),
+    findAll: jest.fn(data => Promise.resolve([{
+      ...data,
+      get: jest.fn(() => ({ users: [{ id: 1 }] })),
+    }])),
+  },
+}));
 
 describe('Test createTransaction handler', () => {
   afterEach(() => {
@@ -39,26 +42,9 @@ describe('Test createTransaction handler', () => {
     ),
   );
 
-  it('should calls modelUserTransaction.create three times with proper parameter', () =>
+  it('should calls addUsers with proper parameter', () =>
     handlers.createTransaction(mockParam).then(() => {
-      expect(modelUserTransaction.create).toHaveBeenCalledTimes(mockParam.participantsId.length);
-      expect(modelUserTransaction.create).toBeCalledWith({
-        userId: mockParam.participantsId.pop(),
-        transactionId: mockTransactionId,
-      });
-    }),
-  );
-
-  it('should calls modelTransaction.findAll with proper parameter', () =>
-    handlers.createTransaction(mockParam).then(() => {
-      expect(modelTransaction.findAll).toBeCalledWith({
-        where: { id: mockTransactionId },
-        include: [{
-          model: modelUserTransaction,
-          as: 'participantsId',
-          attributes: ['userId'],
-        }],
-      });
+      expect(mockAddUsers).toBeCalledWith(mockParam.participantsId);
     }),
   );
 });
@@ -67,11 +53,8 @@ describe('Test getTransactions handler', () => {
   it('should calls modelTransaction.findAll with proper parameter', () =>
     handlers.getTransactions(mockParam).then(() => {
       expect(modelTransaction.findAll).toBeCalledWith({
-        include: [{
-          model: modelUserTransaction,
-          as: 'participantsId',
-          attributes: ['userId'],
-        }],
+        attributes: ['id', 'title', 'cost', 'payerId'],
+        include: [{ model: modelUser }],
       });
     }),
   );

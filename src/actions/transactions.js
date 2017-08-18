@@ -9,8 +9,8 @@ export const getTransactions = dispatch => () =>
     }));
 
 export const addTransaction = dispatch => data =>
-  transactionsApiCalls.addTransaction(data).then(transaction =>
+  transactionsApiCalls.addTransaction(data).then(id =>
     dispatch({
       type: constants.ADD_TRANSACTION,
-      payload: transaction,
+      payload: { ...data, id },
     }));

@@ -10,7 +10,7 @@ const createUser = ({ username, name, surname, password }) =>
       name,
       surname,
       password: hash,
-    }));
+    })).then(user => user.get());
 
 const getUsers = () => modelUser.findAll();
 

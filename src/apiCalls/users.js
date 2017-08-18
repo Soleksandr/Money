@@ -1,6 +1,7 @@
 export const getUsers = () =>
   fetch('/users', {
     method: 'GET',
+    credentials: 'include',
   }).then(users => users.json());
 
 export const addUser = data =>
@@ -9,5 +10,6 @@ export const addUser = data =>
     headers: {
       'Content-Type': 'application/json',
     },
+    credentials: 'include',
     body: JSON.stringify(data),
   }).then(user => user.json());

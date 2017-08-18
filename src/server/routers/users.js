@@ -4,13 +4,24 @@ const passport = require('passport');
 
 const router = express.Router();
 
+const authenticationMiddleware = dataToReturn =>
+  (req, res, next) => {
+    console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    res.json(dataToReturn);
+  };
+
 const createUser = (req, res) =>
   handlers.createUser(req.body).then((user) => {
     if (user) {
-      console.log(user.id, '=========userid')
       req.login(user.id, () => {
-        console.log('loged in successfuly');
-        // res.json(user);
+        res.json({
+          id: user.id,
+          name: user.name,
+          surname: user.surname,
+        });
       });
     } else {
       res.sendStatus(500);
@@ -30,7 +41,7 @@ router.post('/', (req, res) => {
   createUser(req, res);
 });
 
-router.get('/', (req, res) => {
+router.get('/', authenticationMiddleware([]), (req, res) => {
   getUsers(req, res);
 });
 
@@ -41,6 +52,7 @@ passport.serializeUser((id, done) => {
 passport.deserializeUser((id, done) => {
   done(null, id);
 });
+
 
 module.exports = {
   router,
