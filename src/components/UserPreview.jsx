@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const UserPreview = ({ name, surname, money }) => (
   <li className="list-group-item">
     <span>{`${name} ${surname}`}</span>
-    <span className="badge">{money}</span>
+    <span className="badge"><span className="glyphicon glyphicon-usd" />{'   '}{money}</span>
   </li>
 );
 
@@ -19,4 +19,3 @@ UserPreview.defaultProps = {
 };
 
 export default UserPreview;
-

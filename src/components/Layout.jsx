@@ -1,34 +1,53 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Redirect } from 'react-router';
+
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-const Layout = props => (
-  <section className="container">
-    <div className="row well">
-      <div className="col-sm-3">
-        <div>
-          <Link to="/participants">
-            P
-          </Link>
-        </div>
-        <div>
-          <Link to="/all_transactions">
-            T
-          </Link>
-        </div>
-        <div>
-          <Link to="/login">
-            L
-          </Link>
-        </div>
-      </div>
-      <div className="col-sm-9">
-        {props.children}
-      </div>
-    </div>
-  </section>);
+export default class Layout extends Component {
+  onLogOut = () => console.log('logout');
 
-export default Layout;
+  render() {
+    return (
+      <section className="container">
+        <div className="row well">
+          <div className="col-sm-3">
+            <nav className="navbar navbar-default navbar-fixed-side">
+            {
+              !this.props.user ?
+                <ul className="nav navbar-nav">
+                  <li className="active">
+                    <Link to="/participants">P</Link>
+                  </li>
+                  <li>
+                    <Link to="/all_transactions">T</Link>
+                  </li>
+                  <li>
+                    <button onClick={this.onLogOut}>O</button>
+                  </li>
+                </ul> : null
+            }
+            {
+              this.props.user ?
+                <div>
+                  <div>
+                    <Link to="/login">L</Link>
+                  </div>
+                  <div>
+                    <Link to="/registration">R</Link>
+                  </div>
+                </div> : null
+            }
+            </nav>
+          </div>
+          <div className="col-sm-9">
+            {this.props.children}
+          </div>
+        </div>
+      </section>
+    );
+  }
+}
 
 Layout.propTypes = {
   children: PropTypes.element.isRequired,

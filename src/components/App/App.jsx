@@ -8,8 +8,34 @@ import AddTransactionForm from '../AddTransactionForm';
 import AddUserForm from '../AddUserForm';
 import Transaction from '../Transaction';
 import Login from '../Login';
+import '../../style/style.scss';
 
-class App extends Component {
+
+
+const Authorization = (WrappedComponent, user) =>
+  class WithAuthorization extends React.Component {
+    state = {
+      user,
+    }
+
+    render() {
+      if (!this.state.user) {
+        return <WrappedComponent />;
+      }
+      return <h3 className="text-warning bg-warning text-center">You must authorization first</h3>;
+    }
+  };
+
+const Abou = () => (
+  <div>
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo optio alias
+   perferendis quam fuga? Nobis modi praesentium unde veritatis dignissimos
+    id sequi illo ipsa ut esse incidunt labore laboriosam voluptates, non
+     sunt sit quo doloribus voluptas provident, cumque vero! Illo!
+  </div>
+);
+
+export default class App extends Component {
   componentDidMount() {
     this.props.getUsers();
     this.props.getTransactions();
@@ -17,14 +43,16 @@ class App extends Component {
   render() {
     return (
       <Router>
-        <Layout>
+        <Layout {...this.props}>
           <Switch>
-            <Route exact path="/participants" component={Users} />
+            <Route exact path="/" component={Abou} />
+            <Route exact path="/participants" component={Authorization(Users, this.props.user)} />
             <Route exact path="/participants/:id/transactions" component={Transactions} />
             <Route exact path="/new_user" component={AddUserForm} />
-            <Route exact path="/all_transactions" component={Transactions} />
+            <Route exact path="/all_transactions" component={Authorization(Transactions, this.props.user)} />
             <Route exact path="/new_transaction" component={AddTransactionForm} />
-            <Route exact path="/all_transactions/:id" component={Transaction} />
+            <Route exact path="/all_transactions/:id" component={Authorization(Transaction, this.props.user)} />
+            <Route exact path="/registration" component={AddUserForm} />
             <Route exact path="/login" component={Login} />
           </Switch>
         </Layout>
@@ -32,8 +60,6 @@ class App extends Component {
     );
   }
 }
-
-export default App;
 
 App.propTypes = {
   getTransactions: PropTypes.func.isRequired,
