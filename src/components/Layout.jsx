@@ -10,38 +10,37 @@ export default class Layout extends Component {
   render() {
     return (
       <section className="container">
-        <div className="row well">
-          <div className="col-sm-3">
-            <nav className="navbar navbar-default navbar-fixed-side">
-            {
-              !this.props.user ?
-                <ul className="nav navbar-nav">
-                  <li className="active">
-                    <Link to="/participants">P</Link>
-                  </li>
-                  <li>
-                    <Link to="/all_transactions">T</Link>
-                  </li>
-                  <li>
-                    <button onClick={this.onLogOut}>O</button>
-                  </li>
-                </ul> : null
-            }
-            {
-              this.props.user ?
-                <div>
-                  <div>
-                    <Link to="/login">L</Link>
-                  </div>
-                  <div>
-                    <Link to="/registration">R</Link>
-                  </div>
-                </div> : null
-            }
+        <div className="row">
+          <div className="wrapper">
+            <div className="info">You are loged in as {this.props.user ? this.props.user.name : 'a guest'}</div>
+            <nav>
+              {
+                this.props.user ?
+                  <ul className="navigation">
+                    <li>
+                      <Link className="nav-item" to="/participants">P</Link>
+                    </li>
+                    <li >
+                      <Link className="nav-item" to="/all_transactions">T</Link>
+                    </li>
+                    <li>
+                      <Link className="nav-item" to="/">O</Link>
+                    </li>
+                  </ul>
+                  :
+                  <ul className="navigation">
+                    <li>
+                      <Link className="nav-item" to="/login">L</Link>
+                    </li>
+                    <li>
+                      <Link className="nav-item" to="/registration">R</Link>
+                    </li>
+                  </ul>
+              }
             </nav>
-          </div>
-          <div className="col-sm-9">
-            {this.props.children}
+            <div className="content">
+              {this.props.children}
+            </div>
           </div>
         </div>
       </section>

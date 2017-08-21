@@ -39,7 +39,7 @@ export default class AddUserForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.addUser(this.state);
+    this.props.createUser(this.state);
     this.props.history.push('/participants');
   }
 
@@ -94,5 +94,5 @@ export default class AddUserForm extends Component {
 }
 
 AddUserForm.propTypes = {
-  addUser: PropTypes.func.isRequired,
+  createUser: PropTypes.func.isRequired,
 };

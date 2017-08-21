@@ -7,7 +7,7 @@ const Users = ({ users }) => (
   <div>
     <UsersList users={users} />
     <Link to="/new_user">
-      +
+      <i className="fa fa-plus-circle fa-4x" aria-hidden="true" />
     </Link>
   </div>
 );

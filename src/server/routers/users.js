@@ -41,18 +41,9 @@ router.post('/', (req, res) => {
   createUser(req, res);
 });
 
-router.get('/', authenticationMiddleware([]), (req, res) => {
+router.get('/', (req, res) => {
   getUsers(req, res);
 });
-
-passport.serializeUser((id, done) => {
-  done(null, id);
-});
-
-passport.deserializeUser((id, done) => {
-  done(null, id);
-});
-
 
 module.exports = {
   router,

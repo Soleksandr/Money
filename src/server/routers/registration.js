@@ -1,25 +1,43 @@
 const express = require('express');
-const handlers = require('../handlers/transactions');
+const handlers = require('../handlers/users');
+const passport = require('passport');
 
 const router = express.Router();
 
-const checkLoginData = (req, res) =>
-  handlers.createTransaction(req.body).then((data) => {
-    if (data) {
-      const transaction = data[0].get();
-      transaction.participantsId = transaction.participantsId.map(p => p.get().userId);
-      res.json(transaction);
+// const authenticationMiddleware = dataToReturn =>
+//   (req, res, next) => {
+//     console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
+//     if (req.isAuthenticated()) {
+//       return next();
+//     }
+//     res.json(dataToReturn);
+//   };
+
+const createUser = (req, res) =>
+  handlers.createUser(req.body).then((user) => {
+    if (user) {
+      req.login(user.id, () => {
+        res.json({
+          // id: user.id,
+          name: user.name,
+          surname: user.surname,
+        });
+      });
     } else {
       res.sendStatus(500);
     }
   });
 
-router.post('/', (req, res) => {
-  checkLoginData(req, res);
+passport.serializeUser((id, done) => {
+  done(null, id);
+});
+
+passport.deserializeUser((id, done) => {
+  done(null, id);
 });
 
 
 module.exports = {
   router,
-  checkLoginData,
+  createUser,
 };
