@@ -2,18 +2,25 @@ import * as constants from '../constants';
 import * as userApiCalls from '../apiCalls/user';
 
 // register should return username usersurname
-export const createUser = dispatch => () =>
-  userApiCalls.createUser().then(data =>
+export const createUser = dispatch => data =>
+  userApiCalls.createUser(data).then(user =>
     dispatch({
       type: constants.CREATE_USER,
-      payload: data || [],
+      payload: user,
+    }));
+
+export const checkAuthentication = dispatch => () =>
+  userApiCalls.checkAuthentication().then(user =>
+    dispatch({
+      type: constants.CHECK_AUTHENTICATION,
+      payload: user,
     }));
 
 export const logIn = dispatch => () =>
   userApiCalls.logIn().then(data =>
     dispatch({
       type: constants.LOG_IN,
-      payload: data || [],
+      payload: data,
     }));
 
 export const logOut = dispatch => data =>

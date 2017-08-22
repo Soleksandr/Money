@@ -34,10 +34,11 @@ const About = () => (
 );
 
 export default class App extends Component {
-  // componentDidMount() {
-  //   this.props.getUsers();
-  //   this.props.getTransactions();
-  // }
+  componentDidMount() {
+    this.props.checkAuthentication();
+    this.props.getUsers();
+    this.props.getTransactions();
+  }
   render() {
     return (
       <Router>

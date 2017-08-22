@@ -6,7 +6,7 @@ export const mapStateToProps = state => ({
 });
 
 export const mapDispatchToProps = dispatch => ({
-  addTransaction: transactionsActions.addTransaction(dispatch),
+  createTransaction: transactionsActions.createTransaction(dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);

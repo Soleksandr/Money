@@ -4,7 +4,7 @@ export const getTransactions = () =>
     credentials: 'include',
   }).then(transactions => transactions.json());
 
-export const addTransaction = data =>
+export const createTransaction = data =>
   fetch('/transactions', {
     method: 'POST',
     headers: {

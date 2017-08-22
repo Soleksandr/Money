@@ -6,7 +6,7 @@ export const getUsers = dispatch => () =>
   usersApiCalls.getUsers().then(users =>
     dispatch({
       type: constants.GET_USERS,
-      payload: users || [],
+      payload: users,
     }));
 
 

@@ -12,11 +12,8 @@ const createUser = ({ username, name, surname, password }) => {
       surname,
       password: hash,
     })).then(user => user.get());
-}
-
-const getUsers = () => modelUser.findAll();
+};
 
 module.exports = {
   createUser,
-  getUsers,
 };

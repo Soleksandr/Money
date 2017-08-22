@@ -8,30 +8,26 @@ const transactionsRouter = require('./routers/transactions').router;
 const usersRouter = require('./routers/users').router;
 const loginRouter = require('./routers/login').router;
 const registrationRouter = require('./routers/registration').router;
+const authenticationRouter = require('./routers/authentication').router;
 const indexPage = require('./routers/indexPage');
 const db = require('./models').db;
 
+const authenticationMiddleware = () =>
+(req, res, next) => {
+  console.log('lasdfjlasdfjlaskdjflasdfj;lasdfjdlsaf', req.originalUrl)
+  console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  return res.json([]);
+};
 
 const app = express();
-
-const authenticationMiddleware = () =>
-  (req, res, next) => {
-    console.log('lasdfjlasdfjlaskdjflasdfj;lasdfjdlsaf', req.originalUrl)
-    console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
-    if (req.isAuthenticated()) {
-      return next();
-    } else if (req.originalUrl === '/registration') {
-      return app.use('/registration', registrationRouter);
-    } else if (req.originalUrl === '/login') {
-      return loginRouter(req, res);
-    }
-    return indexPage(req, res);
-  };
-
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+
 app.use(express.static('static'));
 app.use(session({
   secret: 'asfoxcnueoijsdfj',
@@ -44,10 +40,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use('/', authenticationMiddleware());
-app.use('/transactions', transactionsRouter);
-app.use('/users', usersRouter);
+app.use('/backend/authentication', authenticationRouter);
+app.use('/backend/registration', registrationRouter);
 app.use('/login', loginRouter);
+app.use('/transactions', authenticationMiddleware(), transactionsRouter);
+app.use('/users', authenticationMiddleware(), usersRouter);
 app.all('*', indexPage);
 
 module.exports = app;

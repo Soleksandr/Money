@@ -1,5 +1,5 @@
 const express = require('express');
-const handlers = require('../handlers/users');
+const handlers = require('../handlers/registration');
 const passport = require('passport');
 
 const router = express.Router();
@@ -15,6 +15,7 @@ const router = express.Router();
 
 const createUser = (req, res) =>
   handlers.createUser(req.body).then((user) => {
+    console.log('==============user===============', user);
     if (user) {
       req.login(user.id, () => {
         res.json({
@@ -27,6 +28,10 @@ const createUser = (req, res) =>
       res.sendStatus(500);
     }
   });
+
+router.post('/', (req, res) => {
+  createUser(req, res);
+});
 
 passport.serializeUser((id, done) => {
   done(null, id);

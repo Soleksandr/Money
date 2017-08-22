@@ -1,11 +1,11 @@
-// export const getUser = () =>
-// fetch('/user', {
-//   method: 'GET',
-//   credentials: 'include',
-// }).then(user => user.json());
+export const checkAuthentication = () =>
+fetch('/backend/authentication', {
+  method: 'GET',
+  credentials: 'include',
+}).then(user => user.json());
 
 export const createUser = data =>
-fetch('/users', {
+fetch('/backend/registration', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',

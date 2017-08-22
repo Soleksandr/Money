@@ -40,7 +40,7 @@ export default class AddTransactionForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.addTransaction({
+    this.props.createTransaction({
       title: this.state.title,
       cost: parseFloat(this.state.cost),
       payerId: parseInt(this.state.payerId, 10),
@@ -96,7 +96,7 @@ export default class AddTransactionForm extends Component {
 }
 
 AddTransactionForm.propTypes = {
-  addTransaction: PropTypes.func.isRequired,
+  createTransaction: PropTypes.func.isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     surname: PropTypes.string.isRequired,
