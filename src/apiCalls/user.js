@@ -1,5 +1,5 @@
-export const checkAuthentication = () =>
-fetch('/backend/authentication', {
+export const userInitialize = () =>
+fetch('/backend', {
   method: 'GET',
   credentials: 'include',
 }).then(user => user.json());

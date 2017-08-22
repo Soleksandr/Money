@@ -4,18 +4,18 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const rootRouter = require('./routers/root').router;
 const transactionsRouter = require('./routers/transactions').router;
 const usersRouter = require('./routers/users').router;
-const loginRouter = require('./routers/login').router;
 const registrationRouter = require('./routers/registration').router;
 const authenticationRouter = require('./routers/authentication').router;
-const indexPage = require('./routers/indexPage');
+const indexPage = require('./handlers/indexPage');
 const db = require('./models').db;
 
 const authenticationMiddleware = () =>
 (req, res, next) => {
-  console.log('lasdfjlasdfjlaskdjflasdfj;lasdfjdlsaf', req.originalUrl)
-  console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
+  // console.log('lasdfjlasdfjlaskdjflasdfj;lasdfjdlsaf', req.originalUrl)
+  // console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
   if (req.isAuthenticated()) {
     return next();
   }
@@ -40,11 +40,11 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use('/backend', rootRouter);
 app.use('/backend/authentication', authenticationRouter);
 app.use('/backend/registration', registrationRouter);
-app.use('/login', loginRouter);
-app.use('/transactions', authenticationMiddleware(), transactionsRouter);
-app.use('/users', authenticationMiddleware(), usersRouter);
+app.use('/backend/transactions', authenticationMiddleware(), transactionsRouter);
+app.use('/backend/users', authenticationMiddleware(), usersRouter);
 app.all('*', indexPage);
 
 module.exports = app;

@@ -1,5 +1,5 @@
 export const getUsers = () =>
-  fetch('/users', {
+  fetch('backend/users', {
     method: 'GET',
     credentials: 'include',
   }).then(users => users.json());

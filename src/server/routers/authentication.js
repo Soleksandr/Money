@@ -3,26 +3,23 @@ const handlers = require('../handlers/authentication');
 
 const router = express.Router();
 
-const getSessionData = (req, res) => {
-  if (req.user) {
-    handlers.getSessionData(req.user)
-      .then(({ name, surname }) =>
-        res.json({
-          name,
-          surname,
-        }),
-      );
-  } else {
-    res.json(null);
-  }
-};
+const checkLoginData = (req, res) =>
+  handlers.createTransaction(req.body).then((data) => {
+    if (data) {
+      const transaction = data[0].get();
+      transaction.participantsId = transaction.participantsId.map(p => p.get().userId);
+      res.json(transaction);
+    } else {
+      res.sendStatus(500);
+    }
+  });
 
-router.get('/', (req, res) => {
-  getSessionData(req, res);
+router.post('/', (req, res) => {
+  checkLoginData(req, res);
 });
 
 
 module.exports = {
   router,
-  getSessionData,
+  checkLoginData,
 };

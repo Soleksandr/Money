@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import Spinner from 'react-spinkit';
 import Layout from '../Layout';
+import Authorization from '../Authorization';
+import About from '../About';
 import Users from '../Users';
 import Transactions from '../Transactions';
 import AddTransactionForm from '../AddTransactionForm';
@@ -10,57 +13,37 @@ import Transaction from '../Transaction';
 import Login from '../Login';
 import '../../style/style.scss';
 
-const Authorization = (WrappedComponent, user) =>
-  class WithAuthorization extends React.Component {
-    state = {
-      user,
-    }
-
-    render() {
-      if (this.state.user) {
-        return <WrappedComponent />;
-      }
-      return <h3 className="text-warning text-center">You are not authorized to view this page</h3>;
-    }
-  };
-
-const About = () => (
-  <div>
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nemo optio alias
-    perferendis quam fuga? Nobis modi praesentium unde veritatis dignissimos
-    id sequi illo ipsa ut esse incidunt labore laboriosam voluptates, non
-    sunt sit quo doloribus voluptas provident, cumque vero! Illo!
-  </div>
-);
-
 export default class App extends Component {
   componentDidMount() {
-    this.props.checkAuthentication();
-    this.props.getUsers();
-    this.props.getTransactions();
+    this.props.userInitialize();
   }
   render() {
-    return (
-      <Router>
+    return !this.props.isFetching ?
+      (<Router>
         <Layout {...this.props}>
           <Switch>
             <Route exact path="/" component={About} />
             <Route exact path="/participants" component={Authorization(Users, this.props.user)} />
-            <Route exact path="/participants/:id/transactions" component={Transactions} />
-            <Route exact path="/new_user" component={AddUserForm} />
-            <Route exact path="/all_transactions" component={Authorization(Transactions, this.props.user)} />
-            <Route exact path="/new_transaction" component={AddTransactionForm} />
-            <Route exact path="/all_transactions/:id" component={Authorization(Transaction, this.props.user)} />
+            <Route exact path="/participants/:id/transactions" component={Authorization(Transactions, this.props.user)} />
+            {/* <Route exact path="/new_user" component={AddUserForm} /> */}
+            <Route exact path="/transactions" component={Authorization(Transactions, this.props.user)} />
+            <Route exact path="/new_transaction" component={Authorization(AddTransactionForm, this.props.user)} />
+            <Route exact path="/transactions/:id" component={Authorization(Transaction, this.props.user)} />
             <Route exact path="/registration" component={AddUserForm} />
             <Route exact path="/login" component={Login} />
           </Switch>
         </Layout>
-      </Router>
-    );
+      </Router>) : <Spinner name="double-bounce" />;
   }
 }
 
 App.propTypes = {
-  getTransactions: PropTypes.func.isRequired,
-  getUsers: PropTypes.func.isRequired,
+  userInitialize: PropTypes.func.isRequired,
+  isFetching: PropTypes.bool,
+  user: PropTypes.objectOf(PropTypes.string),
+};
+
+App.defaultProps = {
+  user: null,
+  isFetching: false,
 };

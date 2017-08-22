@@ -10,9 +10,9 @@ export const getUsers = dispatch => () =>
     }));
 
 
-export const addUser = dispatch => data =>
-  usersApiCalls.addUser(data).then(user =>
-    dispatch({
-      type: constants.ADD_USER,
-      payload: user,
-    }));
+// export const addUser = dispatch => data =>
+//   usersApiCalls.addUser(data).then(user =>
+//     dispatch({
+//       type: constants.ADD_USER,
+//       payload: user,
+//     }));

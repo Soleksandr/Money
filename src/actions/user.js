@@ -9,12 +9,22 @@ export const createUser = dispatch => data =>
       payload: user,
     }));
 
-export const checkAuthentication = dispatch => () =>
-  userApiCalls.checkAuthentication().then(user =>
+export const userInitialize = dispatch => () => {
+  dispatch({
+    type: constants.FETHCING_DATA,
+    payload: true,
+  });
+  return userApiCalls.userInitialize().then(user => {
     dispatch({
-      type: constants.CHECK_AUTHENTICATION,
+      type: constants.USER_INITIALIZE,
       payload: user,
-    }));
+    });
+    dispatch({
+      type: constants.FETHCING_DATA,
+      payload: false,
+    });
+  });
+};
 
 export const logIn = dispatch => () =>
   userApiCalls.logIn().then(data =>
