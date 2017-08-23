@@ -13,9 +13,12 @@ const createTransaction = (req, res) =>
   });
 
 const getTransactions = (req, res) =>
-  handlers.getTransactions(req.user).then((transactions) => {
+  handlers.getTransactions().then((transactions) => {
     if (transactions) {
-      res.json(transactions);
+      const userTransactions = transactions.filter(
+        t => t.payerId === req.user || t.participantsId.find(
+          id => id === req.user));
+      res.json(userTransactions);
     } else {
       res.sendStatus(500);
     }

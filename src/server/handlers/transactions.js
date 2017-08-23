@@ -8,24 +8,24 @@ const createTransaction = ({ title, cost, payerId, participantsId }) =>
     payerId,
   })
     .then(transaction =>
-      transaction.addUsers(participantsId))
+      transaction.addParticipantsId(participantsId))
     .then(result => result[0][0].get({ plain: true }).transactionId)
     .catch(e => console.error(e));
 
-const getTransactions = id => modelTransaction.findAll({
-  where: {
-    payerId: id,
-  },
+const getTransactions = () => modelTransaction.findAll({
   attributes: ['id', 'title', 'cost', 'payerId'],
-  include: [{ model: modelUser }],
+  include: [{
+    model: modelUser,
+    as: 'participantsId',
+  }],
 })
-  .then(transactions =>
-    transactions.map((t) => {
+  .then(data =>
+    data.map((t) => {
       const transaction = t.get({ plain: true });
-      transaction.participantsId = transaction.users.map(u => u.id);
+      transaction.participantsId = transaction.participantsId.map(p => p.id);
       return transaction;
     }))
-    .catch(e => console.error(e));
+  .catch(e => console.error(e));
 
 
 module.exports = {

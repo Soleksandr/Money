@@ -22,7 +22,7 @@ export default class Login extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    console.log('ok');
+    this.props.logIn(this.state);
     this.props.history.push('/participants');
   }
   render() {

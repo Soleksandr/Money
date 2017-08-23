@@ -11,6 +11,6 @@ export const getTransactions = dispatch => () =>
 export const createTransaction = dispatch => data =>
   transactionsApiCalls.createTransaction(data).then(id =>
     dispatch({
-      type: constants.ADD_TRANSACTION,
+      type: constants.CREATE_TRANSACTION,
       payload: { ...data, id },
     }));

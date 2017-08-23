@@ -14,7 +14,7 @@ export const userInitialize = dispatch => () => {
     type: constants.FETHCING_DATA,
     payload: true,
   });
-  return userApiCalls.userInitialize().then(user => {
+  return userApiCalls.userInitialize().then((user) => {
     dispatch({
       type: constants.USER_INITIALIZE,
       payload: user,
@@ -26,16 +26,16 @@ export const userInitialize = dispatch => () => {
   });
 };
 
-export const logIn = dispatch => () =>
-  userApiCalls.logIn().then(data =>
+export const logIn = dispatch => data =>
+  userApiCalls.logIn(data).then(user =>
     dispatch({
       type: constants.LOG_IN,
-      payload: data,
+      payload: user,
     }));
 
 export const logOut = dispatch => data =>
   userApiCalls.logOut(data).then(() =>
     dispatch({
-      type: constants.ADD_USER,
+      type: constants.LOG_OUT,
       payload: null,
     }));

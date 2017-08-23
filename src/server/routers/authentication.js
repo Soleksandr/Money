@@ -1,25 +1,20 @@
 const express = require('express');
+const passport = require('passport');
 const handlers = require('../handlers/authentication');
 
 const router = express.Router();
 
-const checkLoginData = (req, res) =>
-  handlers.createTransaction(req.body).then((data) => {
-    if (data) {
-      const transaction = data[0].get();
-      transaction.participantsId = transaction.participantsId.map(p => p.get().userId);
-      res.json(transaction);
-    } else {
-      res.sendStatus(500);
-    }
-  });
-
-router.post('/', (req, res) => {
-  checkLoginData(req, res);
+router.post('/', passport.authenticate('local'), (req, res) => {
+  console.log('------------ inside router /login -------------');
 });
 
+// passport.authenticate('local'),
+//   function(req, res) {
+//     // If this function gets called, authentication was successful.
+//     // `req.user` contains the authenticated user.
+//     res.redirect('/users/' + req.user.username);
+//   });
 
 module.exports = {
   router,
-  checkLoginData,
 };

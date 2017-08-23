@@ -4,19 +4,15 @@ import { Link } from 'react-router-dom';
 import UsersList from '../UsersList';
 
 export default class Users extends Component {
-  componentDidMount() {
-    this.props.getUsers();
-    this.props.getTransactions();
-  }
   render() {
-    // const userTransactions = this.props.transactions.filter(
-    //   t => t.payerId === this.props.user.id || t.participantsId.find(
-    //     p => p.id === this.props.user.id));
-    // const participantsId = userTransactions.map(t => [...t.participantsId, t.payerId]);
-    // console.log('PARTICIPANTS', participantsId);
+    const participants = this.props.users.filter(
+      u => this.props.transactions.find(
+        t => u.id === t.payerId || t.participantsId.find(
+          id => u.id === id)));
+    console.log('PARTICIPANTS', participants);
     return (
       <div>
-        <UsersList users={this.props.users} />
+        <UsersList users={participants} />
         <Link to="/registration">
           <i className="fa fa-plus-circle fa-4x" aria-hidden="true" />
         </Link>
@@ -26,7 +22,7 @@ export default class Users extends Component {
 }
 
 Users.propTypes = {
-  user: PropTypes.objectOf(PropTypes.string).isRequired,
+  // user: PropTypes.objectOf(PropTypes.string).isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
