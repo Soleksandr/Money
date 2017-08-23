@@ -6,7 +6,7 @@ module.exports = (db, type) => {
       autoIncrement: true,
     },
     title: {
-      type: type.CHAR(30),
+      type: type.STRING(50),
       allowNull: false,
       validate: {
         notEmpty: true,

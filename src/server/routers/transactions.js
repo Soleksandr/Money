@@ -13,7 +13,7 @@ const createTransaction = (req, res) =>
   });
 
 const getTransactions = (req, res) =>
-  handlers.getTransactions().then((transactions) => {
+  handlers.getTransactions(req.user).then((transactions) => {
     if (transactions) {
       res.json(transactions);
     } else {

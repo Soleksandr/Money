@@ -1,11 +1,11 @@
 export const userInitialize = () =>
-fetch('/backend', {
+fetch('backend', {
   method: 'GET',
   credentials: 'include',
 }).then(user => user.json());
 
 export const createUser = data =>
-fetch('/backend/registration', {
+fetch('backend/registration', {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',

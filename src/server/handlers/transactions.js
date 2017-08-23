@@ -12,7 +12,10 @@ const createTransaction = ({ title, cost, payerId, participantsId }) =>
     .then(result => result[0][0].get({ plain: true }).transactionId)
     .catch(e => console.error(e));
 
-const getTransactions = () => modelTransaction.findAll({
+const getTransactions = id => modelTransaction.findAll({
+  where: {
+    payerId: id,
+  },
   attributes: ['id', 'title', 'cost', 'payerId'],
   include: [{ model: modelUser }],
 })

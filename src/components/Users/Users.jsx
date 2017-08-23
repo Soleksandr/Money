@@ -6,14 +6,14 @@ import UsersList from '../UsersList';
 export default class Users extends Component {
   componentDidMount() {
     this.props.getUsers();
-    // this.props.getTransactions();
+    this.props.getTransactions();
   }
   render() {
-    const userTransactions = this.props.transactions.filter(
-      t => t.payerId === this.props.user.id || t.participantsId.find(
-        p => p.id === this.props.user.id));
-    const participants = userTransactions.filter(t => [...t.participantsId, t.payerId]);
-    console.log('PARTICIPANTS', participants);
+    // const userTransactions = this.props.transactions.filter(
+    //   t => t.payerId === this.props.user.id || t.participantsId.find(
+    //     p => p.id === this.props.user.id));
+    // const participantsId = userTransactions.map(t => [...t.participantsId, t.payerId]);
+    // console.log('PARTICIPANTS', participantsId);
     return (
       <div>
         <UsersList users={this.props.users} />
