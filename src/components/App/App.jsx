@@ -44,10 +44,14 @@ App.propTypes = {
   getUsers: PropTypes.func.isRequired,
   userInitialize: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
-  user: PropTypes.objectOf(PropTypes.string),
+  user: PropTypes.PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    surname: PropTypes.string.isRequired,
+  }),
 };
 
 App.defaultProps = {
   user: null,
 };
-

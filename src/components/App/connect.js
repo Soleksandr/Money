@@ -10,6 +10,7 @@ export const mapStateToProps = state => ({
 
 export const mapDispatchToProps = dispatch => ({
   userInitialize: userActions.userInitialize(dispatch),
+  logout: userActions.logout(dispatch),
   getTransactions: transactionsActions.getTransactions(dispatch),
   getUsers: usersActions.getUsers(dispatch),
 });

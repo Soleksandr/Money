@@ -40,7 +40,7 @@ export default class AddUserForm extends Component {
   onSubmit = (e) => {
     e.preventDefault();
     this.props.createUser(this.state);
-    this.props.history.push('/participants');
+    this.props.history.push('/');
   }
 
   render() {
@@ -86,7 +86,7 @@ export default class AddUserForm extends Component {
           <button
             className="btn btn-default"
             type="submit"
-          >add</button>
+          >submit</button>
         </form>
       </div>
     );

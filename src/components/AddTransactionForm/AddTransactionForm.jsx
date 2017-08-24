@@ -40,13 +40,13 @@ export default class AddTransactionForm extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.history.push('/transactions');
     this.props.createTransaction({
       title: this.state.title,
       cost: parseFloat(this.state.cost),
       payerId: parseInt(this.state.payerId, 10),
       participantsId: this.participantsId,
     });
+    this.props.history.push('/transactions');
   }
 
   render() {
@@ -88,7 +88,7 @@ export default class AddTransactionForm extends Component {
           <button
             className="btn btn-default"
             type="submit"
-          >add</button>
+          >create</button>
         </form>
       </div>
     );

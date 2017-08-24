@@ -3,13 +3,13 @@ import * as userActions from '../../actions/user';
 // import * as transactionsActions from '../../actions/transactions';
 // import * as usersActions from '../../actions/users';
 
-export const mapStateToProps = state => ({
-  user: state.user,
-  isFetching: state.fetching,
-});
+// export const mapStateToProps = state => ({
+//   user: state.user,
+//   isFetching: state.fetching,
+// });
 
 export const mapDispatchToProps = dispatch => ({
-  logIn: userActions.logIn(dispatch),
+  login: userActions.login(dispatch),
   // getTransactions: transactionsActions.getTransactions(dispatch),
   // getUsers: usersActions.getUsers(dispatch),
 });

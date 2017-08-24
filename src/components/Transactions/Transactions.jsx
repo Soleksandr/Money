@@ -5,9 +5,15 @@ import TransactionsList from '../TransactionsList';
 
 export default class Transactions extends Component {
   render() {
+    let transactions = this.props.transactions;
+    const id = parseInt(this.props.match.params.id, 10);
+    if (id) {
+      transactions = transactions.filter(t =>
+        t.payerId === id || t.participantsId.find(pId => pId === id))
+    }
     return (
       <div>
-        <TransactionsList transactions={this.props.transactions} />
+        <TransactionsList transactions={transactions} />
         <Link to="/new_transaction">
           <i className="fa fa-plus-circle fa-4x" aria-hidden="true" />
         </Link>

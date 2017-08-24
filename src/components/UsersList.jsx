@@ -5,11 +5,12 @@ import UserPreview from './UserPreview';
 import UserSelectionOpp from './UserSelectionOpp';
 
 export default class UsersList extends Component {
-  renderUserPreview = ({ id, name, surname }) => (
+  renderUserPreview = ({ id, name, surname, money }) => (
     <UserPreview
       id={id}
       name={name}
       surname={surname}
+      money={money}
     />
   );
 

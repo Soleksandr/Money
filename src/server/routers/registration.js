@@ -15,11 +15,12 @@ const router = express.Router();
 
 const createUser = (req, res) =>
   handlers.createUser(req.body).then((user) => {
-    console.log('==============user===============', user);
+    // console.log('==============user===============', user);
     if (user) {
       req.login(user.id, () => {
         res.json({
-          // id: user.id,
+          id: user.id,
+          username: user.username,
           name: user.name,
           surname: user.surname,
         });

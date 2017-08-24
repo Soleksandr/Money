@@ -4,11 +4,13 @@ const handlers = require('../handlers/root');
 const router = express.Router();
 
 const getSessionUser = (req, res) => {
-  // console.log(' ------------------------ req ------------------------ ', req.user);
+  // console.log(' ------------------------ req.user ------------------------ ', req.user);
   if (req.user) {
     handlers.getSessionUser(req.user)
-      .then(({ name, surname }) =>
+      .then(({ id, username, name, surname }) =>
         res.json({
+          id,
+          username,
           name,
           surname,
         }),

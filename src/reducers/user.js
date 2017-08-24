@@ -9,7 +9,7 @@ export default (state = null, action) => {
     case constants.LOG_IN:
       return action.payload;
     case constants.LOG_OUT:
-      return null;
+      return action.payload;
     default:
       return state;
   }

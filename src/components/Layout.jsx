@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 export default class Layout extends Component {
-  // onLogOut = () => console.log('logout');
-
   render() {
     return (
       <section className="container">
@@ -25,7 +23,11 @@ export default class Layout extends Component {
                       <Link className="nav-item" to="/transactions">T</Link>
                     </li>
                     <li>
-                      <Link className="nav-item" to="/">O</Link>
+                      <Link
+                        className="nav-item"
+                        to="/"
+                        onClick={this.props.logout}
+                      >O</Link>
                     </li>
                   </ul>
                   :
@@ -51,7 +53,13 @@ export default class Layout extends Component {
 
 Layout.propTypes = {
   children: PropTypes.element.isRequired,
-  user: PropTypes.objectOf(PropTypes.string),
+  logout: PropTypes.func.isRequired,
+  user: PropTypes.PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    surname: PropTypes.string.isRequired,
+  }),
 };
 
 Layout.defaultProps = {

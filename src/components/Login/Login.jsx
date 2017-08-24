@@ -22,8 +22,9 @@ export default class Login extends Component {
 
   onSubmit = (e) => {
     e.preventDefault();
-    this.props.logIn(this.state);
-    this.props.history.push('/participants');
+    this.props.login(this.state).then(() =>
+      this.props.history.push('/'),
+    );
   }
   render() {
     return (
@@ -50,9 +51,13 @@ export default class Login extends Component {
           <button
             className="btn btn-default"
             type="submit"
-          >sign in</button>
+          >log in</button>
         </form>
       </div>
-    )
+    );
   }
 }
+
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+};

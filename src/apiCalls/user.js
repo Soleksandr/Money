@@ -1,11 +1,11 @@
 export const userInitialize = () =>
-  fetch('backend', {
+  fetch('/backend', {
     method: 'GET',
     credentials: 'include',
   }).then(user => user.json());
 
-export const logIn = data =>
-  fetch('backend/authentication', {
+export const createUser = data =>
+  fetch('/backend/registration', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -14,8 +14,8 @@ export const logIn = data =>
     body: JSON.stringify(data),
   }).then(user => user.json());
 
-export const createUser = data =>
-  fetch('backend/registration', {
+export const login = data =>
+  fetch('/backend/authentication', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -23,3 +23,9 @@ export const createUser = data =>
     credentials: 'include',
     body: JSON.stringify(data),
   }).then(user => user.json());
+
+export const logout = () =>
+  fetch('/backend/logout', {
+    method: 'GET',
+    credentials: 'include',
+  }).then(data => data.json());

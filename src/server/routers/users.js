@@ -27,7 +27,7 @@ const router = express.Router();
 
 const getUsers = (req, res) =>
   handlers.getUsers().then((users) => {
-    console.log('----------- users ------------------', users);
+    // console.log('----------- users ------------------', users);
     if (users) {
       res.json(users);
     } else {

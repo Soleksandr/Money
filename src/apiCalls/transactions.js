@@ -1,11 +1,11 @@
 export const getTransactions = () =>
-  fetch('backend/transactions', {
+  fetch('/backend/transactions', {
     method: 'GET',
     credentials: 'include',
   }).then(transactions => transactions.json());
 
 export const createTransaction = data =>
-  fetch('backend/transactions', {
+  fetch('/backend/transactions', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

@@ -7,11 +7,11 @@ export default class Transaction extends Component {
     const id = parseInt(this.props.match.params.id, 10);
     const transaction = this.props.transactions.find(tr =>
       tr.id === id);
-    const users = this.props.users.filter(user =>
+    const participants = this.props.users.filter(user =>
       transaction.participantsId.some(participantId =>
         participantId === user.id));
     const payer = this.props.users.find(user => user.id === transaction.payerId);
-    
+
     return (<div>
       <div className="form-group">
         <input
@@ -34,12 +34,12 @@ export default class Transaction extends Component {
           className="form-control"
           type="text"
           disabled
-          value={`${payer.name.trim()} ${payer.surname.trim()}`}
+          value={`${payer.name} ${payer.surname}`}
         />
       </div>
       <h4>Participants:</h4>
       <ul className="list-group">{
-        users.map(user =>
+        participants.map(user =>
           (<li
             className="list-group-item"
             key={user.id}

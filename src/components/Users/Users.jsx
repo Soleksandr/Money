@@ -5,10 +5,29 @@ import UsersList from '../UsersList';
 
 export default class Users extends Component {
   render() {
-    const participants = this.props.users.filter(
+    const userId = this.props.user.id;
+    let participants = this.props.users.filter(
       u => this.props.transactions.find(
-        t => u.id === t.payerId || t.participantsId.find(
-          id => u.id === id)));
+        t => (
+          u.id === t.payerId && u.id !== userId) ||
+          t.participantsId.find(id => u.id === id && u.id !== userId)));
+    participants = participants.map((p) => {
+      p.money = 0;
+      this.props.transactions.forEach((t) => {
+        if (t.participantsId.some(id => id === p.id) || t.payerId === p.id) {
+          if (userId === t.payerId && t.participantsId.some(id => id === userId)) {
+            p.money = t.cost / (t.participantsId.length - 1) + p.money;
+          } else if (p.id === t.payerId && t.participantsId.find(id => id === p.id)) {
+            p.money = -t.cost / (t.participantsId.length - 1) + p.money;
+          } else if (userId === t.payerId && !t.participantsId.find(id => id === userId)) {
+            p.money = t.cost / (t.participantsId.length) + p.money;
+          }  else if (p.id === t.payerId && !t.participantsId.find(id => id === p.id)){
+            p.money = -t.cost / (t.participantsId.length) + p.money;
+          }
+        }
+      });
+      return p;
+    });
     console.log('PARTICIPANTS', participants);
     return (
       <div>
@@ -22,7 +41,12 @@ export default class Users extends Component {
 }
 
 Users.propTypes = {
-  // user: PropTypes.objectOf(PropTypes.string).isRequired,
+  user: PropTypes.PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    surname: PropTypes.string.isRequired,
+  }),
   users: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
@@ -34,4 +58,8 @@ Users.propTypes = {
     participantsId: PropTypes.arrayOf(PropTypes.number).isRequired,
     payerId: PropTypes.number.isRequired,
   })).isRequired,
+};
+
+Users.defaultProps = {
+  user: null,
 };
