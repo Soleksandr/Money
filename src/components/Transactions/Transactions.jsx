@@ -25,7 +25,7 @@ export default class Transactions extends Component {
 Transactions.propTypes = {
   transactions: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
-    cost: PropTypes.number,
+    cost: PropTypes.string,
     participantsId: PropTypes.arrayOf(PropTypes.number).isRequired,
     payerId: PropTypes.number.isRequired,
   })).isRequired,

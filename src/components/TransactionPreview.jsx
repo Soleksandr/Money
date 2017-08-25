@@ -14,7 +14,7 @@ const TransactionPreview = ({ title, cost, participantsId }) => (
 
 TransactionPreview.propTypes = {
   title: PropTypes.string.isRequired,
-  cost: PropTypes.number.isRequired,
+  cost: PropTypes.string.isRequired,
   participantsId: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 

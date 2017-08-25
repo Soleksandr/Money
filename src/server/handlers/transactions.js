@@ -9,7 +9,21 @@ const createTransaction = ({ title, cost, payerId, participantsId }) =>
   })
     .then(transaction =>
       transaction.addParticipantsId(participantsId))
-    .then(result => result[0][0].get({ plain: true }).transactionId)
+    .then(result => modelTransaction.findOne({
+      where: {
+        id: result[0][0].get({ plain: true }).transactionId,
+      },
+      attributes: ['id', 'title', 'cost', 'payerId'],
+      include: [{
+        model: modelUser,
+        as: 'participantsId',
+      }],
+    })
+    .then((t) => {
+      const transaction = t.get({ plain: true });
+      transaction.participantsId = transaction.participantsId.map(p => p.id);
+      return transaction;
+    }))
     .catch(e => console.error(e));
 
 const getTransactions = () => modelTransaction.findAll({

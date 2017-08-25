@@ -51,7 +51,6 @@ export const login = dispatch => data =>
 
 export const logout = dispatch => data =>
   userApiCalls.logout(data).then((res) => {
-    console.log('logout result ====== ', res);
     dispatch({
       type: constants.LOG_OUT,
       payload: res,

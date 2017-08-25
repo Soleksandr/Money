@@ -13,7 +13,7 @@ module.exports = (db, type) => {
       },
     },
     cost: {
-      type: type.INTEGER,
+      type: type.DECIMAL(10, 2),
       allowNull: false,
       validate: {
         isNumeric: true,

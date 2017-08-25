@@ -9,8 +9,10 @@ export const getTransactions = dispatch => () =>
     }));
 
 export const createTransaction = dispatch => data =>
-  transactionsApiCalls.createTransaction(data).then(id =>
+  transactionsApiCalls.createTransaction(data).then(((transaction) => {
+    console.log('transaction from json', transaction)
     dispatch({
       type: constants.CREATE_TRANSACTION,
-      payload: { ...data, id },
-    }));
+      payload: transaction,
+    });
+  }));

@@ -4,9 +4,10 @@ const handlers = require('../handlers/transactions');
 const router = express.Router();
 
 const createTransaction = (req, res) =>
-  handlers.createTransaction(req.body).then((id) => {
-    if (id) {
-      res.json(id);
+  handlers.createTransaction(req.body).then((transaction) => {
+    console.log('transaction ========== ', transaction)
+    if (transaction) {
+      res.json(transaction);
     } else {
       res.sendStatus(500);
     }

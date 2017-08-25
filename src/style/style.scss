@@ -53,15 +53,16 @@ ul {
 .nav {
   float: left;
 }
-// .nav-item {
-//   display: inline-block;
-//   text-align: center;
-//   color: #808080;
-//   font-size: 1.5em;
-//   padding: 50px;
-//   background: #c1e0c1;
-// }
 .nav>li:last-child {
   position: absolute;
   bottom: 0;
+}
+.error-container {
+  position: relative;
+  .error-message {
+    padding: 5px 0 5px 12px;
+    font-size: 1.2em;
+    color: #FF0000; 
+    background: #FFDDDD
+  }
 }

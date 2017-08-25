@@ -3,6 +3,7 @@ module.exports = (db, type) => {
     username: {
       type: type.STRING(20),
       allowNull: false,
+      unique: true,
       validate: {
         notEmpty: true,
       },

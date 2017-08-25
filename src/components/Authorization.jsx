@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Authorization = (WrappedComponent, user) => (props) => {
-  console.log('authorization ------- ', user);
+  // console.log('authorization ------- ', user);
   if (user) {
     return <WrappedComponent {...props} />;
   }
