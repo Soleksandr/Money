@@ -1,47 +1,35 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Error from './Error';
+import ErrorMessage from './ErrorMessage';
+import validator from '../utils/validator';
 
 export default class Input extends Component {
   state = {
-    isError: false,
-    message: '',
+    errorMessage: null,
   }
 
   onChange = ({ target: { value } }) => {
     this.props.onChange(value);
+    if (this.state.errorMessage) {
+      this.setState({
+        errorMessage: null,
+      });
+    }
   }
-
+  
   onBlur = ({ target: { value } }) => {
-    Object.keys(this.props).forEach(key => {
-      switch (key) {
-        case 'notEmpty':
-          if (!value) {
-            this.setState({
-              message: `${this.props.placeholder} field is required`,
-              isError: true,
-            });
-          }
-          break;
-        case 'isNumber':
-          if (isNaN(value)) {
-            this.props.onChange('');
-            this.setState({
-              message: `${this.props.placeholder} should be a number`,
-              isError: true,
-            });
-          }
-      }
-    });
+    const errorMessage = validator(value, this.props);
+    // console.log(errorMessage);
+    if (errorMessage) {
+      this.setState({
+        errorMessage,
+      });
+    }
   }
 
-  onFocus = () => {
-    this.setState({
-      isError: false,
-    });
-  }
 
   render() {
+    const error = this.props.errorMessage || this.state.errorMessage;
     return (
       <div>
         <input
@@ -51,13 +39,24 @@ export default class Input extends Component {
           value={this.props.value}
           onChange={this.onChange}
           onBlur={this.onBlur}
-          onFocus={this.props.onFocus}
+          onFocus={this.onFocus}
         />
-        <Error
-          isError={this.state.isError}
-          message={this.state.message}
-        />
+        {
+          error ? <ErrorMessage message={error} /> : null
+        }
       </div>
     );
   }
 }
+
+Input.propTypes = {
+  errorMessage: PropTypes.string,
+  placeholder: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
+Input.defaultProps = {
+  errorMessage: null,
+};

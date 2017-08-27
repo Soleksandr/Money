@@ -12,4 +12,4 @@ export const createTransaction = data =>
     },
     credentials: 'include',
     body: JSON.stringify(data),
-  }).then(transactions => transactions.json());
+  }).then(transaction => transaction.json());

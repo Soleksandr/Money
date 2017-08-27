@@ -6,14 +6,13 @@ export default class UserSelectionOpp extends Component {
     isChecked: false,
   }
 
-  componentDidUpdate() {
-    this.props.onMarkCheckbox(this.props.id, this.state.isChecked);
-  }
+  // componentDidUpdate() {
+  //   this.props.onMarkCheckbox(this.props.id, this.state.isChecked);
+  // }
 
-  onInputChange = () => {
-    this.setState({
-      isChecked: !this.state.isChecked,
-    });
+  onCheckboxChange = () => {
+    this.setState({ isChecked: !this.state.isChecked }, () =>
+      this.props.onMarkCheckbox(this.props.id, this.state.isChecked));
   }
 
   render() {
@@ -26,7 +25,7 @@ export default class UserSelectionOpp extends Component {
             <input
               type="checkbox"
               checked={this.state.isChecked}
-              onChange={this.onInputChange}
+              onChange={this.onCheckboxChange}
             />
             {`${name} ${surname}`}
           </label>

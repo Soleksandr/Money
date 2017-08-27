@@ -3,82 +3,123 @@ import PropTypes from 'prop-types';
 import Input from '../Input';
 import UsersList from '../UsersList';
 import SelectUser from '../SelectUser';
-import Error from '../Error';
+import validator from '../../utils/validator';
 
 export default class AddTransactionForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
       title: {
-        isError: false,
         value: '',
-        message: '',
+        errorMessage: null,
       },
       cost: {
-        isError: false,
         value: '',
-        message: '',
+        errorMessage: null,
       },
-      message: {
-        isError: false,
-        value: '',
-        message: '',
+      payerId: {
+        value: 'default',
+        errorMessage: null,
       },
-      payerId: 'default',
+      participantsId: {
+        value: [],
+        errorMessage: null,
+      },
     };
-    this.participantsId = [];
-  }
-
-  onFocus = () => {
-    this.setState({
-      title: {
-        isError: false,
-      },
-    });
   }
 
   onTitleChange = (value) => {
     this.setState({
-      title: value,
+      title: {
+        value,
+        errorMessage: null,
+      },
     });
   }
 
   onCostChange = (value) => {
     this.setState({
-      cost: value,
+      cost: {
+        value,
+        errorMessage: null,
+      },
     });
   }
 
-  onPayidByChange = (value) => {
+  onPayidByChange = ({ target: { value } }) => {
     this.setState({
-      payerId: value,
+      payerId: {
+        value,
+        errorMessage: null,
+      },
     });
   }
 
   onMarkCheckbox = (id, isChecked) => {
+    if (this.state.participantsId.errorMessage) {
+      this.setState({
+        participantsId: {
+          ...this.state.participantsId,
+          errorMessage: null,
+        },
+      });
+    }
     isChecked ?
-      this.participantsId = [...this.participantsId, id] :
-      this.participantsId = this.participantsId.filter(pId => pId !== id);
+      this.setState({
+        participantsId: {
+          value: [...this.state.participantsId.value, id],
+          errorMessage: null,
+        },
+      }) :
+      this.setState({
+        participantsId: {
+          ...this.state.participantsId,
+          value: this.state.participantsId.value.filter(pId => pId !== id),
+        },
+      });
   }
 
   onSubmit = (e) => {
     e.preventDefault();
-    if (!this.state.title.value) {
-      this.setState({
-        title: {
-          isError: true,
-          message: 'this field is required',
-        },
-      });
-      return;
-    }
-    this.props.createTransaction({
-      title: this.state.title,
-      cost: Math.round(this.state.cost * 100) / 100,
-      payerId: parseInt(this.state.payerId, 10),
-      participantsId: this.participantsId,
+    const errorMessages = Object.keys(this.state).map((prop) => {
+      let message = null;
+      switch (prop) {
+        case 'title':
+          message = validator(
+            this.state[prop].value, { $notEmpty: true });
+          break;
+        case 'cost':
+          message = validator(
+            this.state[prop].value, { $notEmpty: true });
+          break;
+        case 'payerId':
+          message = validator(
+            this.state[prop].value, { $anySelected: true });
+          break;
+        case 'participantsId':
+          message = validator(
+            this.state[prop].value, { $checkedNumber: 1 });
+          break;
+      }
+      if (message) {
+        this.setState({
+          [prop]: {
+            ...this.state[prop],
+            errorMessage: message,
+          },
+        });
+      }
+      return message;
     });
-    this.props.history.push('/transactions');
+
+    if (!errorMessages.some(m => !!m)) {
+      this.props.createTransaction({
+        title: this.state.title.value,
+        cost: Math.round(this.state.cost.value * 100) / 100,
+        payerId: parseInt(this.state.payerId.value, 10),
+        participantsId: this.state.participantsId.value,
+      }).then(() => this.props.history.push('/transactions'));
+    }
   }
 
   render() {
@@ -92,36 +133,27 @@ export default class AddTransactionForm extends Component {
               value={this.state.title.value}
               onChange={this.onTitleChange}
               onFocus={this.onFocus}
-              notEmpty
-            />
-            <Error
-              isError={this.state.title.isError}
-              message={this.state.title.message}
+              errorMessage={this.state.title.errorMessage}
+              $notEmpty
             />
           </div>
           <div className="form-group">
             <Input
               type="text"
               placeholder="cost"
-              value={this.state.cost}
+              value={this.state.cost.value}
               onChange={this.onCostChange}
-              isNumber
-              notEmpty
-            />
-            <Error
-              isError={this.state.cost.isError}
-              message={this.state.cost.message}
+              errorMessage={this.state.cost.errorMessage}
+              $isNumber
+              $notEmpty
             />
           </div>
           <div className="form-group">
             <SelectUser
               users={this.props.users}
-              payerId={this.state.payerId}
+              value={this.state.payerId.value}
+              errorMessage={this.state.payerId.errorMessage}
               onPayidByChange={this.onPayidByChange}
-            />
-            <Error
-              isError={this.state.payerId.isError}
-              message={this.state.payerId.message}
             />
           </div>
           <h4>Participants:</h4>
@@ -129,11 +161,8 @@ export default class AddTransactionForm extends Component {
             className="panel-body"
             users={this.props.users}
             onMarkCheckbox={this.onMarkCheckbox}
+            errorMessage={this.state.participantsId.errorMessage}
             isSelectOpportunity
-          />
-          <Error
-            isError={this.state.payerId.isError}
-            message={this.state.payerId.message}
           />
           <button
             className="btn btn-default"

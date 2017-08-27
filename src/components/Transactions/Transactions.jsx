@@ -9,7 +9,7 @@ export default class Transactions extends Component {
     const id = parseInt(this.props.match.params.id, 10);
     if (id) {
       transactions = transactions.filter(t =>
-        t.payerId === id || t.participantsId.find(pId => pId === id))
+        t.payerId === id || t.participantsId.find(pId => pId === id));
     }
     return (
       <div>

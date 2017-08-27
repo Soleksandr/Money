@@ -3,10 +3,7 @@ import PropTypes from 'prop-types';
 
 
 export default class Transaction extends Component {
-  renderForm = () => {
-    const id = parseInt(this.props.match.params.id, 10);
-    const transaction = this.props.transactions.find(tr =>
-      tr.id === id);
+  renderTransaction = (transaction) => {
     const participants = this.props.users.filter(user =>
       transaction.participantsId.some(participantId =>
         participantId === user.id));
@@ -60,13 +57,15 @@ export default class Transaction extends Component {
   }
 
   render() {
-    const loading = this.props.users.length && this.props.transactions.length;
+    const id = parseInt(this.props.match.params.id, 10);
+    const transaction = this.props.transactions.find(tr =>
+      tr.id === id);
     return (
       <div>
         {
-          loading
-          ? this.renderForm()
-          : <p>Loading...</p>
+          transaction
+          ? this.renderTransaction(transaction)
+          : <div>Transaction does not exist</div>
         }
       </div>
     );
@@ -80,7 +79,7 @@ Transaction.propTypes = {
   })).isRequired,
   transactions: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
-    cost: PropTypes.number,
+    cost: PropTypes.string,
     participantsId: PropTypes.arrayOf(PropTypes.number).isRequired,
     payerId: PropTypes.number.isRequired,
   })).isRequired,
