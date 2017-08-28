@@ -16,7 +16,6 @@ module.exports = (db, type) => {
       type: type.DECIMAL(10, 2),
       allowNull: false,
       validate: {
-        isNumeric: true,
         notEmpty: true,
       },
     },

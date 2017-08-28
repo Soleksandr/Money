@@ -61,8 +61,8 @@ export default class Login extends Component {
 
     if (!errorMessages.some(m => !!m)) {
       this.props.login({
-        username: this.state.username.value,
-        password: this.state.password.value,
+        username: this.state.username.value.trim(),
+        password: this.state.password.value.trim(),
       })
       .then(() =>
         this.props.history.push('/'),

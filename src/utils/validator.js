@@ -3,7 +3,7 @@ export default (value, requirement) => {
   Object.keys(requirement).forEach((key) => {
     switch (key) {
       case '$notEmpty':
-        if (!value) {
+        if (!value || !value.trim()) {
           message = 'this field is required';
         }
         break;

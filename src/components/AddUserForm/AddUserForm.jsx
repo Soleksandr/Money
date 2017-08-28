@@ -98,10 +98,10 @@ export default class AddUserForm extends Component {
 
     if (!errorMessages.some(m => !!m)) {
       this.props.createUser({
-        username: this.state.username.value,
-        name: this.state.name.value,
-        surname: this.state.surname.value,
-        password: this.state.password.value,
+        username: this.state.username.value.trim(),
+        name: this.state.name.value.trim(),
+        surname: this.state.surname.value.trim(),
+        password: this.state.password.value.trim(),
       }).then(() => this.props.history.push('/'));
     }
   }

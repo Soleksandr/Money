@@ -2,7 +2,6 @@ import * as constants from '../constants';
 import * as userApiCalls from '../apiCalls/user';
 import * as transactionsApiCalls from '../apiCalls/transactions';
 
-// register should return username usersurname
 export const createUser = dispatch => data =>
   userApiCalls.createUser(data).then((user) => {
     dispatch({
@@ -33,21 +32,17 @@ export const userInitialize = dispatch => () => {
 };
 
 export const login = dispatch => data =>
-  userApiCalls.login(data).then(user =>
+  userApiCalls.login(data).then((user) => {
     dispatch({
       type: constants.LOG_IN,
       payload: user,
-    }))
-      .then((result) => {
-        if (result) {
-          return transactionsApiCalls.getTransactions().then(transactions =>
-            dispatch({
-              type: constants.GET_TRANSACTIONS,
-              payload: transactions,
-            }));
-        }
-        return null;
-      });
+    });
+    transactionsApiCalls.getTransactions().then(transactions =>
+      dispatch({
+        type: constants.GET_TRANSACTIONS,
+        payload: transactions,
+      }));
+  });
 
 export const logout = dispatch => data =>
   userApiCalls.logout(data).then((res) => {

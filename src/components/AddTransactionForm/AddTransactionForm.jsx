@@ -114,7 +114,7 @@ export default class AddTransactionForm extends Component {
 
     if (!errorMessages.some(m => !!m)) {
       this.props.createTransaction({
-        title: this.state.title.value,
+        title: this.state.title.value.trim(),
         cost: Math.round(this.state.cost.value * 100) / 100,
         payerId: parseInt(this.state.payerId.value, 10),
         participantsId: this.state.participantsId.value,
@@ -159,7 +159,7 @@ export default class AddTransactionForm extends Component {
           <h4>Participants:</h4>
           <UsersList
             className="panel-body"
-            users={this.props.users}
+            users={this.props.users.sort()}
             onMarkCheckbox={this.onMarkCheckbox}
             errorMessage={this.state.participantsId.errorMessage}
             isSelectOpportunity
