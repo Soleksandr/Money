@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Input from '../Input';
 import UsersList from '../UsersList';
 import SelectUser from '../SelectUser';
-import validator from '../../utils/validator';
+import { validator } from '../../utils/validator';
 
 export default class AddTransactionForm extends Component {
   constructor(props) {
@@ -56,14 +56,6 @@ export default class AddTransactionForm extends Component {
   }
 
   onMarkCheckbox = (id, isChecked) => {
-    if (this.state.participantsId.errorMessage) {
-      this.setState({
-        participantsId: {
-          ...this.state.participantsId,
-          errorMessage: null,
-        },
-      });
-    }
     isChecked ?
       this.setState({
         participantsId: {
@@ -132,7 +124,6 @@ export default class AddTransactionForm extends Component {
               placeholder="title"
               value={this.state.title.value}
               onChange={this.onTitleChange}
-              onFocus={this.onFocus}
               errorMessage={this.state.title.errorMessage}
               $notEmpty
             />

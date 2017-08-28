@@ -24,7 +24,6 @@ const mockUser = {
 
 jest.mock('../../apiCalls/users', () => ({
   getUsers: jest.fn(() => Promise.resolve(mockUsers)),
-  addUser: jest.fn(data => Promise.resolve(data)),
 }));
 
 describe('Test users actions', () => {
@@ -42,19 +41,6 @@ describe('Test users actions', () => {
       .then(() => expect(mockDispatch).toBeCalledWith({
         type: constants.GET_USERS,
         payload: mockUsers,
-      }));
-  });
-
-  it('addUser should calls apiCalls.addUser', () => {
-    actions.addUser(mockDispatch)(mockUser);
-    expect(apiCalls.addUser).toBeCalled();
-  });
-
-  it('addUser should calls mockDispatch with proper arguments', () => {
-    actions.addUser(mockDispatch)(mockUser)
-      .then(() => expect(mockDispatch).toBeCalledWith({
-        type: constants.ADD_USER,
-        payload: mockUser,
       }));
   });
 });

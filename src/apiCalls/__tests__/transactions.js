@@ -1,5 +1,5 @@
 import fetchMock from 'fetch-mock';
-import * as apiCalls from '../transactions';
+import * as apiCalls from '../backend/transactions';
 
 const mockTransactions = [
   {
@@ -32,14 +32,14 @@ describe('Test transactions apiCalls', () => {
   });
 
   it('apiCalls.getTransactions should return proper data', () => {
-    fetchMock.get('/transactions', mockTransactions);
+    fetchMock.get('/backend/transactions', mockTransactions);
     apiCalls.getTransactions().then(data =>
       expect(data).toEqual(mockTransactions),
     );
   });
 
   it('apiCalls.addTransaction should has ', () => {
-    fetchMock.post('/transactions', mockTransaction);
+    fetchMock.post('/backend/transactions', mockTransaction);
     apiCalls.addTransaction(mockTransaction).then(data =>
       expect(data).toEqual(mockTransaction),
     );

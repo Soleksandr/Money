@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Input from '../Input';
-import validator from '../../utils/validator';
+import { validator } from '../../utils/validator';
 
 export default class Login extends Component {
   state = {
@@ -64,9 +64,7 @@ export default class Login extends Component {
         username: this.state.username.value.trim(),
         password: this.state.password.value.trim(),
       })
-      .then(() =>
-        this.props.history.push('/'),
-      );
+      .then(() => this.props.history.push('/'));
     }
   }
   render() {

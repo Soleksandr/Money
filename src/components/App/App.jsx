@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import Spinner from 'react-spinkit';
 import Layout from '../Layout';
 import Authorization from '../Authorization';
 import About from '../About';
@@ -27,7 +26,6 @@ export default class App extends Component {
             <Route exact path="/" component={About} />
             <Route exact path="/participants" component={Authorization(Users, this.props.user)} />
             <Route exact path="/participants/:id/transactions" component={Authorization(Transactions, this.props.user)} />
-            {/* <Route exact path="/new_user" component={AddUserForm} /> */}
             <Route exact path="/transactions" component={Authorization(Transactions, this.props.user)} />
             <Route exact path="/new_transaction" component={Authorization(AddTransactionForm, this.props.user)} />
             <Route exact path="/transactions/:id" component={Authorization(Transaction, this.props.user)} />
@@ -35,7 +33,7 @@ export default class App extends Component {
             <Route exact path="/login" component={Login} />
           </Switch>
         </Layout>
-      </Router>) : <Spinner name="double-bounce" />;
+      </Router>) : <div>Loading...</div>;
   }
 }
 

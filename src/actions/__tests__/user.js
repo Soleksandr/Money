@@ -15,7 +15,7 @@ jest.mock('../../apiCalls/user', () => ({
   userInitialize: jest.fn(() => Promise.resolve(mockUser)),
   createUser: jest.fn(() => Promise.resolve(mockUser)),
   login: jest.fn(data => Promise.resolve(data)),
-  logout: jest.fn(data => Promise.resolve(data)),
+  logout: jest.fn(() => Promise.resolve(null)),
 }));
 
 jest.mock('../../apiCalls/transactions', () => ({
@@ -79,10 +79,10 @@ describe('Test user actions', () => {
         });
       });
   });
-  /////////////////////////////////////////
+
   it('login should calls userApiCalls.login with proper argument', () => {
     actions.login(mockDispatch)(mockUser);
-    expect(userApiCalls.login).toBeCalled();
+    expect(userApiCalls.login).toBeCalledWith(mockUser);
   });
 
   it('login should calls mockDispatch two times', () => {
@@ -113,25 +113,27 @@ describe('Test user actions', () => {
       });
   });
 
-  // it('login should calls mockDispatch with proper arguments with incorrect login or password', () => {
-  //   actions.login(mockDispatch)(mockUser)
-  //     .then(() => {
-  //       expect(mockDispatch).toBeCalledWith({
-  //         type: constants.CREATE_USER,
-  //         payload: mockUser,
-  //       });
-  //       expect(mockDispatch).toBeCalledWith({
-  //         type: constants.GET_TRANSACTIONS,
-  //         payload: [],
-  //       });
-  //     });
-  // });
+  it('logout should calls userApiCalls.logout', () => {
+    actions.logout(mockDispatch)(mockUser);
+    expect(userApiCalls.logout).toBeCalled();
+  });
 
-  // it('createUser should calls mockDispatch with proper arguments', () => {
-  //   actions.createUser(mockDispatch)(mockUser)
-  //     .then(() => expect(mockDispatch).toBeCalledWith({
-  //       type: constants.ADD_USER,
-  //       payload: 'mockUser',
-  //     }));
-  // });
+  it('logout should calls mockDispatch two times', () => {
+    actions.logout(mockDispatch)(mockUser)
+    .then(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
+  });
+
+  it('logout should calls mockDispatch with proper arguments', () => {
+    actions.logout(mockDispatch)()
+      .then(() => {
+        expect(mockDispatch).toBeCalledWith({
+          type: constants.LOG_OUT,
+          payload: null,
+        });
+        expect(mockDispatch).toBeCalledWith({
+          type: constants.GET_TRANSACTIONS,
+          payload: [],
+        });
+      });
+  });
 });

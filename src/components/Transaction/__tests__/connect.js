@@ -20,16 +20,10 @@ const mockState = {
 };
 
 describe('Test connect for <Transaction>', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
   it('mapStateToProps should return proper object with data from mockState', () => {
-    expect(connect.mapStateToProps(mockState)).toEqual(
-      {
-        users: mockState.users,
-        transactions: mockState.transactions,
-      },
-    );
+    expect(connect.mapStateToProps(mockState)).toEqual({
+      users: mockState.users,
+      transactions: mockState.transactions,
+    });
   });
 });

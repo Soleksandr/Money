@@ -19,7 +19,7 @@ const mockState = {
   ],
 };
 
-describe('Test connect for <Transaction>', () => {
+describe('Test connect for <Transactions>', () => {
   it('mapStateToProps should return proper object with data from mockState', () => {
     expect(connect.mapStateToProps(mockState)).toEqual(
       {

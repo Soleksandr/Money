@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ErrorMessage from './ErrorMessage';
-import validator from '../utils/validator';
+import { validator } from '../utils/validator';
 
 export default class Input extends Component {
   state = {

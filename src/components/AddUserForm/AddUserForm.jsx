@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Input from '../Input';
-import validator from '../../utils/validator';
+import { validator } from '../../utils/validator';
 
 export default class AddUserForm extends Component {
   constructor(props) {

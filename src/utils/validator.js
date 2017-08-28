@@ -1,4 +1,4 @@
-export default (value, requirement) => {
+const validator = (value, requirement) => {
   let message = null;
   Object.keys(requirement).forEach((key) => {
     switch (key) {
@@ -27,4 +27,8 @@ export default (value, requirement) => {
     }
   });
   return message;
+};
+
+module.exports = {
+  validator,
 };
