@@ -2,12 +2,13 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Transaction from '../Transaction';
 
-const propsCreator = (users, transactions, id) => ({
+
+const propsCreator = (users, transactions) => ({
   transactions,
   users,
   match: {
     params: {
-      id,
+      id: null,
     },
   },
 });
@@ -38,22 +39,48 @@ const transactions = [
     cost: '2',
     payerId: 2,
     participantsId: [1, 2],
-    id: 1,
+    id: 2,
   },
 ];
 
 describe('Test <Transaction>', () => {
-  it('should render not less then four input', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should call renderTransaction with propper parameter method when transaction exist', () => {
+    const props = propsCreator(users, transactions);
+    const wrapper = shallow(<Transaction {...props} />);
+    const instance = wrapper.instance();
+    instance.renderTransaction = jest.fn();
+    wrapper.setProps({
+      match: {
+        params: {
+          id: transactions[0].id,
+        },
+      },
+    });
+    expect(wrapper.instance().renderTransaction).toBeCalledWith(transactions[0]);
+  });
+
+  it('should render not less three input when transaction exist', () => {
     const props = propsCreator(users, transactions, 1);
     const wrapper = shallow(<Transaction {...props} />);
+    wrapper.setProps({
+      match: {
+        params: {
+          id: transactions[0].id,
+        },
+      },
+    });
     expect(wrapper.find('input').length).toBeGreaterThan(3);
   });
 
-  it('should not call renderForm method when props.match.params.id equal to not exist transaction', () => {
+  it('should not call renderTransaction method when transaction does not exist', () => {
     const props = propsCreator(users, transactions, 1000);
     const wrapper = shallow(<Transaction {...props} />);
     const instance = wrapper.instance();
-    instance.renderForm = jest.fn();
-    expect(wrapper.instance().renderForm).not.toBeCalled();
+    instance.renderTransaction = jest.fn();
+    expect(wrapper.instance().renderTransaction).not.toBeCalled();
   });
 });

@@ -7,14 +7,14 @@ const props = {
   transactions: [
     {
       title: 'test1',
-      cost: 1,
+      cost: '1',
       payerId: 1,
       participantsId: [1, 2],
       id: 1,
     },
     {
       title: 'test2',
-      cost: 2,
+      cost: '2',
       payerId: 3,
       participantsId: [3, 4],
       id: 2,
@@ -27,12 +27,13 @@ const props = {
   },
 };
 
+const userId = props.transactions[0].payerId;
 const setId = (value) => {
   props.match.params.id = value;
 };
 
 describe('Test <Transactions>', () => {
-  it('should render one transaction', () => {
+  it('should render one TransactionsList', () => {
     const wrapper = shallow(<Transactions {...props} />);
     expect(wrapper.find('TransactionsList').length).toEqual(1);
   });
@@ -42,8 +43,8 @@ describe('Test <Transactions>', () => {
     expect(wrapper.find('TransactionsList').props().transactions).toEqual(props.transactions);
   });
 
-  it('should pass selected transactions when match.params.id proper is proper value', () => {
-    setId(1);
+  it('should pass selected transactions when match.params.id proper is userId', () => {
+    setId(userId);
     const wrapper = shallow(<Transactions {...props} />);
     expect(wrapper.find('TransactionsList').props().transactions).toEqual([props.transactions[0]]);
   });
