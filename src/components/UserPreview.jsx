@@ -15,7 +15,7 @@ UserPreview.propTypes = {
 };
 
 UserPreview.defaultProps = {
-  money: 0,
+  money: '0',
 };
 
 export default UserPreview;

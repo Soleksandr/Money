@@ -14,24 +14,20 @@ const mockUsers = [
   },
 ];
 
-const mockUser = {
-  name: 'Evgeny',
-  surname: 'Onegin',
-};
+const actionCretor = (p, t) => ({
+  payload: p,
+  type: t,
+});
 
 describe('users reducer', () => {
   it('should return empty array', () => {
-    expect(reducer(undefined, {})).toEqual([]);
+    const action = actionCretor(null, {});
+    expect(reducer(undefined, action)).toEqual([]);
   });
 
   it('should handle GET_USERS', () => {
-    expect(reducer(mockUsers, types.GET_USERS))
+    const action = actionCretor(mockUsers, types.GET_USERS);
+    expect(reducer(undefined, action))
       .toEqual(mockUsers);
-  });
-
-  it('should handle ADD_USER', () => {
-    const state = reducer(mockUsers,
-      { type: types.ADD_USER, payload: mockUser });
-    expect(state).toContain(mockUser);
   });
 });

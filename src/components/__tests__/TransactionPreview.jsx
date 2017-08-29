@@ -4,7 +4,7 @@ import TransactionPreview from '../TransactionPreview';
 
 const props = {
   title: 'test',
-  cost: 1,
+  cost: '1',
   participantsId: [1, 2, 3],
 };
 

@@ -26,19 +26,29 @@ const mockTransaction = {
   id: 1,
 };
 
+const actionCretor = (p, t) => ({
+  payload: p,
+  type: t,
+});
+
 describe('transactions reducer', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should return empty array', () => {
-    expect(reducer(undefined, {})).toEqual([]);
+    const action = actionCretor(null, {});
+    expect(reducer(undefined, action)).toEqual([]);
   });
 
   it('should handle GET_TRANSACTIONS', () => {
-    expect(reducer(mockTransactions, types.GET_TRANSACTIONS))
+    const action = actionCretor(mockTransactions, types.GET_TRANSACTIONS);
+    expect(reducer(undefined, action))
       .toEqual(mockTransactions);
   });
 
-  it('should handle ADD_TRANSACTION', () => {
-    const state = reducer(mockTransactions,
-      { type: types.ADD_TRANSACTION, payload: mockTransaction });
-    expect(state).toContain(mockTransaction);
+  it('should handle CREATE_TRANSACTION', () => {
+    const action = actionCretor(mockTransaction, types.CREATE_TRANSACTION);
+    expect(reducer(mockTransactions, action)).toContain(mockTransaction);
   });
 });

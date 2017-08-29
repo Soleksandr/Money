@@ -6,12 +6,12 @@ const mockTransaction = {
   title: 'goods',
   cost: 50,
   payerId: 1,
-  participantsId: [{ get: () => ({ userId: 1 }) }],
+  participantsId: [1, 2, 3],
   id: 1,
 };
 
 const mockRequest = {
-  body: jest.fn(),
+  user: 1,
   params: {
     id: 1,
   },
@@ -39,7 +39,7 @@ describe('Test transactions router', () => {
       ),
     );
 
-    it('should calls mockResponse.json with mockTransaction', () =>
+    it('should calls mockResponse.json with proper argument ', () =>
       transactionsRouter.createTransaction(mockRequest, mockResponse).then(() =>
         expect(mockResponse.json).toBeCalledWith(mockTransaction.id),
       ),
@@ -61,7 +61,7 @@ describe('Test transactions router', () => {
       ),
     );
 
-    it('should calls mockResponse.json with [mockTransaction]', () =>
+    it('should calls mockResponse.json with with proper argument', () =>
       transactionsRouter.getTransactions(mockRequest, mockResponse).then(() =>
         expect(mockResponse.json).toBeCalledWith([mockTransaction]),
       ),

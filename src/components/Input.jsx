@@ -16,10 +16,9 @@ export default class Input extends Component {
       });
     }
   }
-  
+
   onBlur = ({ target: { value } }) => {
     const errorMessage = validator(value, this.props);
-    // console.log(errorMessage);
     if (errorMessage) {
       this.setState({
         errorMessage,

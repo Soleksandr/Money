@@ -8,7 +8,6 @@ const router = express.Router();
 
 passport.use(new LocalStrategy(
   (username, password, done) => {
-    // console.log('------------- user password', username, password);
     modelUser.findOne({
       where: {
         username,

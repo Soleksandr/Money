@@ -31,7 +31,7 @@ const mockTransaction = {
 
 jest.mock('../../apiCalls/transactions', () => ({
   getTransactions: jest.fn(() => Promise.resolve(mockTransactions)),
-  createTransaction: jest.fn(() => Promise.resolve(mockTransaction.id)),
+  createTransaction: jest.fn(() => Promise.resolve(mockTransaction)),
 }));
 
 describe('Test users actions', () => {
@@ -58,9 +58,9 @@ describe('Test users actions', () => {
   });
 
   it('createTransaction should calls mockDispatch with proper arguments', () => {
-    actions.createTransaction(mockDispatch)(mockTransaction)
+    actions.createTransaction(mockDispatch)()
       .then(() => expect(mockDispatch).toBeCalledWith({
-        type: constants.ADD_TRANSACTION,
+        type: constants.CREATE_TRANSACTION,
         payload: mockTransaction,
       }));
   });

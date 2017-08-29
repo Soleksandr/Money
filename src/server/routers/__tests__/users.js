@@ -20,34 +20,12 @@ const mockResponse = {
 };
 
 jest.mock('../../handlers/users', () => ({
-  createUser: jest.fn(() => Promise.resolve(mockUser)),
   getUsers: jest.fn(() => Promise.resolve([mockUser])),
 }));
 
 describe('Test users router', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-  });
-
-  describe('createUser function', () => {
-    it('should calls handlers.createUser with mockRequest.body', () =>
-      usersRouter.createUser(mockRequest, mockResponse).then(() =>
-        expect(handlers.createUser).toBeCalledWith(mockRequest.body),
-      ),
-    );
-
-    it('should calls mockResponse.json with mockUser', () =>
-      usersRouter.createUser(mockRequest, mockResponse).then(() =>
-        expect(mockResponse.json).toBeCalledWith(mockUser),
-      ),
-    );
-
-    it('should calls mockResponse.sendStatus with 500', () => {
-      handlers.createUser.mockImplementationOnce(() => Promise.reject(null));
-      usersRouter.createUser(mockRequest, mockResponse).then(() =>
-        expect(mockResponse.sendStatus).toBeCalledWith(500),
-      );
-    });
   });
 
   describe('getUsers function', () => {
@@ -57,7 +35,7 @@ describe('Test users router', () => {
       ),
     );
 
-    it('should calls mockResponse.json with [mockUser]', () =>
+    it('should calls mockResponse.json with proper argument', () =>
       usersRouter.getUsers(mockRequest, mockResponse).then(() =>
         expect(mockResponse.json).toBeCalledWith([mockUser]),
       ),

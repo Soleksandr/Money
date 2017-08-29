@@ -5,7 +5,6 @@ const router = express.Router();
 
 const createTransaction = (req, res) =>
   handlers.createTransaction(req.body).then((transaction) => {
-    console.log('transaction ========== ', transaction)
     if (transaction) {
       res.json(transaction);
     } else {

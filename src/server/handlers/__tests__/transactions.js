@@ -3,7 +3,7 @@ const { modelTransaction } = require('../../models');
 const { modelUser } = require('../../models');
 
 const mockTransactionId = 1;
-const mockAddUsers = jest.fn(() => [[{
+const mockAddParticipantsId = jest.fn(() => [[{
   get: jest.fn(() => ({ transactionId: mockTransactionId })),
 }]]);
 const mockParam = {
@@ -18,11 +18,15 @@ jest.mock('../../models', () => ({
     create: jest.fn(data => Promise.resolve({
       ...data,
       id: mockTransactionId,
-      addUsers: mockAddUsers,
+      addParticipantsId: mockAddParticipantsId,
+    })),
+    findOne: jest.fn(data => Promise.resolve({
+      ...data,
+      get: jest.fn(() => ({ participantsId: [{ id: 1 }] })),
     })),
     findAll: jest.fn(data => Promise.resolve([{
       ...data,
-      get: jest.fn(() => ({ users: [{ id: 1 }] })),
+      get: jest.fn(() => ({ participantsId: [{ id: 1 }] })),
     }])),
   },
 }));
@@ -42,9 +46,24 @@ describe('Test createTransaction handler', () => {
     ),
   );
 
-  it('should calls addUsers with proper parameter', () =>
+  it('should calls mockAddParticipantsId with proper parameter', () =>
     handlers.createTransaction(mockParam).then(() => {
-      expect(mockAddUsers).toBeCalledWith(mockParam.participantsId);
+      expect(mockAddParticipantsId).toBeCalledWith(mockParam.participantsId);
+    }),
+  );
+
+  it('should calls modelTransaction.findOne with proper parameter', () =>
+    handlers.createTransaction(mockParam).then(() => {
+      expect(modelTransaction.findOne).toBeCalledWith({
+        where: {
+          id: expect.any(Number),
+        },
+        attributes: ['id', 'title', 'cost', 'payerId'],
+        include: [{
+          model: modelUser,
+          as: 'participantsId',
+        }],
+      });
     }),
   );
 });
@@ -54,7 +73,7 @@ describe('Test getTransactions handler', () => {
     handlers.getTransactions(mockParam).then(() => {
       expect(modelTransaction.findAll).toBeCalledWith({
         attributes: ['id', 'title', 'cost', 'payerId'],
-        include: [{ model: modelUser }],
+        include: [{ model: modelUser, as: 'participantsId' }],
       });
     }),
   );

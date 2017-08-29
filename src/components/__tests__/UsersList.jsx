@@ -17,12 +17,14 @@ const props = {
   ],
   onMarkCheckbox: jest.fn(),
   isSelectOpportunity: null,
+  errorMessage: null,
 };
 
 
 describe('Test <UsersList>', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    props.errorMessage = null;
   });
 
   it('should render one ul', () => {
@@ -86,5 +88,17 @@ describe('Test <UsersList>', () => {
     const wrapper = shallow(<UsersList {...props} />);
     wrapper.setProps({ isSelectOpportunity: true });
     expect(wrapper.find('Link').length).toBe(0);
+  });
+
+  it('should not render ErrorMessage if props.errorMessage is not defined', () => {
+    const wrapper = shallow(<UsersList {...props} />);
+    expect(wrapper.find('ErrorMessage').length).toBe(0);
+  });
+
+  it('should render ErrorMessage with proper props if props.errorMessage is defined', () => {
+    props.errorMessage = 'error';
+    const wrapper = shallow(<UsersList {...props} />);
+    expect(wrapper.find('ErrorMessage').length).toBe(1);
+    expect(wrapper.find('ErrorMessage').props().message).toBe(props.errorMessage);
   });
 });

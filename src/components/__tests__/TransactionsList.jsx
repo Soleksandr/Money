@@ -6,14 +6,14 @@ const props = {
   transactions: [
     {
       title: 'test1',
-      cost: 1,
+      cost: '1',
       payerId: 1,
       participantsId: [1, 2],
       id: 1,
     },
     {
       title: 'test2',
-      cost: 2,
+      cost: '2',
       payerId: 2,
       participantsId: [1, 3],
       id: 2,
