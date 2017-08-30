@@ -8,3 +8,7 @@ export const GET_TRANSACTION = 'GET_TRANSACTION';
 export const LOG_IN = 'LOG_IN';
 export const LOG_OUT = 'LOG_OUT';
 export const FETHCING_DATA = 'FETHCING_DATA';
+export const NOT_EMPTY = 'NOT_EMPTY';
+export const IS_NUMBER = 'IS_NUMBER';
+export const ANY_SELECTED = 'ANY_SELECTED';
+export const ANY_CHECKED = 'ANY_CHECKED';

@@ -18,7 +18,7 @@ export default class Input extends Component {
   }
 
   onBlur = ({ target: { value } }) => {
-    const errorMessage = validator(value, this.props);
+    const errorMessage = validator(value, this.props.validateOn);
     if (errorMessage) {
       this.setState({
         errorMessage,
@@ -54,8 +54,10 @@ Input.propTypes = {
   type: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  validateOn: PropTypes.arrayOf(PropTypes.string),
 };
 
 Input.defaultProps = {
   errorMessage: null,
+  validateOn: [],
 };

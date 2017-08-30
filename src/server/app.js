@@ -15,7 +15,6 @@ const db = require('./models').db;
 
 const authenticationMiddleware = () =>
 (req, res, next) => {
-  // console.log('lasdfjlasdfjlaskdjflasdfj;lasdfjdlsaf', req.originalUrl)
   // console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
   if (req.isAuthenticated()) {
     return next();

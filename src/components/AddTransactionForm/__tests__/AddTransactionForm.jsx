@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import AddTransactionForm from '../AddTransactionForm';
 import { validator } from '../../../utils/validator';
+import * as constants from '../../../constants';
 
 const mockValidResult = null;
 
@@ -50,20 +51,19 @@ describe('Test <AddTransactionForm>', () => {
   it('should render first Input with proper props', () => {
     const wrapper = shallow(<AddTransactionForm {...props} />);
     const instance = wrapper.instance();
-    expect(wrapper.find('Input').first().props().value).toBe(instance.state.title.value);
-    expect(wrapper.find('Input').first().props().onChange).toBe(instance.onTitleChange);
-    expect(wrapper.find('Input').first().props().errorMessage).toBe(instance.state.title.errorMessage);
-    expect(wrapper.find('Input').first().props().$notEmpty).toBe(true);
+    expect(wrapper.find('Input[placeholder="title"]').props().value).toBe(instance.state.title.value);
+    expect(wrapper.find('Input[placeholder="title"]').props().onChange).toBe(instance.onTitleChange);
+    expect(wrapper.find('Input[placeholder="title"]').props().errorMessage).toBe(instance.state.title.errorMessage);
+    expect(wrapper.find('Input[placeholder="title"]').props().validateOn).toEqual([constants.NOT_EMPTY]);
   });
 
   it('should render second Input with proper props', () => {
     const wrapper = shallow(<AddTransactionForm {...props} />);
     const instance = wrapper.instance();
-    expect(wrapper.find('Input').get(1).props.value).toBe(instance.state.cost.value);
-    expect(wrapper.find('Input').get(1).props.onChange).toBe(instance.onCostChange);
-    expect(wrapper.find('Input').get(1).props.errorMessage).toBe(instance.state.cost.errorMessage);
-    expect(wrapper.find('Input').get(1).props.$notEmpty).toBe(true);
-    expect(wrapper.find('Input').get(1).props.$isNumber).toBe(true);
+    expect(wrapper.find('Input[placeholder="cost"]').props().value).toBe(instance.state.cost.value);
+    expect(wrapper.find('Input[placeholder="cost"]').props().onChange).toBe(instance.onCostChange);
+    expect(wrapper.find('Input[placeholder="cost"]').props().errorMessage).toBe(instance.state.cost.errorMessage);
+    expect(wrapper.find('Input[placeholder="cost"]').props().validateOn).toEqual([constants.NOT_EMPTY, constants.IS_NUMBER]);
   });
 
   it('should render SelectUser with proper props', () => {
@@ -159,10 +159,10 @@ describe('Test <AddTransactionForm>', () => {
     instance.state.payerId.value = 'payerId';
     instance.state.participantsId.value = 'participantsId';
     wrapper.find('form').simulate('submit', testEventArg);
-    expect(validator).toBeCalledWith(instance.state.title.value, { $notEmpty: true });
-    expect(validator).toBeCalledWith(instance.state.cost.value, { $notEmpty: true });
-    expect(validator).toBeCalledWith(instance.state.payerId.value, { $anySelected: true });
-    expect(validator).toBeCalledWith(instance.state.participantsId.value, { $checkedNumber: 1 });
+    expect(validator).toBeCalledWith(instance.state.title.value, [constants.NOT_EMPTY]);
+    expect(validator).toBeCalledWith(instance.state.cost.value, [constants.NOT_EMPTY]);
+    expect(validator).toBeCalledWith(instance.state.payerId.value, [constants.ANY_SELECTED]);
+    expect(validator).toBeCalledWith(instance.state.participantsId.value, [constants.ANY_CHECKED]);
   });
 
   it('form submitting should set errorMessage property to proper value', () => {

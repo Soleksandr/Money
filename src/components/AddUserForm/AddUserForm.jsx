@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Input from '../Input';
 import { validator } from '../../utils/validator';
+import * as constants from '../../constants';
 
 export default class AddUserForm extends Component {
   constructor(props) {
@@ -70,19 +71,19 @@ export default class AddUserForm extends Component {
       switch (prop) {
         case 'username':
           message = validator(
-            this.state[prop].value, { $notEmpty: true });
+            this.state[prop].value, [constants.NOT_EMPTY]);
           break;
         case 'name':
           message = validator(
-            this.state[prop].value, { $notEmpty: true });
+            this.state[prop].value, [constants.NOT_EMPTY]);
           break;
         case 'surname':
           message = validator(
-            this.state[prop].value, { $notEmpty: true });
+            this.state[prop].value, [constants.NOT_EMPTY]);
           break;
         case 'password':
           message = validator(
-            this.state[prop].value, { $notEmpty: true });
+            this.state[prop].value, [constants.NOT_EMPTY]);
           break;
       }
       if (message) {
@@ -107,6 +108,7 @@ export default class AddUserForm extends Component {
   }
 
   render() {
+    const validateOn = [constants.NOT_EMPTY];
     return (
       <div>
         <form onSubmit={this.onSubmit}>
@@ -118,7 +120,7 @@ export default class AddUserForm extends Component {
               value={this.state.username.value}
               errorMessage={this.state.username.errorMessage}
               onChange={this.onUsernameChange}
-              $notEmpty
+              validateOn={validateOn}
             />
           </div>
           <div className="form-group">
@@ -129,7 +131,7 @@ export default class AddUserForm extends Component {
               value={this.state.name.value}
               errorMessage={this.state.name.errorMessage}
               onChange={this.onNameChange}
-              $notEmpty
+              validateOn={validateOn}
             />
           </div>
           <div className="form-group">
@@ -140,7 +142,7 @@ export default class AddUserForm extends Component {
               value={this.state.surname.value}
               errorMessage={this.state.surname.errorMessage}
               onChange={this.onSurnameChange}
-              $notEmpty
+              validateOn={validateOn}
             />
           </div>
           <div className="form-group">
@@ -151,7 +153,7 @@ export default class AddUserForm extends Component {
               value={this.state.password.value}
               errorMessage={this.state.password.errorMessage}
               onChange={this.onPasswordChange}
-              $notEmpty
+              validateOn={validateOn}
             />
           </div>
           <button

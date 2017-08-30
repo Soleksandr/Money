@@ -17,7 +17,7 @@ const getTransactions = (req, res) =>
     if (transactions) {
       const userTransactions = transactions.filter(
         t => t.payerId === req.user || t.participantsId.find(
-          id => id === req.user));
+          id => id === req.user.id));
       res.json(userTransactions);
     } else {
       res.sendStatus(500);

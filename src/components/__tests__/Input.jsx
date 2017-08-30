@@ -13,9 +13,8 @@ const props = {
   value: 'value',
   errorMessage: null,
   onChange: jest.fn(),
+  validateOn: ['validateOn'],
 };
-
-const testArg = 'test';
 
 const testEventArg = {
   target: {
@@ -92,7 +91,7 @@ describe('Test <Input>', () => {
   it('onBlur should calls validator with proper arguments', () => {
     const wrapper = shallow(<Input {...props} />);
     wrapper.find('input').simulate('blur', testEventArg);
-    expect(validator).toBeCalledWith(testEventArg.target.value, props);
+    expect(validator).toBeCalledWith(testEventArg.target.value, props.validateOn);
   });
 
   it('onBlur should change state.errorMessage to proper value if validator returns data', () => {

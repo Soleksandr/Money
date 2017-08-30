@@ -32,13 +32,11 @@ passport.use(new LocalStrategy(
 
 const login = (req, res) => {
   const user = req.user;
-  req.login(req.user.id, () => {
-    res.json({
-      id: user.id,
-      username: user.username,
-      name: user.name,
-      surname: user.surname,
-    });
+  res.json({
+    id: user.id,
+    username: user.username,
+    name: user.name,
+    surname: user.surname,
   });
 };
 

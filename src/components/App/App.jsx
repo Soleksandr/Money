@@ -21,7 +21,10 @@ export default class App extends Component {
   render() {
     return !this.props.isFetching ?
       (<Router>
-        <Layout {...this.props}>
+        <Layout
+          logout={this.props.logout}
+          user={this.props.user}
+        >
           <Switch>
             <Route exact path="/" component={About} />
             <Route exact path="/participants" component={Authorization(Users, this.props.user)} />
@@ -41,6 +44,7 @@ App.propTypes = {
   getTransactions: PropTypes.func.isRequired,
   getUsers: PropTypes.func.isRequired,
   userInitialize: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,
   user: PropTypes.PropTypes.shape({
     id: PropTypes.number.isRequired,

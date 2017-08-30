@@ -2,6 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Login from '../Login';
 import { validator } from '../../../utils/validator';
+import * as constants from '../../../constants';
 
 const mockValidResult = null;
 
@@ -53,7 +54,7 @@ describe('Test <Login>', () => {
     expect(wrapper.find('Input[placeholder="username"]').props().value).toBe(instance.state.username.value);
     expect(wrapper.find('Input[placeholder="username"]').props().onChange).toBe(instance.onUsernameChange);
     expect(wrapper.find('Input[placeholder="username"]').props().errorMessage).toBe(instance.state.username.errorMessage);
-    expect(wrapper.find('Input[placeholder="username"]').props().$notEmpty).toBe(true);
+    expect(wrapper.find('Input[placeholder="username"]').props().validateOn).toEqual([constants.NOT_EMPTY]);
   });
 
   it('should render Input with placeholder password with proper props', () => {
@@ -62,7 +63,7 @@ describe('Test <Login>', () => {
     expect(wrapper.find('Input[placeholder="password"]').props().value).toBe(instance.state.password.value);
     expect(wrapper.find('Input[placeholder="password"]').props().onChange).toBe(instance.onPasswordChange);
     expect(wrapper.find('Input[placeholder="password"]').props().errorMessage).toBe(instance.state.password.errorMessage);
-    expect(wrapper.find('Input[placeholder="password"]').props().$notEmpty).toBe(true);
+    expect(wrapper.find('Input[placeholder="password"]').props().validateOn).toEqual([constants.NOT_EMPTY]);
   });
 
 
@@ -104,8 +105,8 @@ describe('Test <Login>', () => {
     instance.state.username.value = 'username';
     instance.state.password.value = 'password';
     wrapper.find('form').simulate('submit', testEventArg);
-    expect(validator).toBeCalledWith(instance.state.username.value, { $notEmpty: true });
-    expect(validator).toBeCalledWith(instance.state.password.value, { $notEmpty: true });
+    expect(validator).toBeCalledWith(instance.state.username.value, [constants.NOT_EMPTY]);
+    expect(validator).toBeCalledWith(instance.state.password.value, [constants.NOT_EMPTY]);
   });
 
   it('form submitting should set errorMessage property to proper value', () => {

@@ -4,6 +4,7 @@ import Input from '../Input';
 import UsersList from '../UsersList';
 import SelectUser from '../SelectUser';
 import { validator } from '../../utils/validator';
+import * as constants from '../../constants';
 
 export default class AddTransactionForm extends Component {
   constructor(props) {
@@ -78,19 +79,19 @@ export default class AddTransactionForm extends Component {
       switch (prop) {
         case 'title':
           message = validator(
-            this.state[prop].value, { $notEmpty: true });
+            this.state[prop].value, [constants.NOT_EMPTY]);
           break;
         case 'cost':
           message = validator(
-            this.state[prop].value, { $notEmpty: true });
+            this.state[prop].value, [constants.NOT_EMPTY]);
           break;
         case 'payerId':
           message = validator(
-            this.state[prop].value, { $anySelected: true });
+            this.state[prop].value, [constants.ANY_SELECTED]);
           break;
         case 'participantsId':
           message = validator(
-            this.state[prop].value, { $checkedNumber: 1 });
+            this.state[prop].value, [constants.ANY_CHECKED]);
           break;
       }
       if (message) {
@@ -115,6 +116,8 @@ export default class AddTransactionForm extends Component {
   }
 
   render() {
+    const titleValidation = [constants.NOT_EMPTY];
+    const costValidation = [constants.NOT_EMPTY, constants.IS_NUMBER];
     return (
       <div>
         <form onSubmit={this.onSubmit}>
@@ -125,7 +128,7 @@ export default class AddTransactionForm extends Component {
               value={this.state.title.value}
               onChange={this.onTitleChange}
               errorMessage={this.state.title.errorMessage}
-              $notEmpty
+              validateOn={titleValidation}
             />
           </div>
           <div className="form-group">
@@ -135,8 +138,7 @@ export default class AddTransactionForm extends Component {
               value={this.state.cost.value}
               onChange={this.onCostChange}
               errorMessage={this.state.cost.errorMessage}
-              $isNumber
-              $notEmpty
+              validateOn={costValidation}
             />
           </div>
           <div className="form-group">

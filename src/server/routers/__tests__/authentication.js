@@ -27,11 +27,6 @@ describe('Test users router', () => {
   });
 
   describe('login function', () => {
-    it('should calls mockRequest.login with proper arguments', () => {
-      authenticationRouter.login(mockRequest, mockResponse);
-      expect(mockRequest.login).toBeCalledWith(mockRequest.user.id, expect.any(Function));
-    });
-
     it('should calls mockResponse.json with proper arguments', () => {
       authenticationRouter.login(mockRequest, mockResponse);
       expect(mockResponse.json).toBeCalledWith({

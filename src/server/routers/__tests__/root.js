@@ -16,7 +16,7 @@ const mockResponse = {
 };
 
 jest.mock('../../handlers/root', () => ({
-  getSessionUser: jest.fn(data => Promise.resolve(data)),
+  getSessionUser: jest.fn(() => Promise.resolve(mockUser)),
 }));
 
 describe('Test root router', () => {
@@ -28,7 +28,7 @@ describe('Test root router', () => {
   describe('getSessionUser function', () => {
     it('should calls handlers.getSessionUser with mockRequest.user if mockRequest.user define', () => {
       rootRouter.getSessionUser(mockRequest, mockResponse);
-      expect(handlers.getSessionUser).toBeCalledWith(mockRequest.user);
+      expect(handlers.getSessionUser).toBeCalledWith(mockRequest.user.id);
     });
 
     it('should not calls handlers.getSessionUser with mockRequest.user if mockRequest.user not define', () => {

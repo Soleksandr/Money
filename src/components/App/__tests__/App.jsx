@@ -9,6 +9,13 @@ const props = {
   getUsers: jest.fn(),
   userInitialize: jest.fn(),
   isFetching: true,
+  logout: jest.fn(),
+  user: {
+    username: 'test',
+    name: 'test',
+    surname: 'test',
+    id: 1,
+  },
 };
 
 describe('Test <App>', () => {
@@ -41,10 +48,9 @@ describe('Test <App>', () => {
   });
 
 
-  it('props.getUsers, props.getTransactions and userInitialize should be called', () => {
-    mount(<App {...props} />);
-    expect(props.getTransactions).toHaveBeenCalled();
-    expect(props.getUsers).toHaveBeenCalled();
-    expect(props.userInitialize).toHaveBeenCalled();
+  it('should render Layout component with proper props', () => {
+    const wrapper = shallow(<App {...props} />);
+    expect(wrapper.find('Layout').props().logout).toEqual(props.logout);
+    expect(wrapper.find('Layout').props().user).toEqual(props.user);
   });
 });
