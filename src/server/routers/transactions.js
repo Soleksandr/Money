@@ -15,6 +15,7 @@ const createTransaction = (req, res) =>
 const getTransactions = (req, res) =>
   handlers.getTransactions().then((transactions) => {
     if (transactions) {
+      console.log('=------------------ transaction in router -----------------------', transactions)
       const userTransactions = transactions.filter(
         t => t.payerId === req.user || t.participantsId.find(
           id => id === req.user.id));

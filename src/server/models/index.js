@@ -7,8 +7,9 @@ const db = new Sequelize('money', 'postgres', 'J19D86C', {
 const modelTransaction = require('./transaction')(db, Sequelize);
 const modelUser = require('./user')(db, Sequelize);
 
-modelUser.belongsToMany(modelTransaction, { through: 'userTransaction' });
-modelTransaction.belongsToMany(modelUser, { through: 'userTransaction', as: 'participantsId' });
+modelUser.belongsToMany(modelTransaction, { through: 'userTransaction', as: 'participants' });
+modelTransaction.belongsToMany(modelUser, { through: 'userTransaction', as: 'participants' });
+modelTransaction.belongsTo(modelUser, { as: 'payer', foreignKey: 'payerId' });
 
 module.exports = {
   db,

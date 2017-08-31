@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
 const rootRouter = require('./routers/root').router;
 const transactionsRouter = require('./routers/transactions').router;
 const usersRouter = require('./routers/users').router;
@@ -12,15 +13,16 @@ const authenticationRouter = require('./routers/authentication').router;
 const logoutRouter = require('./routers/logout').router;
 const indexPage = require('./handlers/indexPage');
 const db = require('./models').db;
+const schema = require('./graphql/schema');
 
 const authenticationMiddleware = () =>
-(req, res, next) => {
-  // console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  return res.json([]);
-};
+  (req, res, next) => {
+    // console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
+    if (req.isAuthenticated()) {
+      return next();
+    }
+    return res.json([]);
+  };
 
 const app = express();
 
@@ -32,15 +34,15 @@ app.use(express.static('static'));
 app.use(session({
   secret: 'asfoxcnueoijsdfj',
   saveUninitialized: false,
-  store: new SequelizeStore({
-    db,
-  }),
+  store: new SequelizeStore({ db }),
   resave: false,
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// app.use('*', (req,res,next) => {console.log('============ main router handler ========', req.originalUrl); next()})
+app.use('/graphql', graphqlExpress({ schema }));
+app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
+
 app.use('/backend/registration', registrationRouter);
 app.use('/backend/authentication', authenticationRouter);
 app.use('/backend/logout', logoutRouter);

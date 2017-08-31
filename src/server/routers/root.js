@@ -5,6 +5,7 @@ const router = express.Router();
 
 const getSessionUser = (req, res) => {
   if (req.user) {
+    console.log('------------ req.user -------------------------', req.user);
     return handlers.getSessionUser(req.user.id)
       .then(({ id, username, name, surname }) =>
         res.json({
