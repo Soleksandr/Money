@@ -20,7 +20,13 @@ passport.use(new LocalStrategy(
         const hash = user.password;
         bcrypt.compare(password, hash, (err, successful) => {
           if (successful) {
-            done(null, user);
+            const userData = {
+              id: user.id,
+              name: user.name,
+              surname: user.surname,
+              username: user.username,
+            };
+            done(null, userData);
           } else {
             done(null, false);
           }
@@ -31,13 +37,7 @@ passport.use(new LocalStrategy(
 ));
 
 const login = (req, res) => {
-  const user = req.user;
-  res.json({
-    id: user.id,
-    username: user.username,
-    name: user.name,
-    surname: user.surname,
-  });
+  res.json(req.user);
 };
 
 router.post('/', passport.authenticate('local'), login);

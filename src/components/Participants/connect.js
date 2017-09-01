@@ -1,13 +1,12 @@
 import { connect } from 'react-redux';
-import * as transactionsActions from '../../actions/transactions';
+import * as participantsActions from '../../actions/participants';
 
 export const mapStateToProps = state => ({
-  transactions: state.transactions,
+  participants: state.participants,
 });
 
 export const mapDispatchToProps = dispatch => ({
-  getTransactions: transactionsActions.getTransactions(dispatch),
+  getParticipants: participantsActions.getParticipants(dispatch),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps);
-

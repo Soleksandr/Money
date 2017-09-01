@@ -9,7 +9,7 @@ export default class Transactions extends Component {
     const id = parseInt(this.props.match.params.id, 10);
     if (id) {
       transactions = transactions.filter(t =>
-        t.payerId === id || t.participantsId.find(pId => pId === id));
+        t.payer.id === id || t.participants.find(p => p.id === id));
     }
     return (
       <div>
@@ -26,7 +26,15 @@ Transactions.propTypes = {
   transactions: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
     cost: PropTypes.string,
-    participantsId: PropTypes.arrayOf(PropTypes.number).isRequired,
-    payerId: PropTypes.number.isRequired,
+    participants: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      surname: PropTypes.string.isRequired,
+    })).isRequired,
+    payer: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      surname: PropTypes.string.isRequired,
+    }).isRequired,
   })).isRequired,
 };

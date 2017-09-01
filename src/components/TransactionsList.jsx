@@ -17,7 +17,7 @@ export default class TransactionsList extends Component {
                 <TransactionPreview
                   title={transaction.title}
                   cost={transaction.cost}
-                  participantsId={transaction.participantsId}
+                  participants={transaction.participants}
                 />
               </Link>
             ))
@@ -32,7 +32,15 @@ TransactionsList.propTypes = {
   transactions: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
     cost: PropTypes.string,
-    participantsId: PropTypes.arrayOf(PropTypes.number).isRequired,
-    payerId: PropTypes.number.isRequired,
+    participants: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      surname: PropTypes.string.isRequired,
+    })).isRequired,
+    payer: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      surname: PropTypes.string.isRequired,
+    }).isRequired,
   })).isRequired,
 };

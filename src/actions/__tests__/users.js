@@ -17,11 +17,6 @@ const mockUsers = [
   },
 ];
 
-const mockUser = {
-  name: 'Evgeny',
-  surname: 'Onegin',
-};
-
 jest.mock('../../apiCalls/users', () => ({
   getUsers: jest.fn(() => Promise.resolve(mockUsers)),
 }));

@@ -29,6 +29,10 @@ export default class AddTransactionForm extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.getUsers();
+  }
+
   onTitleChange = (value) => {
     this.setState({
       title: {
@@ -168,6 +172,7 @@ export default class AddTransactionForm extends Component {
 }
 
 AddTransactionForm.propTypes = {
+  getUsers: PropTypes.func.isRequired,
   createTransaction: PropTypes.func.isRequired,
   users: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,

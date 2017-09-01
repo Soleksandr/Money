@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import AddTransactionForm from '../AddTransactionForm';
 import { validator } from '../../../utils/validator';
 import * as constants from '../../../constants';
@@ -11,6 +11,7 @@ jest.mock('../../../utils/validator', () => ({
 }));
 
 const props = {
+  getUsers: jest.fn(),
   users: [
     {
       name: 'Ivan',
@@ -41,6 +42,17 @@ const testId = 1;
 describe('Test <AddTransactionForm>', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+  });
+
+  it('should calls componentDidMount', () => {
+    const spy = jest.spyOn(AddTransactionForm.prototype, 'componentDidMount');
+    mount(<AddTransactionForm {...props} />);
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('props.getUsers should be called', () => {
+    mount(<AddTransactionForm {...props} />);
+    expect(props.getUsers).toHaveBeenCalled();
   });
 
   it('should render two Input', () => {

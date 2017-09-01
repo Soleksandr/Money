@@ -12,3 +12,4 @@ export const NOT_EMPTY = 'NOT_EMPTY';
 export const IS_NUMBER = 'IS_NUMBER';
 export const ANY_SELECTED = 'ANY_SELECTED';
 export const ANY_CHECKED = 'ANY_CHECKED';
+export const GET_PARTICIPANTS = 'GET_PARTICIPANTS';

@@ -13,31 +13,46 @@ const createTransaction = ({ title, cost, payerId, participantsId }) =>
       where: {
         id: result[0][0].get({ plain: true }).transactionId,
       },
-      attributes: ['id', 'title', 'cost', 'payerId'],
-      include: [{
-        model: modelUser,
-        as: 'participants',
-      }],
+      attributes: ['id', 'title', 'cost'],
+      include: [
+        { model: modelUser,
+          as: 'participants',
+          attributes: ['id', 'name', 'surname', 'username'],
+          through: {
+            attributes: [],
+          },
+        },
+        { model: modelUser,
+          as: 'payer',
+          attributes: ['id', 'name', 'surname', 'username'],
+        },
+      ],
     })
     .then((t) => {
-      console.log('---------------------------------- transaction --------------------', t)
       const transaction = t.get({ plain: true });
-      transaction.participants = transaction.participants.map(p => p.id);
       return transaction;
     }))
     .catch(e => console.error(e));
 
 const getTransactions = () => modelTransaction.findAll({
-  attributes: ['id', 'title', 'cost', 'payerId'],
-  include: [{
-    model: modelUser,
-    as: 'participants',
-  }],
+  attributes: ['id', 'title', 'cost'],
+  include: [
+    { model: modelUser,
+      as: 'participants',
+      attributes: ['id', 'name', 'surname', 'username'],
+      through: {
+        attributes: [],
+      },
+    },
+    { model: modelUser,
+      as: 'payer',
+      attributes: ['id', 'name', 'surname', 'username'],
+    },
+  ],
 })
   .then(data =>
     data.map((t) => {
       const transaction = t.get({ plain: true });
-      transaction.participantsId = transaction.participants.map(p => p.id);
       return transaction;
     }))
   .catch(e => console.error(e));

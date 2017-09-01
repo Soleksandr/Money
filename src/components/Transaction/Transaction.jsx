@@ -3,13 +3,8 @@ import PropTypes from 'prop-types';
 
 
 export default class Transaction extends Component {
-  renderTransaction = (transaction) => {
-    const participants = this.props.users.filter(user =>
-      transaction.participantsId.some(participantId =>
-        participantId === user.id));
-    const payer = this.props.users.find(user => user.id === transaction.payerId);
-
-    return (<div>
+  renderTransaction = transaction =>
+    (<div>
       <div className="form-group">
         <input
           className="form-control"
@@ -31,15 +26,15 @@ export default class Transaction extends Component {
           className="form-control"
           type="text"
           disabled
-          value={`${payer.name} ${payer.surname}`}
+          value={`${transaction.payer.name} ${transaction.payer.surname}`}
         />
       </div>
       <h4>Participants:</h4>
       <ul className="list-group">{
-        participants.map(user =>
+        transaction.participants.map(p =>
           (<li
             className="list-group-item"
-            key={user.id}
+            key={p.id}
           >
             <div className="checkbox">
               <label>
@@ -48,13 +43,12 @@ export default class Transaction extends Component {
                   checked
                   disabled
                 />
-                {`${user.name} ${user.surname}`}
+                {`${p.name} ${p.surname}`}
               </label>
             </div>
           </li>))
         }</ul>
-    </div>);
-  }
+    </div>)
 
   render() {
     const id = parseInt(this.props.match.params.id, 10);
@@ -63,9 +57,9 @@ export default class Transaction extends Component {
     return (
       <div>
         {
-          transaction
-          ? this.renderTransaction(transaction)
-          : <div>Transaction does not exist</div>
+          transaction ?
+            this.renderTransaction(transaction) :
+            <div>Transaction does not exist</div>
         }
       </div>
     );
@@ -73,14 +67,18 @@ export default class Transaction extends Component {
 }
 
 Transaction.propTypes = {
-  users: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    surname: PropTypes.string.isRequired,
-  })).isRequired,
   transactions: PropTypes.arrayOf(PropTypes.shape({
     title: PropTypes.string,
     cost: PropTypes.string,
-    participantsId: PropTypes.arrayOf(PropTypes.number).isRequired,
-    payerId: PropTypes.number.isRequired,
+    participants: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      surname: PropTypes.string.isRequired,
+    })).isRequired,
+    payer: PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      surname: PropTypes.string.isRequired,
+    }).isRequired,
   })).isRequired,
 };

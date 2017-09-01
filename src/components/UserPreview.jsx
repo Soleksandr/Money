@@ -9,7 +9,7 @@ const UserPreview = ({ name, surname, money }) => (
 );
 
 UserPreview.propTypes = {
-  money: PropTypes.string,
+  money: PropTypes.number,
   name: PropTypes.string.isRequired,
   surname: PropTypes.string.isRequired,
 };

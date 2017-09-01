@@ -15,10 +15,9 @@ const createTransaction = (req, res) =>
 const getTransactions = (req, res) =>
   handlers.getTransactions().then((transactions) => {
     if (transactions) {
-      console.log('=------------------ transaction in router -----------------------', transactions)
-      const userTransactions = transactions.filter(
-        t => t.payerId === req.user || t.participantsId.find(
-          id => id === req.user.id));
+      const userId = req.user.id;
+      const userTransactions = transactions.filter(t =>
+        t.payer.id === userId || t.participants.find(p => p.id === userId));
       res.json(userTransactions);
     } else {
       res.sendStatus(500);

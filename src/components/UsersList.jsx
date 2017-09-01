@@ -32,7 +32,8 @@ export default class UsersList extends Component {
           {
             this.props.users.map(user =>
             this.props.isSelectOpportunity ?
-              this.renderUserSelectionOpp(user) :
+              this.renderUserSelectionOpp(user)
+              :
               <Link
                 to={`/participants/${user.id}/transactions`}
                 key={user.id}

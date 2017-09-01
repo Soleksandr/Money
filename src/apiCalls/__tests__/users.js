@@ -6,11 +6,13 @@ const mockUsers = [
     name: 'Ivan',
     surname: 'Ivanov',
     id: 1,
+    money: 1,
   },
   {
     name: 'Petr',
     surname: 'Petrov',
     id: 2,
+    money: 1,
   },
 ];
 
