@@ -7,27 +7,24 @@ import { validator } from '../../utils/validator';
 import * as constants from '../../constants';
 
 export default class AddTransactionForm extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      title: {
-        value: '',
-        errorMessage: null,
-      },
-      cost: {
-        value: '',
-        errorMessage: null,
-      },
-      payerId: {
-        value: 'default',
-        errorMessage: null,
-      },
-      participantsId: {
-        value: [],
-        errorMessage: null,
-      },
-    };
-  }
+  state = {
+    title: {
+      value: '',
+      errorMessage: null,
+    },
+    cost: {
+      value: '',
+      errorMessage: null,
+    },
+    payerId: {
+      value: 'default',
+      errorMessage: null,
+    },
+    participantsId: {
+      value: [],
+      errorMessage: null,
+    },
+  };
 
   componentDidMount() {
     this.props.getUsers();

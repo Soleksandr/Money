@@ -54,4 +54,8 @@ export const logout = dispatch => () =>
       type: constants.GET_TRANSACTIONS,
       payload: [],
     });
+    dispatch({
+      type: constants.GET_PARTICIPANTS,
+      payload: [],
+    });
   });

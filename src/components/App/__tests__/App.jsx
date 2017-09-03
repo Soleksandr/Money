@@ -1,11 +1,10 @@
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { shallow } from 'enzyme';
 import App from '../App';
 
 jest.mock('../../../style/style.scss', () => jest.fn());
 
 const props = {
-  getTransactions: jest.fn(),
   userInitialize: jest.fn(),
   isFetching: true,
   logout: jest.fn(),
@@ -32,7 +31,6 @@ describe('Test <App>', () => {
     const wrapper = shallow(<App {...props} />);
     expect(wrapper.name()).toBe('BrowserRouter');
   });
-
 
   it('should render Layout component with proper props', () => {
     const wrapper = shallow(<App {...props} />);

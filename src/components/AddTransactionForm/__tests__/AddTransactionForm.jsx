@@ -44,13 +44,13 @@ describe('Test <AddTransactionForm>', () => {
     jest.clearAllMocks();
   });
 
-  it('should calls componentDidMount', () => {
+  it('componentDidMount should to be called', () => {
     const spy = jest.spyOn(AddTransactionForm.prototype, 'componentDidMount');
     mount(<AddTransactionForm {...props} />);
     expect(spy).toHaveBeenCalled();
   });
 
-  it('props.getUsers should be called', () => {
+  it('props.getUsers should to be called', () => {
     mount(<AddTransactionForm {...props} />);
     expect(props.getUsers).toHaveBeenCalled();
   });

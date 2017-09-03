@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom';
 import TransactionsList from '../TransactionsList';
 
 export default class Transactions extends Component {
+  componentDidMount() {
+    this.props.getTransactions();
+  }
   render() {
     let transactions = this.props.transactions;
     const id = parseInt(this.props.match.params.id, 10);

@@ -3,73 +3,73 @@ import { shallow } from 'enzyme';
 import Transaction from '../Transaction';
 
 
-const propsCreator = (users, transactions) => ({
-  transactions,
-  users,
+const mockUser1 = {
+  username: 'ivan',
+  name: 'Ivan',
+  surname: 'Ivanov',
+  id: 1,
+};
+
+const mockUser2 = {
+  username: 'petr',
+  name: 'Petr',
+  surname: 'Petrov',
+  id: 2,
+};
+
+const mockProps = {
+  users: [
+    mockUser1,
+    mockUser2,
+  ],
+  transactions: [
+    {
+      title: 'test1',
+      cost: '1',
+      payer: mockUser1,
+      participants: [mockUser1, mockUser2],
+      id: 1,
+    },
+    {
+      title: 'test2',
+      cost: '2',
+      payer: mockUser2,
+      participants: [mockUser1, mockUser2],
+      id: 2,
+    },
+  ],
   match: {
     params: {
       id: null,
     },
   },
-});
-
-const users = [
-  {
-    name: 'Ivan',
-    surname: 'Ivanov',
-    id: 1,
-  },
-  {
-    name: 'Petr',
-    surname: 'Petrov',
-    id: 2,
-  },
-];
-
-const transactions = [
-  {
-    title: 'test1',
-    cost: '1',
-    payerId: 1,
-    participantsId: [1, 2],
-    id: 1,
-  },
-  {
-    title: 'test2',
-    cost: '2',
-    payerId: 2,
-    participantsId: [1, 2],
-    id: 2,
-  },
-];
+};
 
 describe('Test <Transaction>', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should call renderTransaction with propper parameter method when transaction exist', () => {
-    const props = propsCreator(users, transactions);
-    const wrapper = shallow(<Transaction {...props} />);
+  it('should call renderTransaction method with propper parameter when transaction exist', () => {
+    const wrapper = shallow(<Transaction {...mockProps} />);
     const instance = wrapper.instance();
     instance.renderTransaction = jest.fn();
     wrapper.setProps({
       match: {
         params: {
-          id: transactions[0].id,
+          id: mockProps.transactions[0].id,
         },
       },
     });
-    expect(wrapper.instance().renderTransaction).toBeCalledWith(transactions[0]);
+    expect(wrapper.instance().renderTransaction).toBeCalledWith(mockProps.transactions[0]);
   });
 
-  it('should render not less three input when transaction exist', () => {
-    const props = propsCreator(users, transactions, 1);
-    const wrapper = shallow(<Transaction {...props} />);
+  it('should render not less than four input when transaction exist', () => {
+    const wrapper = shallow(<Transaction {...mockProps} />);
     wrapper.setProps({
       match: {
         params: {
-          id: transactions[0].id,
+          id: mockProps.transactions[0].id,
         },
       },
     });
@@ -77,8 +77,7 @@ describe('Test <Transaction>', () => {
   });
 
   it('should not call renderTransaction method when transaction does not exist', () => {
-    const props = propsCreator(users, transactions, 1000);
-    const wrapper = shallow(<Transaction {...props} />);
+    const wrapper = shallow(<Transaction {...mockProps} />);
     const instance = wrapper.instance();
     instance.renderTransaction = jest.fn();
     expect(wrapper.instance().renderTransaction).not.toBeCalled();

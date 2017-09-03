@@ -13,6 +13,7 @@ jest.mock('../../../actions/users', () => ({
 const mockState = {
   users: [
     {
+      username: 'ivan',
       name: 'Ivan',
       surname: 'Ivanov',
       id: 1,

@@ -15,8 +15,6 @@ import '../../style/style.scss';
 export default class App extends Component {
   componentDidMount() {
     this.props.userInitialize();
-    // this.props.getUsers();
-    this.props.getTransactions();
   }
   render() {
     return !this.props.isFetching ?
@@ -41,8 +39,6 @@ export default class App extends Component {
 }
 
 App.propTypes = {
-  getTransactions: PropTypes.func.isRequired,
-  getUsers: PropTypes.func.isRequired,
   userInitialize: PropTypes.func.isRequired,
   logout: PropTypes.func.isRequired,
   isFetching: PropTypes.bool.isRequired,

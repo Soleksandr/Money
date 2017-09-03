@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import UsersList from '../UsersList';
 
-export default class Users extends Component {
+export default class Participants extends Component {
   componentDidMount() {
     this.props.getParticipants();
   }
@@ -19,34 +19,12 @@ export default class Users extends Component {
   }
 }
 
-Users.propTypes = {
-  // user: PropTypes.PropTypes.shape({
-  //   id: PropTypes.number.isRequired,
-  //   username: PropTypes.string.isRequired,
-  //   name: PropTypes.string.isRequired,
-  //   surname: PropTypes.string.isRequired,
-  // }),
+Participants.propTypes = {
+  getParticipants: PropTypes.func.isRequired,
   participants: PropTypes.arrayOf(PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     surname: PropTypes.string.isRequired,
+    money: PropTypes.string.isRequired,
   })).isRequired,
-  // transactions: PropTypes.arrayOf(PropTypes.shape({
-  //   title: PropTypes.string,
-  //   cost: PropTypes.string,
-  //   participants: PropTypes.arrayOf(PropTypes.shape({
-  //     id: PropTypes.number.isRequired,
-  //     name: PropTypes.string.isRequired,
-  //     surname: PropTypes.string.isRequired,
-  //   })).isRequired,
-  //   payer: PropTypes.shape({
-  //     id: PropTypes.number.isRequired,
-  //     name: PropTypes.string.isRequired,
-  //     surname: PropTypes.string.isRequired,
-  //   }).isRequired,
-  // })).isRequired,
 };
-
-// Users.defaultProps = {
-//   user: null,
-// };

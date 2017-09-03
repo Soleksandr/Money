@@ -1,14 +1,9 @@
 import * as connect from '../connect';
-import * as transactionsActions from '../../../actions/transactions';
 import * as userActions from '../../../actions/user';
 
 jest.mock('../../../actions/user', () => ({
   userInitialize: jest.fn(arg => arg),
   logout: jest.fn(arg => arg),
-}));
-
-jest.mock('../../../actions/transactions', () => ({
-  getTransactions: jest.fn(arg => arg),
 }));
 
 const mockState = {
@@ -38,14 +33,12 @@ describe('Test connect for <App>', () => {
 
   it('mapDispatchToProps should call getTransactions, getUsers, logout, userInitialize with mockDispatch', () => {
     connect.mapDispatchToProps(mockDispatch);
-    expect(transactionsActions.getTransactions).toBeCalledWith(mockDispatch);
     expect(userActions.logout).toBeCalledWith(mockDispatch);
     expect(userActions.userInitialize).toBeCalledWith(mockDispatch);
   });
 
   it('mapDispatchToProps should return proper object with result of calling addTransaction', () => {
     expect(connect.mapDispatchToProps(mockDispatch)).toEqual({
-      getTransactions: mockDispatch,
       logout: mockDispatch,
       userInitialize: mockDispatch,
     });
