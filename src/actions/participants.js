@@ -1,9 +1,11 @@
 import * as constants from '../constants';
-import * as participantsApiCalls from '../apiCalls/participants';
+import { fetchQuery } from '../apiCalls/graphql';
 
-export const getParticipants = dispatch => data =>
-  participantsApiCalls.getParticipants(data).then(participants =>
+export const getParticipants = dispatch => () =>
+  fetchQuery(constants.QUERY_PARTICIPANTS).then((result) => {
+    const participants = result.data.getParticipants;
     dispatch({
       type: constants.GET_PARTICIPANTS,
       payload: participants,
-    }));
+    });
+  });

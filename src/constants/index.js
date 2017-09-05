@@ -13,3 +13,82 @@ export const IS_NUMBER = 'IS_NUMBER';
 export const ANY_SELECTED = 'ANY_SELECTED';
 export const ANY_CHECKED = 'ANY_CHECKED';
 export const GET_PARTICIPANTS = 'GET_PARTICIPANTS';
+export const QUERY_PARTICIPANTS = `{
+  getParticipants {
+    id
+    username
+    name
+    surname
+    money
+  }
+}`;
+export const QUERY_TRANSACTIONS = `{
+  getTransactions {
+    id
+    title
+    cost
+    payer {
+      id
+      name
+      surname
+    }
+    participants {
+      id
+      name
+      surname
+    }
+  }
+}`;
+export const QUERY_USERS = `{
+  getUsers {
+    id
+    name
+    surname
+    username
+  }
+}`;
+export const MUTATION_TRANSACTIONS = `mutation createTransaction(
+  $title: String!,
+  $cost: Int!,
+  $payerId: Int!,
+  $participantsId: [Int!]!
+) {
+  createTransaction(
+    title: $title,
+    cost: $cost,
+    payerId: $payerId,
+    participantsId: $participantsId
+  ) {
+    id
+    title
+    cost
+    payer {
+      id
+      name
+      surname
+    }
+    participants {
+      id
+      name
+      surname
+    }
+  }
+}`;
+export const MUTATION_USERS = `mutation createUser(
+  $username: String!,
+  $name: String!,
+  $surname: String!,
+  $password: String!
+) {
+  createUser(
+    username: $username,
+    name: $name,
+    surname: $surname,
+    password: $password
+  ) {
+    id
+    username
+    name
+    surname
+  }
+}`;

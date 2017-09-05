@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import Participants from '../Participants';
 
 const mockParticipant1 = {
@@ -7,7 +7,7 @@ const mockParticipant1 = {
   name: 'Ivan',
   surname: 'Ivanov',
   id: 1,
-  money: '-10'
+  money: '-10',
 };
 
 const mockParticipant2 = {
@@ -15,7 +15,7 @@ const mockParticipant2 = {
   name: 'Petr',
   surname: 'Petrov',
   id: 2,
-  money: '10'
+  money: '10',
 };
 
 const mockProps = {

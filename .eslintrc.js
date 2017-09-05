@@ -12,6 +12,7 @@ module.exports = {
       "jsx-a11y/anchor-is-valid": ["warn", { "aspects": ["invalidHref"] }]
     },
     "env": {
-      "jest": true
+      "jest": true,
+      "browser": true
     }
 };

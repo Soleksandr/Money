@@ -21,12 +21,6 @@ describe('user reducer', () => {
     expect(reducer(undefined, action)).toEqual(null);
   });
 
-  it('should handle CREATE_USER', () => {
-    const action = actionCretor(mockUser, types.CREATE_USER);
-    expect(reducer(null, action))
-      .toEqual(mockUser);
-  });
-
   it('should handle USER_INITIALIZE', () => {
     const action = actionCretor(mockUser, types.USER_INITIALIZE);
     expect(reducer(null, action))

@@ -1,5 +1,5 @@
 import * as actions from '../participants';
-import * as apiCalls from '../../apiCalls/participants';
+import { fetchQuery } from '../../apiCalls/graphql';
 import * as constants from '../../constants';
 
 const mockDispatch = jest.fn();
@@ -17,8 +17,8 @@ const mockParticipants = [
   },
 ];
 
-jest.mock('../../apiCalls/participants', () => ({
-  getParticipants: jest.fn(() => Promise.resolve(mockParticipants)),
+jest.mock('../../apiCalls/graphql', () => ({
+  fetchQuery: jest.fn(() => Promise.resolve({ data: { getParticipants: mockParticipants } })),
 }));
 
 describe('Test participants actions', () => {
@@ -26,9 +26,9 @@ describe('Test participants actions', () => {
     jest.clearAllMocks();
   });
 
-  it('getParticipants should calls apiCalls.getParticipants', () => {
+  it('getParticipants should calls fetchQuery with proper arguments', () => {
     actions.getParticipants(mockDispatch)();
-    expect(apiCalls.getParticipants).toBeCalled();
+    expect(fetchQuery).toBeCalledWith(constants.QUERY_PARTICIPANTS);
   });
 
   it('getParticipants should calls mockDispatch with proper arguments', () => {

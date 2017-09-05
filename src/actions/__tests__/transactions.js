@@ -1,5 +1,5 @@
 import * as actions from '../transactions';
-import * as apiCalls from '../../apiCalls/transactions';
+import { fetchQuery } from '../../apiCalls/graphql';
 import * as constants from '../../constants';
 
 const mockDispatch = jest.fn();
@@ -29,19 +29,24 @@ const mockTransaction = {
   id: 1,
 };
 
-jest.mock('../../apiCalls/transactions', () => ({
-  getTransactions: jest.fn(() => Promise.resolve(mockTransactions)),
-  createTransaction: jest.fn(() => Promise.resolve(mockTransaction)),
+jest.mock('../../apiCalls/graphql', () => ({
+  fetchQuery: jest.fn(() => Promise.resolve({
+    data: {
+      getTransactions: mockTransactions,
+      createTransaction: mockTransaction,
+    },
+  })),
 }));
 
-describe('Test users actions', () => {
+
+describe('Test transactions actions', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('getTransactions should calls apiCalls.getTransactions', () => {
+  it('getTransactions should calls fetchQuery with proper argument', () => {
     actions.getTransactions(mockDispatch)();
-    expect(apiCalls.getTransactions).toBeCalled();
+    expect(fetchQuery).toBeCalledWith(constants.QUERY_TRANSACTIONS);
   });
 
   it('getTransactions should calls mockDispatch with proper arguments', () => {
@@ -52,9 +57,9 @@ describe('Test users actions', () => {
       }));
   });
 
-  it('createTransaction should calls apiCalls.createTransaction', () => {
+  it('createTransaction should calls fetchQuery with proper argument', () => {
     actions.createTransaction(mockDispatch)(mockTransaction);
-    expect(apiCalls.createTransaction).toBeCalled();
+    expect(fetchQuery).toBeCalledWith(constants.MUTATION_TRANSACTIONS, mockTransaction);
   });
 
   it('createTransaction should calls mockDispatch with proper arguments', () => {

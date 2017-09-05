@@ -1,6 +1,5 @@
 import * as actions from '../user';
 import * as userApiCalls from '../../apiCalls/user';
-import * as transactionsApiCalls from '../../apiCalls/transactions';
 import * as constants from '../../constants';
 
 const mockDispatch = jest.fn();
@@ -13,15 +12,9 @@ const mockUser = {
 
 jest.mock('../../apiCalls/user', () => ({
   userInitialize: jest.fn(() => Promise.resolve(mockUser)),
-  createUser: jest.fn(() => Promise.resolve(mockUser)),
   login: jest.fn(data => Promise.resolve(data)),
   logout: jest.fn(() => Promise.resolve(null)),
 }));
-
-jest.mock('../../apiCalls/transactions', () => ({
-  getTransactions: jest.fn(() => Promise.resolve('mockTransactions')),
-}));
-
 
 describe('Test user actions', () => {
   beforeEach(() => {
@@ -56,44 +49,9 @@ describe('Test user actions', () => {
       });
   });
 
-  it('createUser should calls userApiCalls.createUser', () => {
-    actions.createUser(mockDispatch)(mockUser);
-    expect(userApiCalls.createUser).toBeCalled();
-  });
-
-  it('createUser should calls mockDispatch two times', () => {
-    actions.createUser(mockDispatch)(mockUser)
-    .then(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
-  });
-
-  it('createUser should calls mockDispatch with proper arguments', () => {
-    actions.createUser(mockDispatch)()
-      .then(() => {
-        expect(mockDispatch).toBeCalledWith({
-          type: constants.CREATE_USER,
-          payload: mockUser,
-        });
-        expect(mockDispatch).toBeCalledWith({
-          type: constants.GET_TRANSACTIONS,
-          payload: [],
-        });
-      });
-  });
-
   it('login should calls userApiCalls.login with proper argument', () => {
     actions.login(mockDispatch)(mockUser);
     expect(userApiCalls.login).toBeCalledWith(mockUser);
-  });
-
-  it('login should calls mockDispatch two times', () => {
-    actions.login(mockDispatch)(mockUser)
-    .then(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
-  });
-
-  it('login should calls transactionsApiCalls.getTransactions', () => {
-    actions.login(mockDispatch)(mockUser)
-      .then(() =>
-        expect(transactionsApiCalls.getTransactions).toBeCalled());
   });
 
   it('login should calls mockDispatch with proper arguments', () => {
@@ -103,13 +61,6 @@ describe('Test user actions', () => {
           type: constants.LOG_IN,
           payload: mockUser,
         });
-        transactionsApiCalls.getTransactions()
-          .then((data) => {
-            expect(mockDispatch).toBeCalledWith({
-              type: constants.GET_TRANSACTIONS,
-              payload: data,
-            });
-          });
       });
   });
 
@@ -118,9 +69,9 @@ describe('Test user actions', () => {
     expect(userApiCalls.logout).toBeCalled();
   });
 
-  it('logout should calls mockDispatch two times', () => {
+  it('logout should calls mockDispatch three times', () => {
     actions.logout(mockDispatch)(mockUser)
-    .then(() => expect(mockDispatch).toHaveBeenCalledTimes(2));
+    .then(() => expect(mockDispatch).toHaveBeenCalledTimes(3));
   });
 
   it('logout should calls mockDispatch with proper arguments', () => {
@@ -132,6 +83,10 @@ describe('Test user actions', () => {
         });
         expect(mockDispatch).toBeCalledWith({
           type: constants.GET_TRANSACTIONS,
+          payload: [],
+        });
+        expect(mockDispatch).toBeCalledWith({
+          type: constants.GET_PARTICIPANTS,
           payload: [],
         });
       });

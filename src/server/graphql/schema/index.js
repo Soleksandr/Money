@@ -3,23 +3,25 @@ const resolvers = require('./resolvers');
 
 const typeDefs = `
   type User {
-    id: ID!
+    id: Int!
     username: String!
     name: String!
     surname: String!
+    money: String
   }
 
   type Transaction {
-    id: ID!
+    id: Int!
     title: String!
     cost: String!
     payer: User
-    participantsId: [User!]!
+    participants: [User!]!
   }
 
   type Query {
     getUsers: [User!]!
     getTransactions: [Transaction!]!
+    getParticipants: [User!]!
   }
 
   type Mutation {

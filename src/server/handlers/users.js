@@ -1,10 +1,10 @@
-const { modelUser } = require('../models');
+// const { modelUser } = require('../models');
 
-const getUsers = () => modelUser.findAll({
-  attributes: ['id', 'username', 'name', 'surname'],
-})
-  .then(users => users.map(user => user.get({ plain: true })));
+// const getUsers = () => modelUser.findAll({
+//   attributes: ['id', 'username', 'name', 'surname'],
+// })
+//   .then(users => users.map(user => user.get({ plain: true })));
 
-module.exports = {
-  getUsers,
-};
+// module.exports = {
+//   getUsers,
+// };

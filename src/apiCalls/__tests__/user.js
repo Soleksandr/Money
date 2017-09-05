@@ -19,13 +19,6 @@ describe('Test user apiCalls', () => {
     );
   });
 
-  it('apiCalls.createUser should return proper data', () => {
-    fetchMock.post('/backend/registration', mockUser);
-    apiCalls.createUser(mockUser).then(data =>
-      expect(data).toEqual(mockUser),
-    );
-  });
-
   it('apiCalls.login should return proper data', () => {
     fetchMock.post('/backend/authentication', mockUser);
     apiCalls.login(mockUser).then(data =>
