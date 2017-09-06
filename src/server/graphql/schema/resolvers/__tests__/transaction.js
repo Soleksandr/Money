@@ -1,9 +1,8 @@
-const resolvers = require('../resolvers');
-const { modelTransaction } = require('../../../models');
-const { modelUser } = require('../../../models');
+const resolvers = require('../transaction');
+const { modelTransaction } = require('../../../../models');
+const { modelUser } = require('../../../../models');
 
 const mockTransactionId = 1;
-const mockParticipantsHandler = jest.fn((arr, data) => arr.push(data));
 
 const mockUser1 = {
   username: 'ivan',
@@ -26,9 +25,6 @@ const mockUser3 = {
   id: 3,
 };
 
-const mockUsers = [mockUser1, mockUser2, mockUser3];
-
-
 const mockTransactions = [
   {
     title: 'test1',
@@ -45,21 +41,6 @@ const mockTransactions = [
     id: 2,
   },
 ];
-
-const mockQueryHandler = jest.fn((data) => {
-  if (data.passport.user.id) {
-    return Promise.resolve([
-      {
-        title: 'test1',
-        cost: '1',
-        payer: mockUser1,
-        participants: [{ dataValues: mockUser2 }],
-        id: 1,
-      },
-    ]);
-  }
-  return null;
-});
 
 const mockAddParticipants = jest.fn(() => [[{
   get: jest.fn(() => ({ transactionId: mockTransactionId })),
@@ -83,7 +64,7 @@ const mockRequest = {
   },
 };
 
-jest.mock('../../../models', () => ({
+jest.mock('../../../../models', () => ({
   modelTransaction: {
     create: jest.fn(() => Promise.resolve({
       addParticipants: mockAddParticipants,
@@ -175,69 +156,4 @@ describe('Test getTransactions resolver', () => {
   it('should return proper data when user is not loged in', () => {
     expect(resolvers.Query.getTransactions({ passport: { user: null } })).toEqual([]);
   });
-});
-
-describe('getUsers resolver', () => {
-  it('should calls modelUser.findAll with proper arguments', () =>
-    resolvers.Query.getUsers().then(() =>
-      expect(modelUser.findAll).toBeCalledWith({
-        attributes: ['id', 'username', 'name', 'surname'],
-      }),
-    ),
-  );
-});
-
-describe('getParticipants resolver', () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it('should calls mockQueryHandler when user is loged in', () => {
-    resolvers.getParticipantsPureFunc(mockQueryHandler, mockParticipantsHandler)(mockRequest);
-    expect(mockQueryHandler).toBeCalled();
-  });
-
-  it('should calls mockParticipansHandler when user is loged in', () =>
-    resolvers.getParticipantsPureFunc(mockQueryHandler, mockParticipantsHandler)(mockRequest).then(() =>
-    expect(mockParticipantsHandler).toBeCalled(),
-  ));
-
-  it('should return proper data when user is loged in', () =>
-    resolvers.getParticipantsPureFunc(mockQueryHandler, mockParticipantsHandler)(mockRequest).then((data) =>
-    expect(data).toEqual([mockUser2]),
-  ));
-
-  it('should return proper data when user is not loged in', () => {
-    expect(resolvers.getParticipantsPureFunc(mockQueryHandler, mockParticipantsHandler)({ passport: { user: null } })).toEqual([]);
-  });
-
-
-  //   it('should calls mockResponse.json with proper argument', () =>
-  //     usersRouter.getParticipants(mockRequest, mockResponse).then(() =>
-  //       expect(mockResponse.json).toBeCalledWith([mockUsers[1]]),
-  //     ),
-  //   );
-
-  //   it('should calls mockResponse.sendStatus with 500', () => {
-  //     transactionsHandler.getTransactions.mockImplementationOnce(() => Promise.resolve(null));
-  //     return usersRouter.getParticipants(mockRequest, mockResponse).then(() =>
-  //       expect(mockResponse.sendStatus).toBeCalledWith(500),
-  //     );
-  //   });
-
-  //   it('usersRouter.getParticipantsPureFunc should return an object', () => {
-  //     expect(usersRouter.getParticipantsPureFunc()).toEqual(expect.any(Function));
-  //   });
-
-  //   it('mockParticipantsHandler should be called', () =>
-  //     usersRouter.getParticipantsPureFunc(mockParticipantsHandler)(mockRequest, mockResponse).then(() =>
-  //       expect(mockParticipantsHandler).toBeCalled(),
-  //     ),
-  //   );
-
-  //   it('mockParticipantsHandler should be called with proper arguments', () =>
-  //     usersRouter.getParticipantsPureFunc(mockParticipantsHandler)(mockRequest, mockResponse).then(() =>
-  //       expect(mockParticipantsHandler).toBeCalledWith([], mockUsers[0], mockRequest.user.id),
-  //     ),
-  //   )
 });
