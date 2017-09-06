@@ -26,6 +26,14 @@ export const login = dispatch => data =>
     });
   });
 
+export const facebookLoginHandler = dispatch => data =>
+  userApiCalls.facebookLoginHandler(data).then((user) => {
+    dispatch({
+      type: constants.LOG_IN,
+      payload: user,
+    });
+  });
+
 export const logout = dispatch => () =>
   userApiCalls.logout().then((res) => {
     dispatch({

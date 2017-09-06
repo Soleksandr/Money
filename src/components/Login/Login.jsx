@@ -99,6 +99,10 @@ export default class Login extends Component {
             className="btn btn-default"
             type="submit"
           >log in</button>
+          <button
+            onClick={this.props.facebookLoginHandler}
+            className="btn btn-default"
+          >log in through facebook</button>
         </form>
       </div>
     );
