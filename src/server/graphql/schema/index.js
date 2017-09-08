@@ -19,9 +19,9 @@ const typeDefs = `
   }
 
   type Query {
-    getUsers: [User!]!
-    getTransactions: [Transaction!]!
-    getParticipants: [User!]!
+    getUsers: [User]!
+    getTransactions: [Transaction]!
+    getParticipants: [User]!
   }
 
   type Mutation {

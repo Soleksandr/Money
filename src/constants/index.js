@@ -92,3 +92,42 @@ export const MUTATION_USERS = `mutation createUser(
     surname
   }
 }`;
+export const RAW_Q_USER_TRANSACTIONS = `
+SELECT 
+  "transactions"."id" as "transactionId", 
+  "transactions"."title", 
+  "transactions"."cost", 
+  "users"."id" as "payerId",
+  "users"."name" as "payerName", 
+  "users"."surname" as "payerSurname", 
+  "users"."username" as "payerUsername",
+  "participants"."id" as "participantId", 
+  "participants"."name" as "participantName",
+  "participants"."surname" as "participantSurname", 
+  "participants"."username" as "participantUsername"
+FROM "transactions" 
+
+LEFT JOIN "users" 
+ON "transactions"."payerId"="users"."id"
+
+LEFT JOIN
+  (
+    SELECT 
+    "userTransactions"."transactionId", 
+    "users"."name", 
+    "users"."surname", 
+    "users"."username", 
+    "users"."id"
+    FROM "userTransactions"
+    LEFT JOIN "users" 
+    ON "userTransactions"."userId"="users"."id"
+  )
+AS "participants"
+ON "transactions"."id" = "participants"."transactionId"
+
+WHERE "transactions"."id" IN (
+  SELECT "transactionId" 
+  FROM "userTransactions"
+  WHERE "userId"=:userId
+) OR "transactions"."payerId"=:userId`;
+

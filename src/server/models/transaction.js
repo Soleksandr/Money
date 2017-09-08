@@ -19,14 +19,6 @@ module.exports = (db, type) => {
         notEmpty: true,
       },
     },
-    // payerId: {
-    //   type: type.INTEGER,
-    //   allowNull: false,
-    //   validate: {
-    //     isNumeric: true,
-    //     notEmpty: true,
-    //   },
-    // },
   });
   return Transaction;
 };

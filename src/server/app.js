@@ -6,23 +6,12 @@ const passport = require('passport');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const { graphqlExpress, graphiqlExpress } = require('apollo-server-express');
 const rootRouter = require('./routers/root').router;
-const transactionsRouter = require('./routers/transactions').router;
-const usersRouter = require('./routers/users').router;
 const registrationRouter = require('./routers/registration').router;
 const authenticationRouter = require('./routers/authentication').router;
 const logoutRouter = require('./routers/logout').router;
 const indexPage = require('./handlers/indexPage');
 const db = require('./models').db;
 const schema = require('./graphql/schema');
-
-const authenticationMiddleware = () =>
-  (req, res, next) => {
-    // console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
-    if (req.isAuthenticated()) {
-      return next();
-    }
-    return res.json([]);
-  };
 
 const app = express();
 
@@ -39,16 +28,19 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/graphql', graphqlExpress(request => ({ schema, rootValue: request.session })));
-app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 
 app.use('/backend/registration', registrationRouter);
 app.use('/backend/authentication', authenticationRouter);
 app.use('/backend/logout', logoutRouter);
-// app.use('/backend/transactions', authenticationMiddleware(), transactionsRouter);
-// app.use('/backend/users', usersRouter);
-// app.use('/backend/users/participants', usersRouter);
 app.use('/backend', rootRouter);
+app.use('/graphql', (req, res, next) => {
+  if (req.user) {
+    next();
+  } else {
+    res.sendStatus(401);
+  }
+}, graphqlExpress(request => ({ schema, rootValue: request.session })));
+app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 app.all('*', indexPage);
 
 module.exports = app;
