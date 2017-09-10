@@ -19,38 +19,8 @@ const createUser = (_, data) => {
     }));
 };
 
-const getParticipants = (data) => {
-  const user = data.passport.user;
-  return getTransactions(data).then((transactions) => {
-    let participant = null;
-    const userId = user.id;
-    const result = [];
-    const nextParticipants = [];
-    transactions.forEach((t) => {
-      const money = (Math.round((t.cost / t.participants.length) * 100) / 100).toFixed(2);
-      if (t.payer.id === userId) {
-        t.participants.forEach((p) => {
-          participant = { ...p.dataValues, money };
-          if (participant.id !== userId) nextParticipants.push(participant);
-        });
-      } else {
-        participant = { ...t.payer.dataValues, money: -money };
-        nextParticipants.push(participant);
-      }
-    });
-    nextParticipants.forEach((nextP) => {
-      const index = result.findIndex(p => p.id === nextP.id);
-      if (index !== -1) {
-        participant = result[index];
-        result[index] = { ...participant,
-          money: (Math.round((+participant.money + +nextP.money) * 100) / 100).toFixed(2) };
-      } else {
-        result.push(nextP);
-      }
-    });
-    return result;
-  });
-};
+const getParticipants = ({ passport: { user } }) =>
+  modelUser.getParticipants(user.id);
 
 
 module.exports = {

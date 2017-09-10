@@ -1,3 +1,7 @@
+const sequelize = require('sequelize');
+const { db } = require('../models');
+const constants = require('../../constants');
+
 module.exports = (db, type) => {
   const Transaction = db.define('transaction', {
     id: {
@@ -20,5 +24,8 @@ module.exports = (db, type) => {
       },
     },
   });
+  Transaction.getParticipants = id =>
+    db.query(constants.RAW_Q_TRANSACTION_PARTICIPNATS,
+      { replacements: { transactionId: id }, type: sequelize.QueryTypes.SELECT })
   return Transaction;
 };

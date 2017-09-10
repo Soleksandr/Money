@@ -1,58 +1,31 @@
 const { modelUser } = require('../../../models');
 const { modelTransaction } = require('../../../models');
-const { modelUserTransaction } = require('../../../models');
-const { db } = require('../../../models/');
-const sequelize = require('sequelize');
-const constants = require('../../../../constants');
+// const { db } = require('../../../models/');
+// const sequelize = require('sequelize');
+// const constants = require('../../../../constants');
 
 const getTransactions = ({ passport: { user } }) =>
-  db.query(constants.RAW_Q_USER_TRANSACTIONS,
-    { replacements: { userId: user.id }, type: sequelize.QueryTypes.SELECT })
-      .then((result) => {
-        const transactions = [];
-        let id = result[0].transactionId;
-        let participants = [];
-        result.forEach((item, i) => {
-          if (item.transactionId === id && result[i + 1]) {
-            participants.push({
-              id: item.participantId,
-              name: item.participantName,
-              surname: item.participantSurname,
-              username: item.participantUsername,
-            });
-          } else {
-            transactions.push({
-              id: result[i - 1].transactionId,
-              title: result[i - 1].title,
-              cost: result[i - 1].cost,
-              payer: {
-                id: result[i - 1].payerId,
-                name: result[i - 1].payerName,
-                surname: result[i - 1].payerSurname,
-                username: result[i - 1].payerUsername,
-              },
-              participants,
-            });
-            participants = [];
-            id = item.transactionId;
-          }
-        });
-        return transactions;
-      });
+  modelUser.getTransactions(user.id);
+// modelUser.getTransactions(user.id).then(tr => {
+//   return Promise.all(tr.map(t => modelTransaction.getParticipants(t.id).then(p => {tr[0].participants = p; return tr;})))
+//   .then(result => {
+//     result[0].forEach(r => {
+//       console.log('============== transactions ============', r);
+//     })
+//       return result[0]
+//     })
+//   });
+
 
 const createTransaction = (_, data) => {
   const { title, cost, payerId, participantsId } = data;
-  modelTransaction.create({
+  return modelTransaction.create({
     title,
     cost,
     payerId,
   }).then(transaction =>
       transaction.addParticipants(participantsId))
       .then(result =>
-        modelUserTransaction.create({
-          payerId,
-          moneyPerPerson: (Math.round((cost / participantsId.length) * 100) / 100).toFixed(2),
-        }).then(() =>
           modelTransaction.findOne({
             where: {
               id: result[0][0].get({ plain: true }).transactionId,
@@ -71,7 +44,7 @@ const createTransaction = (_, data) => {
                 attributes: ['id', 'name', 'surname', 'username'],
               },
             ],
-          })));
+          }));
 };
 
 module.exports = {

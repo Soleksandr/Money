@@ -6,7 +6,6 @@ const db = new Sequelize('money', 'postgres', 'J19D86C', {
 
 const modelTransaction = require('./transaction')(db, Sequelize);
 const modelUser = require('./user')(db, Sequelize);
-const modelUserTransaction = require('./userTransaction')(db, Sequelize);
 
 modelUser.belongsToMany(modelTransaction, { through: 'userTransaction', as: 'transactions' });
 modelTransaction.belongsToMany(modelUser, { through: 'userTransaction', as: 'participants' });
@@ -16,5 +15,4 @@ module.exports = {
   db,
   modelTransaction,
   modelUser,
-  modelUserTransaction,
 };
