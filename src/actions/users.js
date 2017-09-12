@@ -1,15 +1,14 @@
 import * as constants from '../constants';
 import { fetchQuery } from '../apiCalls/graphql';
 
-export const createUser = dispatch => data =>
+export const addUser = dispatch => data =>
   fetchQuery(constants.MUTATION_USERS, data).then((result) => {
-    const user = result.data.createUser;
+    const user = result.data.addUser;
     dispatch({
       type: constants.CREATE_USER,
       payload: user,
     });
   });
-
 
 export const getUsers = dispatch => () =>
 fetchQuery(constants.QUERY_USERS).then((result) => {

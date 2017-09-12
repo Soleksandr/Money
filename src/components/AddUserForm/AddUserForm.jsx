@@ -21,7 +21,7 @@ export default class AddUserForm extends Component {
         errorMessage: null,
       },
       password: {
-        value: '',
+        value: this.props.withPassword ? '' : 'password',
         errorMessage: null,
       },
     };
@@ -98,12 +98,19 @@ export default class AddUserForm extends Component {
     });
 
     if (!errorMessages.some(m => !!m)) {
-      this.props.createUser({
-        username: this.state.username.value.trim(),
-        name: this.state.name.value.trim(),
-        surname: this.state.surname.value.trim(),
-        password: this.state.password.value.trim(),
-      }).then(() => this.props.history.push('/'));
+      this.props.withPassword ?
+        this.props.createUser({
+          username: this.state.username.value.trim(),
+          name: this.state.name.value.trim(),
+          surname: this.state.surname.value.trim(),
+          password: this.state.password.value.trim(),
+        }).then(() => this.props.history.push('/'))
+        :
+        this.props.addUser({
+          username: this.state.username.value.trim(),
+          name: this.state.name.value.trim(),
+          surname: this.state.surname.value.trim(),
+        }).then(() => this.props.history.push('/new_transaction'));
     }
   }
 
@@ -145,17 +152,20 @@ export default class AddUserForm extends Component {
               validateOn={validateOn}
             />
           </div>
-          <div className="form-group">
-            <Input
-              className="form-control"
-              type="password"
-              placeholder="password"
-              value={this.state.password.value}
-              errorMessage={this.state.password.errorMessage}
-              onChange={this.onPasswordChange}
-              validateOn={validateOn}
-            />
-          </div>
+          {
+            this.props.withPassword ?
+              <div className="form-group">
+                <Input
+                  className="form-control"
+                  type="password"
+                  placeholder="password"
+                  value={this.state.password.value}
+                  errorMessage={this.state.password.errorMessage}
+                  onChange={this.onPasswordChange}
+                  validateOn={validateOn}
+                />
+              </div> : null
+          }
           <button
             className="btn btn-default"
             type="submit"
@@ -168,4 +178,10 @@ export default class AddUserForm extends Component {
 
 AddUserForm.propTypes = {
   createUser: PropTypes.func.isRequired,
+  addUser: PropTypes.func.isRequired,
+  withPassword: PropTypes.bool,
+};
+
+AddUserForm.defaultProps = {
+  withPassword: true,
 };

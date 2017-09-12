@@ -13,6 +13,7 @@ export const IS_NUMBER = 'IS_NUMBER';
 export const ANY_SELECTED = 'ANY_SELECTED';
 export const ANY_CHECKED = 'ANY_CHECKED';
 export const GET_PARTICIPANTS = 'GET_PARTICIPANTS';
+export const ADD_USER = 'ADD_USER';
 export const QUERY_PARTICIPANTS = `{
   getParticipants {
     id
@@ -74,17 +75,15 @@ export const MUTATION_TRANSACTIONS = `mutation createTransaction(
     }
   }
 }`;
-export const MUTATION_USERS = `mutation createUser(
+export const MUTATION_USERS = `mutation addUser(
   $username: String!,
   $name: String!,
   $surname: String!,
-  $password: String!
 ) {
-  createUser(
+  addUser(
     username: $username,
     name: $name,
     surname: $surname,
-    password: $password
   ) {
     id
     username
@@ -92,45 +91,6 @@ export const MUTATION_USERS = `mutation createUser(
     surname
   }
 }`;
-
-// export const RAW_Q_USER_TRANSACTIONS = `
-// SELECT
-//   "transactions"."id",
-//   "transactions"."title",
-//   "transactions"."cost",
-//   "users"."id" as "payerId",
-//   "users"."name",
-//   "users"."surname",
-//   "users"."username"
-//
-// FROM "transactions"
-//
-// LEFT JOIN "users"
-// ON "transactions"."payerId"="users"."id"
-//
-// WHERE "transactions"."id"
-// IN (
-//   SELECT "transactionId"
-//   FROM "userTransaction"
-//   WHERE "userId"=:userId
-// )
-// OR "transactions"."payerId"=:userId`;
-
-// export const RAW_Q_TRANSACTION_PARTICIPNATS = `
-// SELECT
-//   "users"."id",
-//   "users"."name",
-//   "users"."surname",
-//   "users"."username"
-//
-// FROM "users"
-//
-// WHERE "users"."id"
-// IN (
-//   SELECT "userId"
-//   FROM "userTransaction"
-//   WHERE "transactionId"=:transactionId
-// )`;
 
 export const RAW_Q_TRANSACTIONS = `
 SELECT

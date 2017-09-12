@@ -25,11 +25,10 @@ const typeDefs = `
   }
 
   type Mutation {
-    createUser(
+    addUser(
       username: String!,
       name: String!,
       surname: String!,
-      password: String!
     ): User
 
     createTransaction(

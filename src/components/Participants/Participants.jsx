@@ -11,7 +11,7 @@ export default class Participants extends Component {
     return (
       <div>
         <UsersList users={this.props.participants} />
-        <Link to="/registration">
+        <Link to="/new_user">
           <i className="fa fa-plus-circle fa-4x" aria-hidden="true" />
         </Link>
       </div>

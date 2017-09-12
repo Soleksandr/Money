@@ -9,7 +9,7 @@ export default class Layout extends Component {
         <div className="row">
           <div className="wrapper">
             <div className="info">
-              You are loged in as {this.props.user ? this.props.user.name : 'a guest'}
+              You are loged in as {this.props.user ? `${this.props.user.name} ${this.props.user.surname}` : 'a guest'}
             </div>
             <nav>
               {

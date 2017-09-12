@@ -1,21 +1,45 @@
 const { modelUser } = require('../../../models');
 const { modelTransaction } = require('../../../models');
-// const { db } = require('../../../models/');
-// const sequelize = require('sequelize');
-// const constants = require('../../../../constants');
+const { db } = require('../../../models/');
+const sequelize = require('sequelize');
+const constants = require('../../../../constants');
 
 const getTransactions = ({ passport: { user } }) =>
-  modelUser.getTransactions(user.id);
-// modelUser.getTransactions(user.id).then(tr => {
-//   return Promise.all(tr.map(t => modelTransaction.getParticipants(t.id).then(p => {tr[0].participants = p; return tr;})))
-//   .then(result => {
-//     result[0].forEach(r => {
-//       console.log('============== transactions ============', r);
-//     })
-//       return result[0]
-//     })
-//   });
-
+db.query(constants.RAW_Q_TRANSACTIONS,
+  { replacements: { userId: user.id }, type: sequelize.QueryTypes.SELECT })
+    .then((result) => {
+      const transactions = [];
+      result.forEach((item) => {
+        const transaction = transactions.find(t => t.id === item.transactionId);
+        if (transaction) {
+          transaction.participants.push({
+            id: item.participantId,
+            name: item.participantName,
+            surname: item.participantSurname,
+            username: item.participantUsername,
+          });
+        } else {
+          transactions.push({
+            id: item.transactionId,
+            title: item.title,
+            cost: item.cost,
+            payer: {
+              id: item.payerId,
+              name: item.payerName,
+              surname: item.payerSurname,
+              username: item.payerUsername,
+            },
+            participants: [{
+              id: item.participantId,
+              name: item.participantName,
+              surname: item.participantSurname,
+              username: item.participantUsername,
+            }],
+          });
+        }
+      });
+      return transactions;
+    });
 
 const createTransaction = (_, data) => {
   const { title, cost, payerId, participantsId } = data;

@@ -1,26 +1,25 @@
-const bcrypt = require('bcrypt');
 const { modelUser } = require('../../../models');
-const { getTransactions } = require('./transaction').Query;
+const { db } = require('../../../models/');
+const sequelize = require('sequelize');
+const constants = require('../../../../constants');
 
-const saltRounds = 10;
 
 const getUsers = () => modelUser.findAll({
   attributes: ['id', 'username', 'name', 'surname'],
 });
 
-const createUser = (_, data) => {
-  const { name, surname, username, password } = data;
-  return bcrypt.hash(password, saltRounds).then(hash =>
-    modelUser.create({
-      username,
-      name,
-      surname,
-      password: hash,
-    }));
+const addUser = (_, data) => {
+  const { name, surname, username } = data;
+  return modelUser.create({
+    username,
+    name,
+    surname,
+  });
 };
 
 const getParticipants = ({ passport: { user } }) =>
-  modelUser.getParticipants(user.id);
+  db.query(constants.RAW_Q_PARTICIPANTS,
+    { replacements: { userId: user.id }, type: sequelize.QueryTypes.SELECT });
 
 
 module.exports = {
@@ -29,6 +28,6 @@ module.exports = {
     getParticipants,
   },
   Mutation: {
-    createUser,
+    addUser,
   },
 };

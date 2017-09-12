@@ -18,6 +18,15 @@ export const userInitialize = dispatch => () => {
   });
 };
 
+export const createUser = dispatch => data =>
+  userApiCalls.createUser(data).then((user) => {
+    dispatch({
+      type: constants.CREATE_USER,
+      payload: user,
+    });
+  });
+
+
 export const login = dispatch => data =>
   userApiCalls.login(data).then((user) => {
     dispatch({

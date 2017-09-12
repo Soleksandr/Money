@@ -30,6 +30,7 @@ export default class App extends Component {
             <Route exact path="/transactions" component={Authorization(Transactions, this.props.user)} />
             <Route exact path="/new_transaction" component={Authorization(AddTransactionForm, this.props.user)} />
             <Route exact path="/transactions/:id" component={Authorization(Transaction, this.props.user)} />
+            <Route exact path="/new_user" component={Authorization(AddUserForm, this.props.user, { withPassword: false })} />
             <Route exact path="/registration" component={AddUserForm} />
             <Route exact path="/login" component={Login} />
           </Switch>

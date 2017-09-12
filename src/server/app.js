@@ -34,7 +34,11 @@ app.use('/backend/authentication', authenticationRouter);
 app.use('/backend/logout', logoutRouter);
 app.use('/backend', rootRouter);
 app.use('/graphql', (req, res, next) => {
-  next();
+  if (req.user) {
+    next();
+  } else {
+    res.sendStatus(401);
+  }
 }, graphqlExpress(request => ({ schema, rootValue: request.session })));
 app.use('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 app.all('*', indexPage);

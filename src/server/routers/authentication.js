@@ -13,7 +13,7 @@ passport.use(new LocalStrategy(
         username,
       },
     }).then((u) => {
-      if (!u) {
+      if (!u || u.dataValues.password === null) {
         done(null, false);
       } else {
         const user = u.get({ plain: true });
