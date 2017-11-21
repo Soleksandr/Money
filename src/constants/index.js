@@ -94,71 +94,67 @@ export const MUTATION_USERS = `mutation addUser(
 
 export const RAW_Q_TRANSACTIONS = `
 SELECT
-  "transactions"."id" as "transactionId",
-  "transactions"."title",
-  "transactions"."cost",
-  "users"."id" as "payerId",
-  "users"."name" as "payerName",
-  "users"."surname" as "payerSurname",
-  "users"."username" as "payerUsername",
-  "participants"."id" as "participantId",
-  "participants"."name" as "participantName",
-  "participants"."surname" as "participantSurname",
-  "participants"."username" as "participantUsername"
-FROM "transactions"
-LEFT JOIN "users"
-ON "transactions"."payerId"="users"."id"
+  transactions.id,
+  transactions.title,
+  transactions.cost,
+  json_build_object('id', users.id, 'name', users.name, 'surname', users.surname, 'username', users.username) as payer,
+  array_agg( json_build_object('id', p.id, 'name', p.name, 'surname', p.surname, 'username', p.username)) as participants
+  
+FROM transactions
+LEFT JOIN users
+ON transactions."payerId"=users.id
 LEFT JOIN
   (
     SELECT
     "userTransaction"."transactionId",
-    "users"."name",
-    "users"."surname",
-    "users"."username",
-    "users"."id"
+    users.name,
+    users.surname,
+    users.username,
+    users.id
     FROM "userTransaction"
-    LEFT JOIN "users"
-    ON "userTransaction"."userId"="users"."id"
+    LEFT JOIN users
+    ON "userTransaction"."userId"=users.id
   )
-AS "participants"
-ON "transactions"."id" = "participants"."transactionId"
-WHERE "transactions"."id" IN (
+AS "p"
+ON transactions.id = "p"."transactionId"
+WHERE transactions.id IN (
   SELECT "transactionId"
   FROM "userTransaction"
   WHERE "userId"=:userId
-) OR "transactions"."payerId"=:userId`;
+) OR transactions."payerId"=:userId
+GROUP BY transactions.id, users.id`;
 
 export const RAW_Q_PARTICIPANTS = `
-SELECT "p"."id", "p"."name", "p"."surname", "p"."username", SUM(result) as money
+SELECT "p".id, "p".name, "p".surname, "p".username, SUM(result) as money
 FROM (
-  SELECT "users"."id", "users"."name", "users"."surname", "users"."username",
-    SUM(round("transactions"."cost" /
+  SELECT users.id, users.name, users.surname, users.username,
+    SUM(round(transactions."cost" /
       (SELECT COUNT("userId")
       FROM "userTransaction"
-      WHERE "userTransaction"."transactionId"="transactions"."id" ), 2))
+      WHERE "userTransaction"."transactionId"=transactions.id ), 2))
       AS result
-	FROM "transactions", "users"
-  WHERE "users"."id"
+	FROM transactions, users
+  WHERE users.id
   IN (
 		SELECT "userId" FROM "userTransaction"
-    WHERE "userTransaction"."transactionId"="transactions"."id")
-		AND "users"."id" <> :userId
-		AND "transactions"."payerId"=:userId
-	GROUP BY "users"."id"
+    WHERE "userTransaction"."transactionId"=transactions.id)
+		AND users.id <> :userId
+		AND transactions."payerId"=:userId
+	GROUP BY users.id
 	UNION
-	SELECT "users"."id", "users"."name", "users"."surname", "users"."username",
-    -SUM(round("transactions"."cost" /
+	SELECT users.id, users.name, users.surname, users.username,
+    -SUM(round(transactions."cost" /
 	    (SELECT COUNT("userId")
       FROM "userTransaction"
-      WHERE "userTransaction"."transactionId"="transactions"."id" ), 2))
+      WHERE "userTransaction"."transactionId"=transactions.id ), 2))
       AS result
-	FROM "transactions", "users"
-  WHERE "users"."id"="transactions"."payerId"
-  AND "users"."id" <> :userId
-  AND "transactions"."id" IN (
+	FROM transactions, users
+  WHERE users.id=transactions."payerId"
+  AND users.id <> :userId
+  AND transactions.id IN (
 	  SELECT "transactionId"
 	  FROM "userTransaction"
 	  WHERE "userId"=:userId)
-	GROUP BY "users"."id")
+	GROUP BY users.id)
 AS p
-GROUP BY "p"."id", "p"."name", "p"."surname", "p"."username"`;
+GROUP BY "p".id, "p".name, "p".surname, "p".username`;
